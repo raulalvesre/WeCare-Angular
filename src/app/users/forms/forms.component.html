@@ -1,0 +1,467 @@
+<section class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 mt-5 d-flex justify-content-center">
+      <div
+        class="form-box col-md-4 px-4 py-3 d-flex justify-content-center rounded-4"
+      >
+        <form [formGroup]="form" class="row">
+          <h2 class="text-center">Cadastro</h2>
+
+          <div class="mb-3">
+            <p class="d-block form-label">Tipo de documento</p>
+            <div class="form-check form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="cpf"
+                [value]="cpf"
+                formControlName="documentType"
+              />
+              <label class="form-check-label" for="cpf"> CPF </label>
+            </div>
+            <div class="form-check form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="cnpj"
+                [value]="cnpj"
+                formControlName="documentType"
+              />
+              <label class="form-check-label" for="cnpj">CNPJ</label>
+            </div>
+          </div>
+
+          <!-- CPF -->
+          <div *ngIf="form.get('documentType').value === cpf" class="mb-3">
+            <label for="document" class="form-label">CPF</label>
+            <input
+              id="document"
+              type="text"
+              name="document"
+              formControlName="document"
+              mask="000.000.000-00"
+              [showMaskType]="true"
+              [dropSpecialCharacters]="false"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('document').invalid &&
+                  (form.get('document').dirty || form.get('document').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('document').invalid &&
+                (form.get('document').dirty || form.get('document').touched)
+              "
+              class="invalid-feedback"
+            >
+              CPF inválido
+            </div>
+          </div>
+
+          <!-- CNPJ -->
+          <div *ngIf="form.get('documentType').value === cnpj" class="mb-3">
+            <label for="document" class="form-label">CNPJ</label>
+            <input
+              id="document"
+              type="text"
+              name="document"
+              formControlName="document"
+              mask="00.000.000/0000-00"
+              [showMaskType]="true"
+              [dropSpecialCharacters]="false"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('document').invalid &&
+                  (form.get('document').dirty || form.get('document').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('document').invalid &&
+                (form.get('document').dirty || form.get('document').touched)
+              "
+              class="invalid-feedback"
+            >
+              CNPJ inválido
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="name" class="form-label">Nome</label>
+            <input
+              id="name"
+              type="text"
+              name="name"
+              formControlName="name"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('name').errors?.minlength &&
+                  (form.get('name').dirty || form.get('name').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('name').errors?.minlength &&
+                (form.get('name').dirty || form.get('name').touched)
+              "
+              class="invalid-feedback"
+            >
+              Nome inválido
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="birth-date" class="form-label"
+              >Data de nascimento</label
+            >
+            <input
+              id="birth-date"
+              type="date"
+              name="birthDate"
+              formControlName="birthDate"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('birthDate').invalid &&
+                  (form.get('birthDate').dirty || form.get('birthDate').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('birthDate').invalid &&
+                (form.get('birthDate').dirty || form.get('birthDate').touched)
+              "
+              class="invalid-feedback"
+            >
+              Data de nascimento inválida
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="telephone" class="form-label">Celular</label>
+            <input
+              id="telephone"
+              type="text"
+              name="telephone"
+              formControlName="telephone"
+              mask="(00) 90000-0000"
+              [showMaskTyped]="true"
+              [dropSpecialCharacters]="false"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('telephone').invalid &&
+                  (form.get('telephone').dirty || form.get('telephone').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('telephone').invalid &&
+                (form.get('telephone').dirty || form.get('telephone').touched)
+              "
+              class="invalid-feedback"
+            >
+              Celular inválido
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="biography" class="form-label"
+              >Conte um pouco sobre você</label
+            >
+            <textarea
+              class="form-control"
+              rows="4"
+              id="biography"
+              type="text"
+              name="biography"
+              formControlName="biography"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('biography').invalid &&
+                  (form.get('biography').dirty || form.get('biography').touched)
+              }"
+            ></textarea>
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                (form.get('biography').invalid ||
+                  form.get('biography').errors?.minlength) &&
+                (form.get('biography').dirty || form.get('biography').touched)
+              "
+            >
+              Pelo menos 12 caracteres.
+            </div>
+          </div>
+
+          <ngb-accordion class="mb-3">
+            <ngb-panel title="Endereço">
+              <ng-template ngbPanelContent>
+                <div formGroupName="address">
+                  <div class="mb-3">
+                    <label for="postal-code" class="form-label">CEP</label>
+                    <input
+                      id="postal-code"
+                      type="text"
+                      formControlName="postalCode"
+                      mask="00000-000"
+                      [dropSpecialCharacters]="false"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          (form.get('address').get('postalCode').invalid ||
+                            postalCodeInvalid) &&
+                          (form.get('address').get('postalCode').dirty ||
+                            form.get('address').get('postalCode').touched)
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        (form.get('address').get('postalCode').invalid ||
+                          postalCodeInvalid) &&
+                        (form.get('address').get('postalCode').dirty ||
+                          form.get('address').get('postalCode').touched)
+                      "
+                      class="invalid-feedback"
+                    >
+                      CEP inválido
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="street" class="form-label">Logradouro</label>
+                    <input
+                      id="street"
+                      type="text"
+                      name="street"
+                      formControlName="street"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          form.get('address').get('street').invalid &&
+                          (form.get('address').get('street').dirty ||
+                            form.get('address').get('street').touched)
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        form.get('address').get('street').invalid &&
+                        (form.get('address').get('street').dirty ||
+                          form.get('address').get('street').touched)
+                      "
+                      class="invalid-feedback"
+                    >
+                      Logradouro inválido
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="street-number" class="form-label">Número</label>
+                    <input
+                      id="street-number"
+                      type="text"
+                      name="street-number"
+                      formControlName="number"
+                      class="form-control"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="complement" class="form-label"
+                      >Complemento</label
+                    >
+                    <input
+                      id="complement"
+                      type="text"
+                      name="complement"
+                      formControlName="complement"
+                      class="form-control"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="neighborhood" class="form-label">Bairro</label>
+                    <input
+                      id="neighborhood"
+                      type="text"
+                      name="neighborhood"
+                      formControlName="neighborhood"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          form.get('address').get('neighborhood').invalid &&
+                          (form.get('address').get('neighborhood').dirty ||
+                            form.get('address').get('neighborhood').touched)
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        form.get('address').get('neighborhood').invalid &&
+                        (form.get('address').get('neighborhood').dirty ||
+                          form.get('address').get('neighborhood').touched)
+                      "
+                      class="invalid-feedback"
+                    >
+                      É necessário informar o bairro
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="city" class="form-label">Cidade</label>
+                    <input
+                      id="city"
+                      type="text"
+                      name="city"
+                      formControlName="city"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          form.get('address').get('city').invalid &&
+                          (form.get('address').get('city').dirty ||
+                            form.get('address').get('city').touched)
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        form.get('address').get('city').invalid &&
+                        (form.get('address').get('city').dirty ||
+                          form.get('address').get('city').touched)
+                      "
+                      class="invalid-feedback"
+                    >
+                      Cidade não informada
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="state" class="form-label">Estado</label>
+                    <input
+                      id="state"
+                      type="text"
+                      name="state"
+                      formControlName="state"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          form.get('address').get('state').invalid &&
+                          (form.get('address').get('state').dirty ||
+                            form.get('address').get('state').touched)
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        form.get('address').get('state').invalid &&
+                        (form.get('address').get('state').dirty ||
+                          form.get('address').get('state').touched)
+                      "
+                      class="invalid-feedback"
+                    >
+                      Estado não informado
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">E-mail</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              formControlName="email"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('email').invalid &&
+                  (form.get('email').dirty || form.get('email').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('email').invalid &&
+                (form.get('email').dirty || form.get('email').touched)
+              "
+              class="invalid-feedback"
+            >
+              E-mail não informado
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Senha</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              formControlName="password"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('password').errors?.minlength &&
+                  (form.get('password').dirty || form.get('password').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('password').errors?.minlength &&
+                (form.get('password').dirty || form.get('password').touched)
+              "
+              class="invalid-feedback"
+            >
+              Senha inválida. Mínimo de 4 caracteres.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password-confirmation" class="form-label"
+              >Confirmar Senha</label
+            >
+            <input
+              id="password-confirmation"
+              type="password"
+              name="password-confirmation"
+              placeholder=""
+              formControlName="passwordConfirmation"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('passwordConfirmation').errors?.minlength &&
+                  form.errors?.passwordDoesNotEqualPasswordConfirmation &&
+                  (form.get('passwordConfirmation').dirty ||
+                    form.get('passwordConfirmation').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('passwordConfirmation').errors?.minlength &&
+                form.errors?.passwordDoesNotEqualPasswordConfirmation &&
+                (form.get('passwordConfirmation').dirty ||
+                  form.get('passwordConfirmation').touched)
+              "
+              class="invalid-feedback"
+            >
+              A senha está diferente da confirmação da senha
+            </div>
+          </div>
+
+          <div class="d-grid mt-1">
+            <button
+              type="button"
+              [disabled]="form.invalid"
+              class="btn btn-primary btn-lg rounded-5"
+              (click)="register()"
+            >
+              Cadastrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,33 @@
+.carousel {
+    margin: auto;
+    height: 30vh;
+    background-color: aliceblue;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background: linear-gradient(to bottom,  rgba(255, 255, 255, 1) 0%, rgba(233, 233, 233, 0) 100%); W3C */
+
+    /* -webkit-mask-image: -webkit-gradient(linear, left left, left right, 
+    from(rgba(0,0,0,1)), to(rgba(0,0,0,0))); */
+  }
+
+.logo{
+    width: 270px;
+    height: 150px;
+    margin-right: 15vw;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: black;
+    padding: 0;
+    margin: 0;
+ 
+  }
+
+  .mss{
+    text-align: center;
+    padding: 50px;
+  }

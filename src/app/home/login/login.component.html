@@ -1,0 +1,87 @@
+<section class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 mt-5 d-flex justify-content-center">
+      <div
+        class="form-box col-md-3 d-flex justify-content-center pt-2 rounded-4"
+      >
+        <div class="form-value">
+          <form [formGroup]="form">
+            <h2 class="text-center">Acesso</h2>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">E-mail</label>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('email').invalid &&
+                    (form.get('email').dirty || form.get('email').touched)
+                }"
+              />
+              <div
+                *ngIf="
+                  form.get('email').invalid &&
+                  (form.get('email').dirty || form.get('email').touched)
+                "
+                class="invalid-feedback"
+              >
+                E-mail não preenchido
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Senha</label>
+              <input
+                id="password"
+                type="password"
+                formControlName="password"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('password').invalid &&
+                    (form.get('password').dirty || form.get('password').touched)
+                }"
+              />
+              <div
+                *ngIf="
+                  form.get('password').invalid &&
+                  (form.get('password').dirty || form.get('password').touched)
+                "
+                class="invalid-feedback"
+              >
+                Senha não preenchida
+              </div>
+            </div>
+
+            <div class="d-grid mt-4">
+              <button
+                type="button"
+                class="btn btn-primary btn-lg rounded-5"
+                [disabled]="form.invalid"
+                (click)="login()"
+              >
+                Entrar
+              </button>
+            </div>
+
+            <div class="register mt-3 text-center">
+              <p>
+                Não tem uma conta?
+                <a
+                  routerLink="/user/create"
+                  class="nav-link link-primary text-decoration-none"
+                  routerLinkActive="active"
+                >
+                  Cadastre-se agora</a
+                >
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

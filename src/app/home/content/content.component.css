@@ -1,0 +1,43 @@
+.paragraph {
+ background: aliceblue;
+ padding:  5% 10% 5% 10%;
+ margin: 5% 0% 5% 0%;
+ border-style: none;
+ border-width: 5px;
+ border-image: linear-gradient(to left, rgba(0, 251, 217, 0.8), rgba(255, 0, 217, 0.8), rgba(0, 251, 217, 0.8))90% 0%/5px 0px;
+}
+
+#homeContent div{
+    display: flex;
+    align-items: center;
+    /* Ajuste a largura conforme necessário*/ 
+}
+
+#homeContent img{
+  /* Ajuste a largura conforme necessário */
+  width: 300px;
+  /* Adicione margens conforme necessário */
+  margin: 0px 40px 0px 40px;
+  padding: 10px;
+  border: 2px rgb(154, 154, 184) dashed;
+  border-radius: 30px;
+  transform: rotate(-30deg);
+}
+
+#homeContent p{
+      /* Adicione margens conforme necessário */
+  text-align: justify;
+}
+
+button{
+  padding: 0px 70px;
+  height: 40px;
+  border-radius: 40px;
+  background: #5fc9fa;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  color: white;
+}

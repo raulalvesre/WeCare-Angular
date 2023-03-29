@@ -1,0 +1,66 @@
+nav.navbar-transparent{
+	background: rgba(14, 164, 233, 0.7);
+}
+
+.cor{
+	background-image: linear-gradient(to left, rgba(255, 0, 217), rgba(0, 251, 217), rgba(255, 0, 217, 0.5));
+}
+
+.item{
+	background-color: rgba(0,0,0,0.8);
+	border: 1px solid red;
+	float: left;
+	height: 350px;
+	opacity: 0.9;
+}
+
+footer .logo{
+	width: 270px;
+	height: 90px;
+}
+
+/*<!--classes-->*/
+/* .header-bg{
+*/
+
+.logo{
+	margin-top: 1%;
+	margin-left: 1%;
+}
+
+.slogan{
+	text-align: left;
+	color: lightblue;
+	text-decoration: none;
+
+}
+
+.fotterespc{
+	background-color: black;
+	text-align: center;
+	color: white;
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    width: 50%;
+    text-align: center;
+    -webkit-transform: translateY( -50% );
+    -moz-transform: translateY( -50% );
+    transform: translateY( -50% );
+}
+
+.divfooter{
+	height: 50px;
+}
+
+.separatorfooter{
+	border-right: 2px solid rgb(8, 1, 1);
+}
+
+.imagem{
+	width: 80%;
+	height: 200px;
+}

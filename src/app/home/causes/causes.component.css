@@ -1,0 +1,38 @@
+.paragraph {
+    background: aliceblue;
+    padding:  5% 20% 5% 20%;
+    margin: 5% 0% 5% 0%;
+    border-style: solid;
+    border-width: 5px;
+    border-image: linear-gradient(to left, rgba(255, 255, 255, 0.8), rgba(255, 254, 255, 0.8), rgba(243, 245, 245, 0.8))90% 0%/5px 0px;
+    text-align: justify;
+   }
+
+   .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .col {
+    flex: 1;
+    margin: 10px;
+    text-align: center;
+  }
+  
+  .img-dev img{
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 30px;
+  }
+  
+  h3 {
+    margin-top: 10px;
+  }
+
+  img{
+    margin: auto;
+    object-fit: cover;
+
+  }

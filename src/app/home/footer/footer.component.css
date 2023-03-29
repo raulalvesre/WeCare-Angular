@@ -1,0 +1,67 @@
+#corpo .menu{
+	background-color: blue;
+	width: 29%;
+	height: 60Vh;
+	display: inline-table;
+}
+
+footer .logo{
+	width: 270px;
+	height: 150px;
+}
+
+/*<!--classes-->*/
+
+.header-size{
+	height: 180px;
+}
+
+.logo{
+	margin-top: 1%;
+	margin-left: 1%;
+	height: 300px;
+	width: 300px;
+}
+
+.slogan{
+	text-align: left;
+	color: lightblue;
+	text-decoration: none;
+
+}
+
+.gradiente{
+	clear: both;
+	height: 5px;
+	background-image: linear-gradient(to left, rgba(0, 251, 217, 0.5), rgba(255, 0, 217, 0.5), rgba(0, 251, 217, 0.5));
+}
+
+.fotterespc{
+	background-color: rgb(14, 164, 233, 0.7);
+	text-align: center;
+	color: rgb(255, 255, 255);
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    width: 50%;
+    text-align: center;
+    -webkit-transform: translateY( -50% );
+    -moz-transform: translateY( -50% );
+    transform: translateY( -50% );
+}
+
+.divfooter{
+	height: 50px;
+}
+
+.separatorfooter{
+	border-right: 2px solid white;
+}
+
+.imagem{
+	width: 80%;
+	height: 200px;
+}
