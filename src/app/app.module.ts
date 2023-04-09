@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 import { AppComponent } from './app.component';
@@ -20,6 +20,7 @@ import { UsermainComponent } from './users/usermain/usermain.component';
 import { InstitutionsFormsComponent } from './institutions/forms/forms.component';
 import { ToastsContainerComponent } from '../shared/components/toasts-container/toasts-container.component';
 import { CausesComponent } from './home/causes/causes.component';
+import { OpportunitiesSearchComponent } from './users/opportunities/opportunities-search/opportunities-search.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { CausesComponent } from './home/causes/causes.component';
     UsermainComponent,
     InstitutionsFormsComponent,
     CausesComponent,
+    OpportunitiesSearchComponent,
   ],
   providers: [provideNgxMask()],
   bootstrap: [AppComponent],
@@ -48,7 +50,8 @@ import { CausesComponent } from './home/causes/causes.component';
     NgbModule,
     ToastsContainerComponent,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    NgbDropdownModule
   ]
 })
 export class AppModule { }

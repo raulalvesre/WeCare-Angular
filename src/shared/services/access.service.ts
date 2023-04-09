@@ -19,7 +19,7 @@ export class AccessService {
 
   login(accessCredential: AccessCredential): Observable<JwtToken> {
     return this.httpClient
-      .post<JwtToken>(`${this.apiUrl}/auth/login`, {
+      .post<JwtToken>(`${this.apiUrl}/api/auth/login`, {
         email: accessCredential.email,
         password: accessCredential.password
       })
@@ -33,14 +33,14 @@ export class AccessService {
     let user = {};
 
     if (userRegistration.documentType == UserDocumentType.cpf) {
-      url = `${this.apiUrl}/auth/register-candidate`;
+      url = `${this.apiUrl}/api/auth/register-candidate`;
 
       user = {
         cpf: userRegistration.document,
         ...userRegistration
       };
     } else {
-      url = `${this.apiUrl}/auth/register-institution`;
+      url = `${this.apiUrl}/api/auth/register-institution`;
 
       user = {
         cnpj: userRegistration.document,
@@ -53,5 +53,9 @@ export class AccessService {
       user,
       { observe: 'response' }
     );
+  }
+
+  getToken(): string {
+    return localStorage.getItem(this.tokenStorageKey);
   }
 }

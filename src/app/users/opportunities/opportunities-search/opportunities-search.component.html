@@ -1,0 +1,155 @@
+<div class="container-fluid">
+  <h2 class="fs-3 text-primary my-3">Projetos Disponíveis</h2>
+
+  <div class="row">
+    <section class="col d-flex flex-wrap">
+      <div ngbDropdown>
+        <button
+          type="button"
+          class="btn btn-light"
+          id="categories-dropdown"
+          ngbDropdownToggle
+        >
+          Categorias
+        </button>
+        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+          <button ngbDropdownItem>Opção 1</button>
+          <button ngbDropdownItem>Opção 2</button>
+        </div>
+      </div>
+
+      <div ngbDropdown>
+        <button
+          type="button"
+          class="btn btn-light"
+          id="categories-dropdown"
+          ngbDropdownToggle
+        >
+          Data
+        </button>
+        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+          <button ngbDropdownItem>Opção 1</button>
+          <button ngbDropdownItem>Opção 2</button>
+        </div>
+      </div>
+
+      <div ngbDropdown>
+        <button
+          type="button"
+          class="btn btn-light"
+          id="categories-dropdown"
+          ngbDropdownToggle
+        >
+          Local
+        </button>
+        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+          <button ngbDropdownItem>Opção 1</button>
+          <button ngbDropdownItem>Opção 2</button>
+        </div>
+      </div>
+
+      <div ngbDropdown>
+        <button
+          type="button"
+          class="btn btn-light"
+          id="categories-dropdown"
+          ngbDropdownToggle
+        >
+          Habilidades
+        </button>
+        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+          <button ngbDropdownItem>Opção 1</button>
+          <button ngbDropdownItem>Opção 2</button>
+        </div>
+      </div>
+
+      <div ngbDropdown>
+        <button
+          type="button"
+          class="btn btn-light"
+          id="categories-dropdown"
+          ngbDropdownToggle
+        >
+          Instituição
+        </button>
+        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+          <button ngbDropdownItem>Opção 1</button>
+          <button ngbDropdownItem>Opção 2</button>
+        </div>
+      </div>
+
+      <div ngbDropdown>
+        <button
+          type="button"
+          class="btn btn-light"
+          id="categories-dropdown"
+          ngbDropdownToggle
+        >
+          Restrições
+        </button>
+        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+          <button ngbDropdownItem>Opção 1</button>
+          <button ngbDropdownItem>Opção 2</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="row">
+    <section
+      *ngFor="let volunteerOpportunity of volunteerOpportunities"
+      class="col col-md-2 mt-4"
+    >
+      <div class="card">
+        <img
+          src="data:image/jpg;base64,{{ volunteerOpportunity.photo }}"
+          class="card-img-top"
+          alt="Imagem da oportunidade de voluntariado"
+        />
+        <div class="card-body">
+          <h4
+            class="card-title fs-5 text-nowrap overflow-hidden"
+            style="text-overflow: ellipsis"
+          >
+            {{ volunteerOpportunity.name }}
+          </h4>
+
+          <h5 class="card-subtitle fs-6 fw-light text-black-50 my-1">
+            {{ volunteerOpportunity?.institution?.name }}
+          </h5>
+
+          <p class="card-text mt-2">{{ volunteerOpportunity.description }}</p>
+
+          <div class="mb-1">
+            <p class="card-text mb-0">Publicação</p>
+
+            <p class="card-text mb-0 badge rounded-pill text-bg-warning">
+              <span class="bi bi-calendar"></span>&nbsp;{{
+                volunteerOpportunity.opportunityDate | date : "mediumDate"
+              }}
+            </p>
+          </div>
+
+          <div class="mb-4">
+            <p class="card-text mb-0">Local</p>
+
+            <p
+              class="badge rounded-pill fs-6 text-bg-info fw-light text-light my-1"
+            >
+              <span class="bi bi-geo-alt-fill"></span>
+              {{ volunteerOpportunity.address?.neighborhood }} |
+              {{ volunteerOpportunity.address?.city }},
+              {{ volunteerOpportunity.address?.state }}
+            </p>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-outline-primary rounded-5 w-100">
+              Tenho Interesse
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
