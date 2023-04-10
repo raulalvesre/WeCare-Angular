@@ -12,4 +12,6 @@ export interface VolunteerOpportunity {
   address: Address;
   creationDate: Date;
   causes: string[];
+
+  collapseDescription: boolean;
 }

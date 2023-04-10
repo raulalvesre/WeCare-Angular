@@ -118,23 +118,60 @@
             {{ volunteerOpportunity?.institution?.name }}
           </h5>
 
-          <p class="card-text mt-2">{{ volunteerOpportunity.description }}</p>
+          <div class="mt-2 mb-4">
+            <p class="card-text mb-1">
+              {{ getOpportunityDescription(volunteerOpportunity) }}
+              <span
+                *ngIf="volunteerOpportunity?.collapseDescription"
+                class="fs-6 fw-bold"
+                >...</span
+              >
+            </p>
 
-          <div class="mb-1">
+            <span
+              *ngIf="
+                volunteerOpportunity?.description?.length >
+                opportunityDescriptionLength
+              "
+              (click)="toggleOpportunityDescription(volunteerOpportunity)"
+              class="badge text-bg-light"
+              style="cursor: pointer"
+            >
+              <ng-container
+                *ngIf="
+                  volunteerOpportunity?.collapseDescription;
+                  else ocultarDetalhes
+                "
+              >
+                <span class="bi bi-chevron-down"></span>&nbsp;Mostrar detalhes
+              </ng-container>
+              <ng-template #ocultarDetalhes>
+                <span class="bi bi-chevron-up"></span>&nbsp;Ocultar detalhes
+              </ng-template>
+            </span>
+          </div>
+
+          <div class="d-flex flex-column mb-1">
             <p class="card-text mb-0">Publicação</p>
 
-            <p class="card-text mb-0 badge rounded-pill text-bg-warning">
+            <p
+              class="card-text mb-0 badge rounded-pill fs-6 text-bg-warning text-light text-start"
+            >
               <span class="bi bi-calendar"></span>&nbsp;{{
                 volunteerOpportunity.opportunityDate | date : "mediumDate"
               }}
             </p>
           </div>
 
-          <div class="mb-4">
+          <div class="d-flex flex-column mb-4">
             <p class="card-text mb-0">Local</p>
 
             <p
-              class="badge rounded-pill fs-6 text-bg-info fw-light text-light my-1"
+              class="badge rounded-pill fs-6 text-bg-info text-light my-1 text-nowrap overflow-hidden text-start"
+              style="text-overflow: ellipsis"
+              title="{{ volunteerOpportunity.address?.neighborhood }} | {{
+                volunteerOpportunity.address?.city
+              }}, {{ volunteerOpportunity.address?.state }}"
             >
               <span class="bi bi-geo-alt-fill"></span>
               {{ volunteerOpportunity.address?.neighborhood }} |
@@ -144,12 +181,21 @@
           </div>
 
           <div class="d-flex justify-content-end">
-            <button class="btn btn-outline-primary rounded-5 w-100">
+            <button
+              (click)="registerToOpportunity(volunteerOpportunity)"
+              class="btn btn-outline-primary rounded-5 w-100"
+            >
               Tenho Interesse
             </button>
           </div>
         </div>
       </div>
     </section>
+  </div>
+
+  <div *ngIf="hasNextPage" class="row d-flex justify-content-center mt-5">
+    <div class="col col-md-2 d-flex justify-content-center">
+      <button (click)="loadMoreOpportunities()" class="btn btn-outline-light text-primary">Carregar mais</button>
+    </div>
   </div>
 </div>
