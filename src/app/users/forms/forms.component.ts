@@ -64,6 +64,10 @@ export class FormsComponent implements OnInit, OnDestroy {
     this.toastService.clear();
   }
 
+  changeDocumentType(documentType: UserDocumentType) {
+    this.form.get('documentType').setValue(documentType);
+  }
+
   register() {
     const {
       email,

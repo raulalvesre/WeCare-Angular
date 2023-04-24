@@ -2,34 +2,29 @@
   <div class="row">
     <div class="col-md-12 mt-5 d-flex justify-content-center">
       <div
-        class="col-md-4 px-4 py-3 d-flex justify-content-center border border-1 rounded-4"
+        class="col-md-8 col-lg-4 px-4 py-3 d-flex justify-content-center border border-1 rounded-4"
       >
         <form [formGroup]="form" class="row">
           <h2 class="text-center">Cadastro</h2>
 
-          <div class="mb-3">
-            <p class="d-block form-label">Tipo de documento</p>
-            <div class="form-check form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="cpf"
-                [value]="cpf"
-                formControlName="documentType"
-              />
-              <label class="form-check-label" for="cpf"> CPF </label>
-            </div>
-            <div class="form-check form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="cnpj"
-                [value]="cnpj"
-                formControlName="documentType"
-              />
-              <label class="form-check-label" for="cnpj">CNPJ</label>
-            </div>
-          </div>
+          <ul class="nav nav-tabs">
+            <li class="nav-item" style="cursor: pointer">
+              <a
+                class="nav-link"
+                [ngClass]="{ active: form.get('documentType').value === cpf }"
+                (click)="changeDocumentType(cpf)"
+                >Pessoa Física</a
+              >
+            </li>
+            <li class="nav-item" style="cursor: pointer">
+              <a
+                class="nav-link"
+                [ngClass]="{ active: form.get('documentType').value === cnpj }"
+                (click)="changeDocumentType(cnpj)"
+                >Pessoa Jurídica</a
+              >
+            </li>
+          </ul>
 
           <!-- CPF -->
           <div *ngIf="form.get('documentType').value === cpf" class="mb-3">
