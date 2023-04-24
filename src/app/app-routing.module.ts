@@ -8,6 +8,7 @@ import { LoginComponent } from './home/login/login.component';
 import { UsermainComponent } from './users/usermain/usermain.component';
 import { CausesComponent } from './home/causes/causes.component';
 import { OpportunitiesSearchComponent } from './users/opportunities/opportunities-search/opportunities-search.component';
+import { OpportunityCreateComponent } from './users/opportunities/opportunity-create/opportunity-create.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'opportunities',
     component: OpportunitiesSearchComponent
+  },
+  {
+    path: 'opportunity/create',
+    component: OpportunityCreateComponent
   },
   {
     path: 'login',

@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask, provideNgxMask } from 'ngx-mask';
 
 import { AppComponent } from './app.component';
 import { FormsComponent } from './users/forms/forms.component';
@@ -21,6 +21,7 @@ import { InstitutionsFormsComponent } from './institutions/forms/forms.component
 import { ToastsContainerComponent } from '../shared/components/toasts-container/toasts-container.component';
 import { CausesComponent } from './home/causes/causes.component';
 import { OpportunitiesSearchComponent } from './users/opportunities/opportunities-search/opportunities-search.component';
+import { OpportunityCreateComponent } from './users/opportunities/opportunity-create/opportunity-create.component';
 
 
 @NgModule({
@@ -38,8 +39,9 @@ import { OpportunitiesSearchComponent } from './users/opportunities/opportunitie
     InstitutionsFormsComponent,
     CausesComponent,
     OpportunitiesSearchComponent,
+    OpportunityCreateComponent,
   ],
-  providers: [provideNgxMask()],
+  providers: [provideEnvironmentNgxMask()],
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
@@ -50,8 +52,7 @@ import { OpportunitiesSearchComponent } from './users/opportunities/opportunitie
     NgbModule,
     ToastsContainerComponent,
     NgxMaskDirective,
-    NgxMaskPipe,
-    NgbDropdownModule
+    NgxMaskPipe
   ]
 })
 export class AppModule { }
