@@ -5,87 +5,10 @@
         class="col-md-8 col-lg-4 px-4 py-3 d-flex justify-content-center border border-1 rounded-4"
       >
         <form [formGroup]="form" class="row">
-          <h2 class="text-center">Cadastro</h2>
-
-          <ul class="nav nav-tabs">
-            <li class="nav-item" style="cursor: pointer">
-              <a
-                class="nav-link"
-                [ngClass]="{ active: form.get('documentType').value === cpf }"
-                (click)="changeDocumentType(cpf)"
-                >Pessoa Física</a
-              >
-            </li>
-            <li class="nav-item" style="cursor: pointer">
-              <a
-                class="nav-link"
-                [ngClass]="{ active: form.get('documentType').value === cnpj }"
-                (click)="changeDocumentType(cnpj)"
-                >Pessoa Jurídica</a
-              >
-            </li>
-          </ul>
-
-          <!-- CPF -->
-          <div *ngIf="form.get('documentType').value === cpf" class="mb-3">
-            <label for="document" class="form-label">CPF</label>
-            <input
-              id="document"
-              type="text"
-              name="document"
-              formControlName="document"
-              mask="000.000.000-00"
-              [showMaskType]="true"
-              [dropSpecialCharacters]="false"
-              class="form-control"
-              [ngClass]="{
-                'is-invalid':
-                  form.get('document').invalid &&
-                  (form.get('document').dirty || form.get('document').touched)
-              }"
-            />
-            <div
-              *ngIf="
-                form.get('document').invalid &&
-                (form.get('document').dirty || form.get('document').touched)
-              "
-              class="invalid-feedback"
-            >
-              CPF inválido
-            </div>
-          </div>
-
-          <!-- CNPJ -->
-          <div *ngIf="form.get('documentType').value === cnpj" class="mb-3">
-            <label for="document" class="form-label">CNPJ</label>
-            <input
-              id="document"
-              type="text"
-              name="document"
-              formControlName="document"
-              mask="00.000.000/0000-00"
-              [showMaskType]="true"
-              [dropSpecialCharacters]="false"
-              class="form-control"
-              [ngClass]="{
-                'is-invalid':
-                  form.get('document').invalid &&
-                  (form.get('document').dirty || form.get('document').touched)
-              }"
-            />
-            <div
-              *ngIf="
-                form.get('document').invalid &&
-                (form.get('document').dirty || form.get('document').touched)
-              "
-              class="invalid-feedback"
-            >
-              CNPJ inválido
-            </div>
-          </div>
+          <h2 class="text-center">Oportunidade de Voluntariado</h2>
 
           <div class="mb-3">
-            <label for="name" class="form-label">Nome</label>
+            <label for="name" class="form-label">Título</label>
             <input
               id="name"
               type="text"
@@ -105,91 +28,123 @@
               "
               class="invalid-feedback"
             >
-              Nome inválido
+              Título inválido
             </div>
           </div>
 
           <div class="mb-3">
-            <label for="birth-date" class="form-label"
-              >Data de nascimento</label
-            >
+            <label for="birth-date" class="form-label">Data</label>
             <input
               id="birth-date"
               type="date"
-              name="birthDate"
-              formControlName="birthDate"
+              name="opportunityDate"
+              formControlName="opportunityDate"
               class="form-control"
               [ngClass]="{
                 'is-invalid':
-                  form.get('birthDate').invalid &&
-                  (form.get('birthDate').dirty || form.get('birthDate').touched)
+                  form.get('opportunityDate').invalid &&
+                  (form.get('opportunityDate').dirty ||
+                    form.get('opportunityDate').touched)
               }"
             />
             <div
               *ngIf="
-                form.get('birthDate').invalid &&
-                (form.get('birthDate').dirty || form.get('birthDate').touched)
+                form.get('opportunityDate').invalid &&
+                (form.get('opportunityDate').dirty ||
+                  form.get('opportunityDate').touched)
               "
               class="invalid-feedback"
             >
-              Data de nascimento inválida
+              Data inválida
             </div>
           </div>
 
+          <!-- photo -->
           <div class="mb-3">
-            <label for="telephone" class="form-label">Celular</label>
+            <label for="photo" class="form-label">Foto</label>
             <input
-              id="telephone"
-              type="text"
-              name="telephone"
-              formControlName="telephone"
-              mask="(00) 90000-0000"
-              [showMaskTyped]="true"
-              [dropSpecialCharacters]="false"
+              id="photo"
+              type="file"
+              name="photo"
+              formControlName="photo"
               class="form-control"
               [ngClass]="{
                 'is-invalid':
-                  form.get('telephone').invalid &&
-                  (form.get('telephone').dirty || form.get('telephone').touched)
+                  form.get('photo').invalid &&
+                  (form.get('photo').dirty || form.get('photo').touched)
               }"
             />
             <div
               *ngIf="
-                form.get('telephone').invalid &&
-                (form.get('telephone').dirty || form.get('telephone').touched)
+                form.get('photo').invalid &&
+                (form.get('photo').dirty || form.get('photo').touched)
               "
               class="invalid-feedback"
             >
-              Celular inválido
+              Foto inválida
             </div>
           </div>
 
           <div class="mb-3">
-            <label for="biography" class="form-label"
-              >Conte um pouco sobre você</label
-            >
+            <label for="description" class="form-label">Descrição</label>
             <textarea
               class="form-control"
               rows="4"
-              id="biography"
+              id="description"
               type="text"
-              name="biography"
-              formControlName="biography"
+              name="description"
+              formControlName="description"
               [ngClass]="{
                 'is-invalid':
-                  form.get('biography').invalid &&
-                  (form.get('biography').dirty || form.get('biography').touched)
+                  form.get('description').invalid &&
+                  (form.get('description').dirty ||
+                    form.get('description').touched)
               }"
             ></textarea>
             <div
               class="invalid-feedback"
               *ngIf="
-                (form.get('biography').invalid ||
-                  form.get('biography').errors?.minlength) &&
-                (form.get('biography').dirty || form.get('biography').touched)
+                (form.get('description').invalid ||
+                  form.get('description').errors?.minlength) &&
+                (form.get('description').dirty ||
+                  form.get('description').touched)
               "
             >
               Pelo menos 12 caracteres.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="causes" class="form-label">Causas</label>
+            <select
+              #causesSelect
+              class="form-select"
+              id="causes"
+              type="text"
+              name="causes"
+              (change)="addCause(causesSelect.value)"
+            >
+              <option disabled selected>Selecionar Causa</option>
+              <option
+                *ngFor="let cause of opportunityCauses"
+                [value]="cause.code"
+              >
+                {{ cause.name }}
+              </option>
+            </select>
+            <div class="mt-2">
+              <span
+                *ngFor="let opportunityCause of selectedOpportunityCauses"
+                class="badge rounded-pill text-bg-info me-1"
+              >
+                {{ opportunityCause.name }}
+                <span
+                style="cursor: pointer;"
+                  class="bi bi-x"
+                  title="Excluir {{ opportunityCause }}"
+                  (click)="removeCause(opportunityCause)"
+                ></span>
+              </span>
             </div>
           </div>
 
@@ -362,88 +317,6 @@
               </ng-template>
             </ngb-panel>
           </ngb-accordion>
-
-          <div class="mb-3">
-            <label for="email" class="form-label">E-mail</label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              formControlName="email"
-              class="form-control"
-              [ngClass]="{
-                'is-invalid':
-                  form.get('email').invalid &&
-                  (form.get('email').dirty || form.get('email').touched)
-              }"
-            />
-            <div
-              *ngIf="
-                form.get('email').invalid &&
-                (form.get('email').dirty || form.get('email').touched)
-              "
-              class="invalid-feedback"
-            >
-              E-mail não informado
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="password" class="form-label">Senha</label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              formControlName="password"
-              class="form-control"
-              [ngClass]="{
-                'is-invalid':
-                  form.get('password').errors?.minlength &&
-                  (form.get('password').dirty || form.get('password').touched)
-              }"
-            />
-            <div
-              *ngIf="
-                form.get('password').errors?.minlength &&
-                (form.get('password').dirty || form.get('password').touched)
-              "
-              class="invalid-feedback"
-            >
-              Senha inválida. Mínimo de 4 caracteres.
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="password-confirmation" class="form-label"
-              >Confirmar Senha</label
-            >
-            <input
-              id="password-confirmation"
-              type="password"
-              name="password-confirmation"
-              placeholder=""
-              formControlName="passwordConfirmation"
-              class="form-control"
-              [ngClass]="{
-                'is-invalid':
-                  form.get('passwordConfirmation').errors?.minlength &&
-                  form.errors?.passwordDoesNotEqualPasswordConfirmation &&
-                  (form.get('passwordConfirmation').dirty ||
-                    form.get('passwordConfirmation').touched)
-              }"
-            />
-            <div
-              *ngIf="
-                form.get('passwordConfirmation').errors?.minlength &&
-                form.errors?.passwordDoesNotEqualPasswordConfirmation &&
-                (form.get('passwordConfirmation').dirty ||
-                  form.get('passwordConfirmation').touched)
-              "
-              class="invalid-feedback"
-            >
-              A senha está diferente da confirmação da senha
-            </div>
-          </div>
 
           <div class="d-grid mt-1">
             <button
