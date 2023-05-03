@@ -2,9 +2,28 @@
   <div class="row">
     <div class="col-md-12 mt-5 d-flex justify-content-center">
       <div
-        class="form-box col-md-3 d-flex justify-content-center pt-2 rounded-4"
+        class="form-box col-md-8 col-lg-4 d-flex justify-content-center pt-3 border border-1 rounded-4"
       >
-        <div class="form-value">
+        <div>
+          <ul class="nav nav-tabs">
+            <li class="nav-item" style="cursor: pointer">
+              <a
+                class="nav-link"
+                [ngClass]="{ active: form.get('documentType').value === cpf }"
+                (click)="changeDocumentType(cpf)"
+                >Pessoa Física</a
+              >
+            </li>
+            <li class="nav-item" style="cursor: pointer">
+              <a
+                class="nav-link"
+                [ngClass]="{ active: form.get('documentType').value === cnpj }"
+                (click)="changeDocumentType(cnpj)"
+                >Pessoa Jurídica</a
+              >
+            </li>
+          </ul>
+
           <form [formGroup]="form">
             <h2 class="text-center">Acesso</h2>
 
