@@ -24,8 +24,12 @@ export class AccessService {
   constructor(private httpClient: HttpClient) { }
 
   login(accessCredential: AccessCredential): Observable<JwtToken> {
+    const authenticationUrl = accessCredential.documentType === UserDocumentType.cpf
+      ? `${this.apiUrl}/api/auth/login-candidate`
+      : `${this.apiUrl}/api/auth/login-institution`;
+      
     return this.httpClient
-      .post<JwtToken>(`${this.apiUrl}/api/auth/login`, {
+      .post<JwtToken>(authenticationUrl, {
         email: accessCredential.email,
         password: accessCredential.password
       })

@@ -23,6 +23,9 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
   opportunityCauses: OpportunityCause[] = [];
   selectedOpportunityCauses: OpportunityCause[] = [];
 
+  showPhotoPreview = false;
+  photoPreviewUrl = '';
+
   constructor(
     private volunteerOpportunityService: VolunteerOpportunityService,
     private opportunityCauseService: OpportunityCauseService,
@@ -65,6 +68,19 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
         const postalCodePattern = /^\d{5}\-\d{3}$/;
         if (postalCodePattern.test(postalCode)) {
           this.searchPostalCode(postalCode);
+        }
+      });
+
+    this.form.get('photo')
+      .valueChanges
+      .subscribe(file => {
+        const photoFile = (document.querySelector('#photo') as HTMLInputElement).files[0];
+
+        this.showPhotoPreview = true;
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(photoFile);
+        fileReader.onload = () => {
+          this.photoPreviewUrl = fileReader.result as string;
         }
       });
   }

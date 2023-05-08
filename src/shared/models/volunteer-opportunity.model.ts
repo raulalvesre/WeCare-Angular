@@ -7,7 +7,7 @@ export interface VolunteerOpportunity {
   institution?: Institution;
   name: string;
   description: string;
-  opportunityDate: Date;
+  opportunityDate: Date | string;
   photo: string;
   address: Address;
   creationDate: Date;

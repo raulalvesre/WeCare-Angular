@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row my-3">
     <div class="col">
-      <h2 class="fs-3 text-primary">Projetos Disponíveis</h2>
+      <h2 class="fs-3 text-primary">Projetos</h2>
     </div>
 
     <section class="col d-flex justify-content-end">
@@ -209,12 +209,14 @@
 
           <div class="d-flex justify-content-end">
             <button class="btn btn-outline-danger rounded-5 w-100 me-2">
+              <span class="bi bi-trash3"></span>
               Excluir
             </button>
             <a
               [routerLink]="['/opportunity/edit', volunteerOpportunity.id]"
               class="btn btn-outline-primary rounded-5 w-100"
             >
+              <span class="bi bi-pencil"></span>
               Editar
             </a>
           </div>
