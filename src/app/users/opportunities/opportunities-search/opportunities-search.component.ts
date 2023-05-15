@@ -4,6 +4,7 @@ import { Page } from 'src/shared/models/page.model';
 import { VolunteerOpportunity } from 'src/shared/models/volunteer-opportunity.model';
 import { ToastService } from 'src/shared/services/toast.service';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { FileService } from 'src/shared/services/file.service';
 
 @Component({
   selector: 'app-opportunities-search',
@@ -22,7 +23,8 @@ export class OpportunitiesSearchComponent implements OnInit {
 
   constructor(
     private volunteerOpportunityService: VolunteerOpportunityService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private fileService: FileService
   ) { }
 
   ngOnInit(): void {
@@ -69,6 +71,11 @@ export class OpportunitiesSearchComponent implements OnInit {
           }
         }
       });
+  }
+
+  convertBase64ToPhotoUrl(photoBase64: string) {
+    const photoExtension = this.fileService.fileExtension(photoBase64);
+    return `data:image/${photoExtension};base64,${photoBase64}`;
   }
 
   private loadOpportunities() {

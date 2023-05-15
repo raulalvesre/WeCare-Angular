@@ -129,7 +129,7 @@
     >
       <div class="card">
         <img
-          src="data:image/jpg;base64,{{ volunteerOpportunity.photo }}"
+          [src]="convertBase64ToPhotoUrl(volunteerOpportunity.photo)"
           class="card-img-top"
           alt="Imagem da oportunidade de voluntariado"
         />

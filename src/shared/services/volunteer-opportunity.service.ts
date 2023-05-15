@@ -66,6 +66,21 @@ export class VolunteerOpportunityService {
         });
   }
 
+  updateOpportunity(opportunityRegistration: OpportunityRegistration) {
+    const token = this.accessService.getToken();
+
+    const opportunityData = this.convertOpportunityToFormData(opportunityRegistration);
+
+    return this.httpClient.put<HttpResponse<any>>(
+      `${this.apiUrl}/api/volunteer-opportunity/${opportunityRegistration.id}`,
+      opportunityData,
+      {
+        headers: new HttpHeaders().append('Authorization', `Bearer ${token}`),
+        observe: 'response'
+      }
+    );
+  }
+
   registerOpportunity(opportunityRegistration: OpportunityRegistration) {
     const token = this.accessService.getToken();
 
@@ -96,6 +111,29 @@ export class VolunteerOpportunityService {
         observe: 'response'
       }
     );
+  }
+
+  private convertOpportunityToFormData(opportunityRegistration: OpportunityRegistration) {
+    const opportunityRegistrationData = new FormData();
+    opportunityRegistrationData.append('name', opportunityRegistration.name);
+    opportunityRegistrationData.append('description', opportunityRegistration.description);
+    opportunityRegistrationData.append('opportunityDate', opportunityRegistration.opportunityDate.toISOString());
+    opportunityRegistrationData.append('photo', opportunityRegistration.photo);
+    opportunityRegistrationData.append('address.street', opportunityRegistration.address.street);
+    opportunityRegistrationData.append('address.city', opportunityRegistration.address.city);
+    opportunityRegistrationData.append('address.postalCode', opportunityRegistration.address.postalCode);
+    opportunityRegistrationData.append('address.neighborhood', opportunityRegistration.address.neighborhood);
+    opportunityRegistrationData.append('address.number', opportunityRegistration.address.number.toString());
+    opportunityRegistrationData.append('address.state', opportunityRegistration.address.state);
+
+    for (const [index, opportunityCause] of opportunityRegistration.opportunityCauses.entries()) {
+      opportunityRegistrationData.append(
+        `causes[${index}]`,
+        opportunityCause.code
+      );
+    }
+
+    return opportunityRegistrationData;
   }
 
   registerCurrentUserToOpportunity(volunteerOpportunity: VolunteerOpportunity): Observable<HttpResponse<any>> {

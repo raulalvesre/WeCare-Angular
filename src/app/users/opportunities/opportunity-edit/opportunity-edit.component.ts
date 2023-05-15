@@ -1,9 +1,9 @@
 import { formatDate } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { delay, distinctUntilChanged } from 'rxjs';
+import { Subscription, delay, distinctUntilChanged } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Institution } from 'src/shared/models/institution.model';
 import { OpportunityCause } from 'src/shared/models/opportunity-cause.model';
@@ -19,9 +19,11 @@ import { VolunteerOpportunityService } from 'src/shared/services/volunteer-oppor
   templateUrl: './opportunity-edit.component.html',
   styleUrls: ['./opportunity-edit.component.css']
 })
-export class OpportunityEditComponent implements OnInit {
+export class OpportunityEditComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
+
+  opportunityId: number;
 
   loggedInstitution: Institution;
   volunteerOpportunityId: number;
@@ -34,13 +36,16 @@ export class OpportunityEditComponent implements OnInit {
   showPhotoPreview = false;
   photoPreviewUrl = '';
 
+  private routeSubscription: Subscription;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private volunteerOpportunityService: VolunteerOpportunityService,
     private toastService: ToastService,
     private viaCepService: ViaCepService,
     private opportunityCauseService: OpportunityCauseService,
-    private fileService: FileService
+    private fileService: FileService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -86,6 +91,15 @@ export class OpportunityEditComponent implements OnInit {
           this.searchPostalCode(postalCode);
         }
       });
+
+    this.routeSubscription = this.route.params
+      .subscribe(params => {
+        this.opportunityId = params['id'];
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
   }
 
   searchOpportunity() {
@@ -108,18 +122,22 @@ export class OpportunityEditComponent implements OnInit {
           this.form.get('address').get('postalCode').setValue(volunteerOpportunity.address.postalCode);
           this.form.get('causes').setValue(volunteerOpportunity.causes);
 
-          console.log(volunteerOpportunity.photo);
+          const photoExtension = this.fileService.fileExtension(volunteerOpportunity.photo);
+
+          const photoUrl = `data:image/${photoExtension};base64,${volunteerOpportunity.photo}`;
 
           const photoDataTransfer = new DataTransfer();
           this.fileService
-            .urlToFile('data:image/jpg;base64,' + volunteerOpportunity.photo, `${uuidv4()}.jpg`, 'img/jpg')
+            .urlToFile(photoUrl, `${uuidv4()}.jpg`)
             .then(photoFile => {
+              const imageExtensionType = photoFile.type;
+
               photoDataTransfer.items.add(photoFile);
 
               (document.querySelector('#photo') as HTMLInputElement).files = photoDataTransfer.files;
 
               this.showPhotoPreview = true;
-              this.photoPreviewUrl = `data:image/jpg;base64,${volunteerOpportunity.photo}`;
+              this.photoPreviewUrl = `data:${imageExtensionType};base64,${volunteerOpportunity.photo}`;
             });
 
 
@@ -156,6 +174,7 @@ export class OpportunityEditComponent implements OnInit {
     } = this.form.value;
 
     const opportunityRegistration: OpportunityRegistration = {
+      id: this.opportunityId,
       name,
       description,
       opportunityDate: new Date(opportunityDate),
@@ -166,7 +185,7 @@ export class OpportunityEditComponent implements OnInit {
 
     opportunityRegistration.photo = (document.querySelector('#photo') as HTMLInputElement)?.files[0] ?? null;
 
-    this.volunteerOpportunityService.registerOpportunity(opportunityRegistration)
+    this.volunteerOpportunityService.updateOpportunity(opportunityRegistration)
       .subscribe({
         next: httpResponse => {
           if (httpResponse.status == HttpStatusCode.Ok) {

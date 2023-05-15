@@ -4,6 +4,7 @@ import { Institution } from 'src/shared/models/institution.model';
 import { Page } from 'src/shared/models/page.model';
 import { VolunteerOpportunity } from 'src/shared/models/volunteer-opportunity.model';
 import { AccessService } from 'src/shared/services/access.service';
+import { FileService } from 'src/shared/services/file.service';
 import { ToastService } from 'src/shared/services/toast.service';
 import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
 
@@ -24,7 +25,8 @@ export class OpportunitiesSearchAdminComponent {
   constructor(
     private accessService: AccessService,
     private volunteerOpportunityService: VolunteerOpportunityService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private fileService: FileService
   ) { }
 
   ngOnInit(): void {
@@ -71,6 +73,11 @@ export class OpportunitiesSearchAdminComponent {
           }
         }
       });
+  }
+
+  convertBase64ToPhotoUrl(photoBase64: string) {
+    const photoExtension = this.fileService.fileExtension(photoBase64);
+    return `data:image/${photoExtension};base64,${photoBase64}`;
   }
 
   private loadOpportunities() {
