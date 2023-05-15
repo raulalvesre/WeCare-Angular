@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask, provideNgxMask } from 'ngx-mask';
+import { NgbCollapseModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-mask';
 
 import { AppComponent } from './app.component';
 import { FormsComponent } from './users/forms/forms.component';
@@ -56,7 +56,8 @@ import { OpportunityEditComponent } from './users/opportunities/opportunity-edit
     NgbModule,
     ToastsContainerComponent,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    NgbCollapseModule
   ]
 })
 export class AppModule { }
