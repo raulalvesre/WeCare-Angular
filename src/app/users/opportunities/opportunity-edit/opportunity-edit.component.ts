@@ -1,22 +1,30 @@
+import { formatDate } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { delay, distinctUntilChanged } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
+import { Institution } from 'src/shared/models/institution.model';
 import { OpportunityCause } from 'src/shared/models/opportunity-cause.model';
 import { OpportunityRegistration } from 'src/shared/models/opportunity-registration.model';
+import { FileService } from 'src/shared/services/file.service';
 import { OpportunityCauseService } from 'src/shared/services/opportunity-cause.service';
 import { ToastService } from 'src/shared/services/toast.service';
 import { ViaCepService } from 'src/shared/services/via-cep.service';
 import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
 
 @Component({
-  selector: 'app-opportunity-create',
-  templateUrl: './opportunity-create.component.html',
-  styleUrls: ['./opportunity-create.component.css']
+  selector: 'app-opportunity-edit',
+  templateUrl: './opportunity-edit.component.html',
+  styleUrls: ['./opportunity-edit.component.css']
 })
-export class OpportunityCreateComponent implements OnInit, OnDestroy {
+export class OpportunityEditComponent implements OnInit {
 
   form: FormGroup;
+
+  loggedInstitution: Institution;
+  volunteerOpportunityId: number;
 
   postalCodeInvalid = false;
 
@@ -27,10 +35,12 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
   photoPreviewUrl = '';
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private volunteerOpportunityService: VolunteerOpportunityService,
-    private opportunityCauseService: OpportunityCauseService,
     private toastService: ToastService,
-    private viaCepService: ViaCepService
+    private viaCepService: ViaCepService,
+    private opportunityCauseService: OpportunityCauseService,
+    private fileService: FileService
   ) { }
 
   ngOnInit(): void {
@@ -38,7 +48,7 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
       name: new FormControl(null, [Validators.required, Validators.minLength(2), Validators.maxLength(255)]),
       description: new FormControl(null, [Validators.required, Validators.minLength(2), Validators.maxLength(500)]),
       opportunityDate: new FormControl(null, [Validators.required]),
-      photo: new FormControl(null, [Validators.required]),
+      photo: new FormControl(null),
       address: new FormGroup({
         street: new FormControl(null, [Validators.required]),
         number: new FormControl(null, [Validators.min(1), Validators.max(Number.MAX_SAFE_INTEGER)]),
@@ -49,6 +59,12 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
         postalCode: new FormControl(null, [Validators.required, Validators.pattern(/^\d{5}\-\d{3}$/)]),
       }),
       causes: new FormControl([])
+    });
+
+    this.activatedRoute.params.subscribe(parameters => {
+      this.volunteerOpportunityId = parameters.id;
+
+      this.searchOpportunity();
     });
 
     this.opportunityCauseService.search()
@@ -70,23 +86,50 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
           this.searchPostalCode(postalCode);
         }
       });
-
-    this.form.get('photo')
-      .valueChanges
-      .subscribe(file => {
-        const photoFile = (document.querySelector('#photo') as HTMLInputElement).files[0];
-
-        this.showPhotoPreview = true;
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(photoFile);
-        fileReader.onload = () => {
-          this.photoPreviewUrl = fileReader.result as string;
-        }
-      });
   }
 
-  ngOnDestroy(): void {
-    this.toastService.clear();
+  searchOpportunity() {
+    this.volunteerOpportunityService
+      .searchById({ volunteerOpportunityId: this.volunteerOpportunityId })
+      .subscribe({
+        next: volunteerOpportunity => {
+          this.form.get('name').setValue(volunteerOpportunity.name);
+          this.form.get('description').setValue(volunteerOpportunity.description);
+
+          this.form.get('opportunityDate').setValue(formatDate(volunteerOpportunity.opportunityDate, 'yyyy-MM-dd', 'en'));
+
+          // this.form.get('photo').setValue(volunteerOpportunity.photo);
+          this.form.get('address').get('street').setValue(volunteerOpportunity.address.street);
+          this.form.get('address').get('number').setValue(volunteerOpportunity.address.number);
+          this.form.get('address').get('complement').setValue(volunteerOpportunity.address.complement);
+          this.form.get('address').get('city').setValue(volunteerOpportunity.address.city);
+          this.form.get('address').get('neighborhood').setValue(volunteerOpportunity.address.neighborhood);
+          this.form.get('address').get('state').setValue(volunteerOpportunity.address.state);
+          this.form.get('address').get('postalCode').setValue(volunteerOpportunity.address.postalCode);
+          this.form.get('causes').setValue(volunteerOpportunity.causes);
+
+          console.log(volunteerOpportunity.photo);
+
+          const photoDataTransfer = new DataTransfer();
+          this.fileService
+            .urlToFile('data:image/jpg;base64,' + volunteerOpportunity.photo, `${uuidv4()}.jpg`, 'img/jpg')
+            .then(photoFile => {
+              photoDataTransfer.items.add(photoFile);
+
+              (document.querySelector('#photo') as HTMLInputElement).files = photoDataTransfer.files;
+
+              this.showPhotoPreview = true;
+              this.photoPreviewUrl = `data:image/jpg;base64,${volunteerOpportunity.photo}`;
+            });
+
+
+          this.selectedOpportunityCauses = [
+            ...this.opportunityCauses.filter(
+              opportunityCause => volunteerOpportunity.causes.includes(opportunityCause.name)
+            )
+          ];
+        }
+      });
   }
 
   addCause(opportunityCause: string) {
@@ -103,7 +146,7 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
     this.selectedOpportunityCauses.splice(opportunityIndex, 1);
   }
 
-  register() {
+  save() {
     const {
       name,
       description,

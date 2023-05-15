@@ -1,0 +1,238 @@
+<div class="container-fluid">
+  <div class="row my-3">
+    <div class="col">
+      <h2 class="fs-3 text-primary">Projetos</h2>
+    </div>
+
+    <section class="col d-flex justify-content-end">
+      <a class="btn btn-primary" role="button" routerLink="/opportunity/create">
+        <span class="bi bi-plus-lg"></span>
+        Cadastrar Oportunidade
+      </a>
+    </section>
+  </div>
+
+  <div class="row">
+    <section
+      class="col d-flex flex-wrap"
+      *ngIf="volunteerOpportunities?.length > 0"
+    >
+      <div ngbDropdown>
+        <button
+          type="button"
+          class="btn btn-light"
+          id="categories-dropdown"
+          ngbDropdownToggle
+        >
+          Categorias
+        </button>
+        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+          <button ngbDropdownItem>Opção 1</button>
+          <button ngbDropdownItem>Opção 2</button>
+        </div>
+      </div>
+
+      <div ngbDropdown>
+        <button
+          type="button"
+          class="btn btn-light"
+          id="categories-dropdown"
+          ngbDropdownToggle
+        >
+          Data
+        </button>
+        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+          <button ngbDropdownItem>Opção 1</button>
+          <button ngbDropdownItem>Opção 2</button>
+        </div>
+      </div>
+
+      <div ngbDropdown>
+        <button
+          type="button"
+          class="btn btn-light"
+          id="categories-dropdown"
+          ngbDropdownToggle
+        >
+          Local
+        </button>
+        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+          <button ngbDropdownItem>Opção 1</button>
+          <button ngbDropdownItem>Opção 2</button>
+        </div>
+      </div>
+
+      <div ngbDropdown>
+        <button
+          type="button"
+          class="btn btn-light"
+          id="categories-dropdown"
+          ngbDropdownToggle
+        >
+          Habilidades
+        </button>
+        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+          <button ngbDropdownItem>Opção 1</button>
+          <button ngbDropdownItem>Opção 2</button>
+        </div>
+      </div>
+
+      <div ngbDropdown>
+        <button
+          type="button"
+          class="btn btn-light"
+          id="categories-dropdown"
+          ngbDropdownToggle
+        >
+          Instituição
+        </button>
+        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+          <button ngbDropdownItem>Opção 1</button>
+          <button ngbDropdownItem>Opção 2</button>
+        </div>
+      </div>
+
+      <div ngbDropdown>
+        <button
+          type="button"
+          class="btn btn-light"
+          id="categories-dropdown"
+          ngbDropdownToggle
+        >
+          Restrições
+        </button>
+        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+          <button ngbDropdownItem>Opção 1</button>
+          <button ngbDropdownItem>Opção 2</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="row">
+    <section
+      *ngIf="volunteerOpportunities?.length == 0"
+      class="col d-flex justify-content-center mt-5"
+    >
+      <div class="col-md-8 col-lg-4">
+        <div class="card">
+          <div class="card-body fs-3 text-center">
+            <span class="bi bi-exclamation-triangle"></span>
+            Nenhuma oportunidade cadastrada
+          </div>
+        </div>
+      </div>
+    </section>
+    <section
+      *ngFor="let volunteerOpportunity of volunteerOpportunities"
+      class="col col-md-2 mt-4"
+    >
+      <div class="card">
+        <img
+          src="data:image/jpg;base64,{{ volunteerOpportunity.photo }}"
+          class="card-img-top"
+          alt="Imagem da oportunidade de voluntariado"
+        />
+        <div class="card-body">
+          <h4
+            class="card-title fs-5 text-nowrap overflow-hidden"
+            style="text-overflow: ellipsis"
+          >
+            {{ volunteerOpportunity.name }}
+          </h4>
+
+          <h5 class="card-subtitle fs-6 fw-light text-black-50 my-1">
+            {{ volunteerOpportunity?.institution?.name }}
+          </h5>
+
+          <div class="mt-2 mb-4">
+            <p class="card-text mb-1">
+              {{ getOpportunityDescription(volunteerOpportunity) }}
+              <span
+                *ngIf="volunteerOpportunity?.collapseDescription"
+                class="fs-6 fw-bold"
+                >...</span
+              >
+            </p>
+
+            <span
+              *ngIf="
+                volunteerOpportunity?.description?.length >
+                opportunityDescriptionLength
+              "
+              (click)="toggleOpportunityDescription(volunteerOpportunity)"
+              class="badge text-bg-light"
+              style="cursor: pointer"
+            >
+              <ng-container
+                *ngIf="
+                  volunteerOpportunity?.collapseDescription;
+                  else ocultarDetalhes
+                "
+              >
+                <span class="bi bi-chevron-down"></span>&nbsp;Mostrar detalhes
+              </ng-container>
+              <ng-template #ocultarDetalhes>
+                <span class="bi bi-chevron-up"></span>&nbsp;Ocultar detalhes
+              </ng-template>
+            </span>
+          </div>
+
+          <div class="d-flex flex-column mb-1">
+            <p class="card-text mb-0">Publicação</p>
+
+            <p
+              class="card-text mb-0 badge rounded-pill fs-6 text-bg-warning text-light text-start"
+            >
+              <span class="bi bi-calendar"></span>&nbsp;{{
+                volunteerOpportunity.opportunityDate | date : "mediumDate"
+              }}
+            </p>
+          </div>
+
+          <div class="d-flex flex-column mb-4">
+            <p class="card-text mb-0">Local</p>
+
+            <p
+              class="badge rounded-pill fs-6 text-bg-info text-light my-1 text-nowrap overflow-hidden text-start"
+              style="text-overflow: ellipsis"
+              title="{{ volunteerOpportunity.address?.neighborhood }} | {{
+                volunteerOpportunity.address?.city
+              }}, {{ volunteerOpportunity.address?.state }}"
+            >
+              <span class="bi bi-geo-alt-fill"></span>
+              {{ volunteerOpportunity.address?.neighborhood }} |
+              {{ volunteerOpportunity.address?.city }},
+              {{ volunteerOpportunity.address?.state }}
+            </p>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-outline-danger rounded-5 w-100 me-2">
+              <span class="bi bi-trash3"></span>
+              Excluir
+            </button>
+            <a
+              [routerLink]="['/opportunity/edit', volunteerOpportunity.id]"
+              class="btn btn-outline-primary rounded-5 w-100"
+            >
+              <span class="bi bi-pencil"></span>
+              Editar
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div *ngIf="hasNextPage" class="row d-flex justify-content-center mt-5">
+    <div class="col col-md-2 d-flex justify-content-center">
+      <button
+        (click)="loadMoreOpportunities()"
+        class="btn btn-outline-light text-primary"
+      >
+        Carregar mais
+      </button>
+    </div>
+  </div>
+</div>

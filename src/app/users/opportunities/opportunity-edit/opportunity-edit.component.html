@@ -5,7 +5,9 @@
         class="col-md-8 col-lg-4 px-4 py-3 d-flex justify-content-center border border-1 rounded-4"
       >
         <form [formGroup]="form" class="row">
-          <h2 class="text-center">Oportunidade de Voluntariado</h2>
+          <h2 class="text-center">Editar Oportunidade de Voluntariado</h2>
+
+          <div>{{ form.value | json }}</div>
 
           <div class="mb-3">
             <label for="name" class="form-label">Título</label>
@@ -330,9 +332,9 @@
               type="button"
               [disabled]="form.invalid"
               class="btn btn-primary btn-lg rounded-5"
-              (click)="register()"
+              (click)="save()"
             >
-              Cadastrar
+              Salvar
             </button>
           </div>
         </form>

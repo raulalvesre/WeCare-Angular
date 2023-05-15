@@ -21,12 +21,16 @@ export class VolunteerOpportunityService {
     private institutionService: InstitutionService
   ) { }
 
-  search({ pageNumber = 1, pageSize = 10 }): Observable<Page<VolunteerOpportunity[]>> {
+  search({ pageNumber = 1, pageSize = 10, institutionId = null }): Observable<Page<VolunteerOpportunity[]>> {
     const token = this.accessService.getToken();
 
-    const parameters = new HttpParams()
+    let parameters = new HttpParams()
       .append("pageNumber", pageNumber)
       .append("pageSize", pageSize);
+
+    if (institutionId != null) {
+      parameters = parameters.append("institutionId", institutionId)
+    }
 
     return this.httpClient
       .get<Page<VolunteerOpportunity[]>>(
@@ -49,6 +53,17 @@ export class VolunteerOpportunityService {
           }
         }
       }));
+  }
+
+  searchById({ volunteerOpportunityId: opportunityId }: { volunteerOpportunityId: number }): Observable<VolunteerOpportunity> {
+    const token = this.accessService.getToken();
+
+    return this.httpClient
+      .get<VolunteerOpportunity>(
+        `${this.apiUrl}/api/volunteer-opportunity/${opportunityId}`,
+        {
+          headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
+        });
   }
 
   registerOpportunity(opportunityRegistration: OpportunityRegistration) {

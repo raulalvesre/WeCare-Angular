@@ -22,6 +22,8 @@ import { ToastsContainerComponent } from '../shared/components/toasts-container/
 import { CausesComponent } from './home/causes/causes.component';
 import { OpportunitiesSearchComponent } from './users/opportunities/opportunities-search/opportunities-search.component';
 import { OpportunityCreateComponent } from './users/opportunities/opportunity-create/opportunity-create.component';
+import { OpportunitiesSearchAdminComponent } from './users/opportunities/opportunities-search-admin/opportunities-search-admin.component';
+import { OpportunityEditComponent } from './users/opportunities/opportunity-edit/opportunity-edit.component';
 
 
 @NgModule({
@@ -40,6 +42,8 @@ import { OpportunityCreateComponent } from './users/opportunities/opportunity-cr
     CausesComponent,
     OpportunitiesSearchComponent,
     OpportunityCreateComponent,
+    OpportunitiesSearchAdminComponent,
+    OpportunityEditComponent,
   ],
   providers: [provideEnvironmentNgxMask()],
   bootstrap: [AppComponent],
