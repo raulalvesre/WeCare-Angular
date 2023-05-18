@@ -80,7 +80,26 @@ export class OpportunitiesSearchAdminComponent {
     return `data:image/${photoExtension};base64,${photoBase64}`;
   }
 
+  deleteOpportunity(volunteerOpportunity: VolunteerOpportunity) {
+    this.volunteerOpportunityService.deleteOpportunity(volunteerOpportunity)
+      .subscribe({
+        next: httpResponse => {
+          if (httpResponse.status == HttpStatusCode.NoContent) {
+            this.toastService.show('Oportunidade deletada com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+          }
+
+          this.loadOpportunities();
+        },
+        error: (httpErrorResponse: HttpErrorResponse) => {
+          console.error(httpErrorResponse);
+        }
+      });
+  }
+
   private loadOpportunities() {
+    this.pageNumber = 1;
+    this.volunteerOpportunities = [];
+
     const loggedInstitution = this.accessService.getCurrentUser() as Institution;
 
     this.volunteerOpportunityService.search({

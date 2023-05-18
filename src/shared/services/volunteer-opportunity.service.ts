@@ -113,6 +113,17 @@ export class VolunteerOpportunityService {
     );
   }
 
+  deleteOpportunity(volunteerOpportunity: VolunteerOpportunity): Observable<HttpResponse<any>> {
+    const token = this.accessService.getToken();
+    return this.httpClient.delete<HttpResponse<any>>(
+      `${this.apiUrl}/api/volunteer-opportunity/${volunteerOpportunity.id}`,
+      {
+        headers: new HttpHeaders().append('Authorization', `Bearer ${token}`),
+        observe: 'response'
+      }
+    );
+  }
+
   private convertOpportunityToFormData(opportunityRegistration: OpportunityRegistration) {
     const opportunityRegistrationData = new FormData();
     opportunityRegistrationData.append('name', opportunityRegistration.name);

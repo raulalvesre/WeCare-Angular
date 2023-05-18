@@ -208,7 +208,10 @@
           </div>
 
           <div class="d-flex justify-content-end">
-            <button class="btn btn-outline-danger rounded-5 w-100 me-2">
+            <button
+              (click)="deleteOpportunity(volunteerOpportunity)"
+              class="btn btn-outline-danger rounded-5 w-100 me-2"
+            >
               <span class="bi bi-trash3"></span>
               Excluir
             </button>
