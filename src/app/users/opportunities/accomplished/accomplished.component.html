@@ -1,0 +1,39 @@
+<div class="content">
+    <div style="max-height: 500px; overflow: hidden;" class="px-2">
+        <div *ngIf="realizados.length == 0">
+          <p class="bold">Você ainda não realizou nenhum evento!</p>
+        </div>
+    
+        <div *ngIf="realizados.length > 0">
+          <p class="bold">Você realizou dos seguintes eventos:</p>
+          
+          <div class="row text-white bg-info">
+            <div class="col col-sm-2">Tipo do evento</div>
+            <div class="col col-sm-4">Nome</div>
+            <div class="col col-sm-4">Data</div>
+            <div class="col col-sm-2">Certificado</div>
+          </div>
+          <div style="min-height: 500px;">
+            <div *ngFor="let realizado of realizados" class="border-top border-bottom">
+              <div class="row">
+                <div class="col col-sm-2" title="{{realizado.type}}">{{realizado.type}}</div>
+                <div class="col col-sm-4" title="{{realizado.name}}">{{realizado.name}}</div>
+                <div class="col col-sm-4" title="{{realizado.date}}">{{realizado.date}}</div>
+                <div class="col col-sm-2" title="{{realizado.certificado}}">{{realizado.certificado}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div>
+        <div class="row">
+          <div class="col" style="text-align: left;">
+            <button class="btn btn-sm btnCollor text-white">Anterior</button>
+          </div>
+          <div class="col" style="text-align: right;">
+            <button class="btn btn-sm btnCollor text-white">Próximo</button>
+          </div>
+        </div>
+      </div>
+</div>

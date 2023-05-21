@@ -1,3 +1,4 @@
+
 #corpo .menu{
 	background-color: blue;
 	width: 29%;
@@ -37,9 +38,7 @@ footer .logo{
 }
 
 .fotterespc{
-	background-color: rgb(14, 164, 233, 0.7);
-	text-align: center;
-	color: rgb(255, 255, 255);
+	background-color: rgb(11,125,179, 0.7);
 }
 
 .content {
@@ -47,7 +46,7 @@ footer .logo{
     top: 50%;
     left: 25%;
     width: 50%;
-    text-align: center;
+    
     -webkit-transform: translateY( -50% );
     -moz-transform: translateY( -50% );
     transform: translateY( -50% );
@@ -64,4 +63,22 @@ footer .logo{
 .imagem{
 	width: 80%;
 	height: 200px;
+}
+
+.row{
+	--bs-gutter-x: 0em;
+}
+
+.footerBorder{
+	box-sizing: border-box;
+	border: 3px solid rgb(255, 255, 255);
+}
+
+.divisor{
+	height: 1px;
+	background: rgb(255, 255, 255, 0.5);
+}
+
+ul{
+	list-style-type: none;
 }

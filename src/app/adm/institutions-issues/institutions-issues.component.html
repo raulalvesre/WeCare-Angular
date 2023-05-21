@@ -1,0 +1,74 @@
+<div class="content">
+    <div class="container">
+      <div class="text-center">
+        <h3>Problemas Relatados com Vagas</h3>
+      </div>
+      <div *ngIf="oportunityIssues.length == 0">
+        <p class="bold">Sem problemas relatados no momento!</p>
+      </div>
+  
+      <div *ngIf="oportunityIssues.length > 0">
+        <!-- <p class="bold">Você agendou dos seguintes eventos:</p> -->
+  <!--       
+        <div class="row">
+          <div class="col col-sm-2">Tipo do evento</div>
+          <div class="col col-sm-2">Nome</div>
+          <div class="col col-sm-2">Data do Registo</div>
+          <div class="col col-sm-2">Status</div>
+          <div class="col col-sm-2">Ações Rapidas</div>
+        </div> -->
+        <table class="table table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">#Id</th>
+              <th scope="col">Tipo do evento</th>
+              <th scope="col">Data do Registo</th>
+              <th scope="col">Status</th>
+              <th scope="col">Ações Rapidas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <div  class="border"> -->
+              <tr *ngFor="let oportunityIssue of oportunityIssues">
+                <th scope="row" title="{{oportunityIssue.type}}">{{oportunityIssue.type}}</th>
+                <td>{{oportunityIssue.name}}</td>
+                <td>{{oportunityIssue.date}}</td>
+                <td>{{oportunityIssue.status}}</td>
+                <td>
+                  <div class="">            
+                  <button class="btn btn-sm btn-danger" title="Avaliar como Improcedente"><i class="bi bi-x-circle"></i></button>
+                  <button class="btn btn-sm btn-success" title="Avaliar como Procedente"><i class="bi bi-check-circle"></i></button>
+                  </div>    
+                </td>
+              </tr>
+              <!-- <div class="row">
+                <div class="col col-sm-2" title="{{oportunityIssue.type}}">{{oportunityIssue.type}}</div>
+                <div class="col col-sm-2 text-truncate" title="{{oportunityIssue.name}}">{{oportunityIssue.name}}</div>
+                <div class="col col-sm-2" title="{{oportunityIssue.date}}">{{oportunityIssue.date}}</div>
+                <div class="col col-sm-2" title="{{oportunityIssue.status}}">{{oportunityIssue.status}}</div>
+                <div class="col col-sm-4">            
+                  <button class="btn btn-sm btn-danger" title="Avaliar como Improcedente"><i class="bi bi-x-circle"></i></button>
+                  <button class="btn btn-sm btn-success" title="Avaliar como Procedente"><i class="bi bi-check-circle"></i></button>
+                </div>            
+              </div> -->
+            <!-- </div> -->
+          </tbody>
+        </table>
+        <!-- <div style="min-height: 300px;">
+          <div *ngFor="let oportunityIssue of oportunityIssues" class="border">
+            <div class="row">
+              <div class="col col-sm-2" title="{{oportunityIssue.type}}">{{oportunityIssue.type}}</div>
+              <div class="col col-sm-2 text-truncate" title="{{oportunityIssue.name}}">{{oportunityIssue.name}}</div>
+              <div class="col col-sm-2" title="{{oportunityIssue.date}}">{{oportunityIssue.date}}</div>
+              <div class="col col-sm-2" title="{{oportunityIssue.status}}">{{oportunityIssue.status}}</div>
+              <div class="col col-sm-4">            
+                <button class="btn btn-sm btn-danger" title="Avaliar como Improcedente"><i class="bi bi-x-circle"></i></button>
+                <button class="btn btn-sm btn-success" title="Avaliar como Procedente"><i class="bi bi-check-circle"></i></button>
+              </div>            
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  

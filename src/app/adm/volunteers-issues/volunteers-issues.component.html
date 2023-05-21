@@ -1,0 +1,37 @@
+<div class="content">
+    <div class="container">
+      <p>Problemas Relatados com Voluntariados</p>
+      <div class="content">
+        <div class="container">
+          <p>Problemas Relatados com Vagas</p>
+          <div *ngIf="userIssues.length == 0">
+            <p class="bold">Você ainda não realizou nenhum evento!</p>
+          </div>
+      
+          <div *ngIf="userIssues.length > 0">
+            <!-- <p class="bold">Você agendou dos seguintes eventos:</p> -->
+            
+            <div class="row">
+              <div class="col col-sm-2">Tipo do evento</div>
+              <div class="col col-sm-4">Nome</div>
+              <div class="col col-sm-4">Data do Registo</div>
+              <div class="col col-sm-2">Status</div>
+            </div>
+            <div style="min-height: 300px;">
+              <div *ngFor="let userIssue of userIssues" class="border">
+                <div class="row">
+                  <div class="col col-sm-2">{{oportunityIssue.type}}</div>
+                  <div class="col col-sm-4">{{oportunityIssue.name}}</div>
+                  <div class="col col-sm-4">{{oportunityIssue.date}}</div>
+                  <div class="col col-sm-2">{{oportunityIssue.status}}</div>
+                  <button>Confere</button>
+                  <button>Não confere</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
