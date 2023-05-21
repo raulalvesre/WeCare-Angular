@@ -21,15 +21,41 @@ export class VolunteerOpportunityService {
     private institutionService: InstitutionService
   ) { }
 
-  search({ pageNumber = 1, pageSize = 10, institutionId = null }): Observable<Page<VolunteerOpportunity[]>> {
+  search({
+    pageNumber = 1,
+    pageSize = 10,
+    institutionId = null,
+    opportunityCauses = null,
+    federativeUnits = null,
+    initialDate = null,
+    finalDate = null
+  }): Observable<Page<VolunteerOpportunity[]>> {
     const token = this.accessService.getToken();
 
     let parameters = new HttpParams()
       .append("pageNumber", pageNumber)
       .append("pageSize", pageSize);
 
+    opportunityCauses ??= [];
+    for (const opportunityCauseCode of opportunityCauses.map(opportunityCause => opportunityCause.code)) {
+      parameters = parameters.append('causes', opportunityCauseCode);
+    }
+
+    federativeUnits ??= [];
+    for (const federativeUnit of federativeUnits.map(federativeUnit => federativeUnit.abbreviation)) {
+      parameters = parameters.append('state', federativeUnit);
+    }
+
     if (institutionId != null) {
       parameters = parameters.append("institutionId", institutionId)
+    }
+
+    if (initialDate != null) {
+      parameters = parameters.append('periodStart', (initialDate as Date).toISOString());
+    }
+
+    if (finalDate != null) {
+      parameters = parameters.append('periodEnd', (finalDate as Date).toISOString());
     }
 
     return this.httpClient
