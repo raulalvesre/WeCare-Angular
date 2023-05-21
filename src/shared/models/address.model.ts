@@ -7,3 +7,8 @@ export interface Address {
   state: string;
   postalCode: string;
 }
+
+export interface FederativeUnit {
+  name: string,
+  abbreviation: string
+}
