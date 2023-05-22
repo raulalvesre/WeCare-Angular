@@ -12,106 +12,133 @@
     </section>
   </div>
 
+  <form [formGroup]="searchForm">
+    <div class="row d-flex flex-wrap">
+      <div class="col-lg-1">
+        <div ngbDropdown>
+          <button
+            type="button"
+            class="btn btn-light"
+            id="causes-dropdown"
+            ngbDropdownToggle
+          >
+            Causas
+          </button>
+          <div ngbDropdownMenu aria-labelledby="causes-dropdown">
+            <button
+              (click)="addCauseToSearch(opportunityCause)"
+              ngbDropdownItem
+              *ngFor="let opportunityCause of opportunityCauses"
+            >
+              {{ opportunityCause.name }}
+            </button>
+          </div>
+        </div>
+        <div
+          *ngIf="selectedOpportunityCauses?.length > 0"
+          class="d-flex flex-column mt-1"
+        >
+          <div
+            *ngFor="let opportunityCause of selectedOpportunityCauses"
+            class="d-flex flex-row mt-1"
+          >
+            <span class="me-2 w-50">{{ opportunityCause.name }}</span>
+            <span
+              (click)="removeOpportunityCause(opportunityCause)"
+              role="button"
+              class="bi bi-x-circle text-danger ms-2"
+              title="Excluir {{ opportunityCause.name }}"
+              style="cursor: pointer"
+            ></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-1">
+        <div ngbDropdown>
+          <button
+            type="button"
+            class="btn btn-light"
+            id="federative-units-dropdown"
+            ngbDropdownToggle
+          >
+            Estados
+          </button>
+          <div ngbDropdownMenu aria-labelledby="federative-units-dropdown">
+            <button
+              (click)="addFederativeUnitToSearch(federativeUnit)"
+              ngbDropdownItem
+              *ngFor="let federativeUnit of federativeUnits"
+            >
+              {{ federativeUnit.name }} ({{ federativeUnit.abbreviation }})
+            </button>
+          </div>
+        </div>
+        <div
+          *ngIf="selectedFederativeUnits?.length > 0"
+          class="d-flex flex-column mt-1"
+        >
+          <div
+            *ngFor="let federativeUnit of selectedFederativeUnits"
+            class="d-flex flex-row mt-1"
+          >
+            <span class="me-2 w-50"
+              >{{ federativeUnit.name }} ({{
+                federativeUnit.abbreviation
+              }})</span
+            >
+            <span
+              (click)="removeFederativeUnit(federativeUnit)"
+              role="button"
+              class="bi bi-x-circle text-danger ms-2"
+              title="Excluir {{ federativeUnit.name }}"
+              style="cursor: pointer"
+            ></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center col-lg-3">
+        <label for="inicial-date" class="form-label mb-0 me-1">Período</label>
+        <input
+          formControlName="initialDate"
+          type="date"
+          name="initialDate"
+          id="inicial-date"
+          title="Data inicial"
+          class="form-control me-1"
+        />
+        <input
+          formControlName="finalDate"
+          type="date"
+          name="finalDate"
+          id="final-date"
+          title="Data final"
+          class="form-control me-1"
+        />
+        <span
+          (click)="clearDatesSelection()"
+          role="button"
+          class="bi bi-x-circle text-danger"
+          title="Limpar seleção do período de datas"
+        ></span>
+      </div>
+    </div>
+  </form>
+
   <div class="row">
-    <section
-      class="col d-flex flex-wrap"
-      *ngIf="volunteerOpportunities?.length > 0"
-    >
-      <div ngbDropdown>
-        <button
-          type="button"
-          class="btn btn-light"
-          id="categories-dropdown"
-          ngbDropdownToggle
-        >
-          Categorias
-        </button>
-        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-          <button ngbDropdownItem>Opção 1</button>
-          <button ngbDropdownItem>Opção 2</button>
-        </div>
-      </div>
-
-      <div ngbDropdown>
-        <button
-          type="button"
-          class="btn btn-light"
-          id="categories-dropdown"
-          ngbDropdownToggle
-        >
-          Data
-        </button>
-        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-          <button ngbDropdownItem>Opção 1</button>
-          <button ngbDropdownItem>Opção 2</button>
-        </div>
-      </div>
-
-      <div ngbDropdown>
-        <button
-          type="button"
-          class="btn btn-light"
-          id="categories-dropdown"
-          ngbDropdownToggle
-        >
-          Local
-        </button>
-        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-          <button ngbDropdownItem>Opção 1</button>
-          <button ngbDropdownItem>Opção 2</button>
-        </div>
-      </div>
-
-      <div ngbDropdown>
-        <button
-          type="button"
-          class="btn btn-light"
-          id="categories-dropdown"
-          ngbDropdownToggle
-        >
-          Habilidades
-        </button>
-        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-          <button ngbDropdownItem>Opção 1</button>
-          <button ngbDropdownItem>Opção 2</button>
-        </div>
-      </div>
-
-      <div ngbDropdown>
-        <button
-          type="button"
-          class="btn btn-light"
-          id="categories-dropdown"
-          ngbDropdownToggle
-        >
-          Instituição
-        </button>
-        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-          <button ngbDropdownItem>Opção 1</button>
-          <button ngbDropdownItem>Opção 2</button>
-        </div>
-      </div>
-
-      <div ngbDropdown>
-        <button
-          type="button"
-          class="btn btn-light"
-          id="categories-dropdown"
-          ngbDropdownToggle
-        >
-          Restrições
-        </button>
-        <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-          <button ngbDropdownItem>Opção 1</button>
-          <button ngbDropdownItem>Opção 2</button>
+    <section *ngIf="searching" class="col d-flex justify-content-center mt-5">
+      <div class="col-md-8 col-lg-4">
+        <div class="fs-3 text-center">
+          Pesquisando
+          <span
+            class="bi bi-arrow-clockwise text-info d-inline-block rotate"
+          ></span>
         </div>
       </div>
     </section>
-  </div>
-
-  <div class="row">
     <section
-      *ngIf="volunteerOpportunities?.length == 0"
+      *ngIf="volunteerOpportunities?.length == 0 && !searching"
       class="col d-flex justify-content-center mt-5"
     >
       <div class="col-md-8 col-lg-4">
@@ -129,7 +156,7 @@
     >
       <div class="card">
         <img
-          src="data:image/jpg;base64,{{ volunteerOpportunity.photo }}"
+          [src]="convertBase64ToPhotoUrl(volunteerOpportunity.photo)"
           class="card-img-top"
           alt="Imagem da oportunidade de voluntariado"
         />
@@ -208,7 +235,10 @@
           </div>
 
           <div class="d-flex justify-content-end">
-            <button class="btn btn-outline-danger rounded-5 w-100 me-2">
+            <button
+              (click)="deleteOpportunity(volunteerOpportunity)"
+              class="btn btn-outline-danger rounded-5 w-100 me-2"
+            >
               <span class="bi bi-trash3"></span>
               Excluir
             </button>

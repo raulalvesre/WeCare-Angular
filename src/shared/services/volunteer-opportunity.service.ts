@@ -21,15 +21,41 @@ export class VolunteerOpportunityService {
     private institutionService: InstitutionService
   ) { }
 
-  search({ pageNumber = 1, pageSize = 10, institutionId = null }): Observable<Page<VolunteerOpportunity[]>> {
+  search({
+    pageNumber = 1,
+    pageSize = 10,
+    institutionId = null,
+    opportunityCauses = null,
+    federativeUnits = null,
+    initialDate = null,
+    finalDate = null
+  }): Observable<Page<VolunteerOpportunity[]>> {
     const token = this.accessService.getToken();
 
     let parameters = new HttpParams()
       .append("pageNumber", pageNumber)
       .append("pageSize", pageSize);
 
+    opportunityCauses ??= [];
+    for (const opportunityCauseCode of opportunityCauses.map(opportunityCause => opportunityCause.code)) {
+      parameters = parameters.append('causes', opportunityCauseCode);
+    }
+
+    federativeUnits ??= [];
+    for (const federativeUnit of federativeUnits.map(federativeUnit => federativeUnit.abbreviation)) {
+      parameters = parameters.append('state', federativeUnit);
+    }
+
     if (institutionId != null) {
       parameters = parameters.append("institutionId", institutionId)
+    }
+
+    if (initialDate != null) {
+      parameters = parameters.append('periodStart', (initialDate as Date).toISOString());
+    }
+
+    if (finalDate != null) {
+      parameters = parameters.append('periodEnd', (finalDate as Date).toISOString());
     }
 
     return this.httpClient
@@ -66,6 +92,21 @@ export class VolunteerOpportunityService {
         });
   }
 
+  updateOpportunity(opportunityRegistration: OpportunityRegistration) {
+    const token = this.accessService.getToken();
+
+    const opportunityData = this.convertOpportunityToFormData(opportunityRegistration);
+
+    return this.httpClient.put<HttpResponse<any>>(
+      `${this.apiUrl}/api/volunteer-opportunity/${opportunityRegistration.id}`,
+      opportunityData,
+      {
+        headers: new HttpHeaders().append('Authorization', `Bearer ${token}`),
+        observe: 'response'
+      }
+    );
+  }
+
   registerOpportunity(opportunityRegistration: OpportunityRegistration) {
     const token = this.accessService.getToken();
 
@@ -96,6 +137,40 @@ export class VolunteerOpportunityService {
         observe: 'response'
       }
     );
+  }
+
+  deleteOpportunity(volunteerOpportunity: VolunteerOpportunity): Observable<HttpResponse<any>> {
+    const token = this.accessService.getToken();
+    return this.httpClient.delete<HttpResponse<any>>(
+      `${this.apiUrl}/api/volunteer-opportunity/${volunteerOpportunity.id}`,
+      {
+        headers: new HttpHeaders().append('Authorization', `Bearer ${token}`),
+        observe: 'response'
+      }
+    );
+  }
+
+  private convertOpportunityToFormData(opportunityRegistration: OpportunityRegistration) {
+    const opportunityRegistrationData = new FormData();
+    opportunityRegistrationData.append('name', opportunityRegistration.name);
+    opportunityRegistrationData.append('description', opportunityRegistration.description);
+    opportunityRegistrationData.append('opportunityDate', opportunityRegistration.opportunityDate.toISOString());
+    opportunityRegistrationData.append('photo', opportunityRegistration.photo);
+    opportunityRegistrationData.append('address.street', opportunityRegistration.address.street);
+    opportunityRegistrationData.append('address.city', opportunityRegistration.address.city);
+    opportunityRegistrationData.append('address.postalCode', opportunityRegistration.address.postalCode);
+    opportunityRegistrationData.append('address.neighborhood', opportunityRegistration.address.neighborhood);
+    opportunityRegistrationData.append('address.number', opportunityRegistration.address.number.toString());
+    opportunityRegistrationData.append('address.state', opportunityRegistration.address.state);
+
+    for (const [index, opportunityCause] of opportunityRegistration.opportunityCauses.entries()) {
+      opportunityRegistrationData.append(
+        `causes[${index}]`,
+        opportunityCause.code
+      );
+    }
+
+    return opportunityRegistrationData;
   }
 
   registerCurrentUserToOpportunity(volunteerOpportunity: VolunteerOpportunity): Observable<HttpResponse<any>> {
