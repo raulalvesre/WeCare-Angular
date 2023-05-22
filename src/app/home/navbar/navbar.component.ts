@@ -7,6 +7,13 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
   isMenuCollapsed = true;
+  // mock pra nav bar
+  //opções:
+  //adm
+  //volunteer
+  //institution
+  //unknow
+  userMenuType: string = "institution"
 
   toggleNavigationMenu() {
     this.isMenuCollapsed = !this.isMenuCollapsed;

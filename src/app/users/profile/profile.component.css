@@ -40,3 +40,12 @@
     max-width: 40%;
     height: auto;
   }
+
+  .img_profile img{
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    box-shadow: 1px 3px 12px rgba(0, 0, 0, 0.18);
+  }

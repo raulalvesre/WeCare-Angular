@@ -1,3 +1,13 @@
 nav.navbar-transparent{
 	background: rgba(14, 164, 233, 0.7);
 }
+
+.navbar-toggler{
+	border-color: rgb(255, 255, 255, 0.5);
+}
+
+.divisor{
+	width: 1px;
+	background: rgb(255, 255, 255, 0.5);
+	margin: 15px 15px;
+}

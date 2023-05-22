@@ -1,79 +1,209 @@
-<!-- <div>
-    <ul>
-        <li class="list">
-            <a>
-                <span class="icon"></span>
-                <span class="text"></span>
-            </a>
-        </li>
-    </ul>
-</div> -->
-
 <nav
-  class="navbar navbar-expand-lg navbar-dark navbar-transparent sticky-top border-white"
+  class="navbar navbar-expand-lg navbar-dark navbar-transparent sticky-top border-bottom-1 border-white py-3"
 >
-  <div class="container-fluid">
+  <div class="container">
+    <!-- Icone -->
+    <a routerLink="/home" class="nav-link" routerLinkActive="active">
+      <img
+        src="../../../assets/img/logo-footer-no-slogan.png"
+        width="112" alt="Logo da WeCare "
+      /><span class="d-inline-block text-white" style="padding-left: 25px"
+        >Mudando vidas, juntos!</span
+      >
+    </a>
+
     <!-- Menu Hamburguer -->
     <button
-      class="navbar-toggler ml-5"
-      data-toggle="collapse"
-      data-target="#navbar-menu"
-      (click)="toggleNavigationMenu()"
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainMenu"
+      aria-controls="mainMenu"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
     >
-      <span class="navbar-toggler-icon text-white"></span>
+      <span class="navbar-toggler-icon"></span>
     </button>
     <div
-      class="collapse navbar-collapse"
-      [ngbCollapse]="isMenuCollapsed"
-      id="navbar-menu"
-    >
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      class="collapse navbar-collapse" id="mainMenu">
+      <ul class="navbar-nav ms-auto">
         <li class="nav-item">
           <a routerLink="/home" class="nav-link" routerLinkActive="active"
             >Início</a
           >
         </li>
         <li class="nav-item">
-          <a routerLink="/causes" class="nav-link" routerLinkActive="active"
-            >Projetos</a
-          >
+          <a
+            href="/about"
+            class="nav-link font-weight-bold"
+            routerLinkActive="active"
+            >Sobre a WeCare
+          </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item divisor"></li>
+        
+        <!-- Menus diferentes de acordo com o perfil de quem acessa -->
+        <!-- Sem estar logado -->
+        <div *ngIf="userMenuType == 'unknow'">
+          <li class="nav-item">
+            <a
+              href="/login"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Acessar</a
+            >
+          </li>
+        </div>
+
+        <!-- Identificado como voluntário -->
+        <div *ngIf="userMenuType == 'volunteer'">
+          <li class="nav-item">
+            <a
+              href="/opportunities"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Pesquisar Vagas</a
+            >
+          </li>
+          <li class="nav-item dropdown">
+            <!-- <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Oportunidades
+            </a> -->
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Agendadas</a></li>
+              <li><a class="dropdown-item" href="#">Realizadas</a></li>
+              <!-- <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+            </ul>
+            <div class="col">
+              <div ngbDropdown class="d-inline-block">
+                <a class="nav-link dropdown-toggle" id="dropdownBasic1" ngbDropdownToggle>
+                  Oportunidades
+                </a>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <a href="/opportunities-scheduled" class="" routerLinkActive="active" ngbDropdownItem>Agendadas</a>
+                  <a href="/opportunities-accomplished" class="" routerLinkActive="active" ngbDropdownItem>Realizadas</a>
+                  <a href="" class="" routerLinkActive="active" ngbDropdownItem>Convites</a>
+                </div>
+              </div>
+            </div>
+
+          </li>
+          <li class="nav-item">
+            <a
+              href="/user-profile"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Perfil</a
+            >
+          </li>
+        </div>
+
+        <!-- Identificado como instituição -->
+        <div *ngIf="userMenuType == 'institution'">
+          <li class="nav-item">
+            <a
+              href="/opportunities"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Pesquisar Voluntários</a
+            >
+          </li>
+          <div class="col">
+            <div ngbDropdown class="d-inline-block">
+              <a class="nav-link dropdown-toggle" id="dropdownBasic2" ngbDropdownToggle>
+                Oportunidades
+              </a>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <a href="/opportunity/create" class="" routerLinkActive="active" ngbDropdownItem>Adicionar</a>
+                <a href="/opportunities-admin" class="" routerLinkActive="active" ngbDropdownItem>Editar</a>
+              </div>
+            </div>
+          </div>
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Oportunidades
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a routerLink="/opportunities-admin"
+                class="nav-link"
+                routerLinkActive="active">
+                  Adicionar
+                </a>
+              </li>
+              <li><a class="dropdown-item" href="#">Editar</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Oportunidades Listadas</a></li>
+            </ul>
+          </li> -->
+          <li class="nav-item">
+            <a
+              href="/institution-profile"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Perfil</a
+            >
+          </li>
+        </div>
+
+        <!-- Identificado como adm -->
+        <div *ngIf="userMenuType == 'adm'">
+          <div class="col">
+            <div ngbDropdown class="d-inline-block">
+              <a class="nav-link dropdown-toggle" id="dropdownBasic2" ngbDropdownToggle>
+                Problemas Relatados
+              </a>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <a href="/issues-volunteers" class="" routerLinkActive="active" ngbDropdownItem>Com Voluntários</a>
+                <a href="/issues-institutions" class="" routerLinkActive="active" ngbDropdownItem>Com Vagas</a>
+              </div>
+            </div>
+          </div>
+          <!-- <li class="nav-item">
+            <a
+              href="/issues-users"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Problemas Relatados Com Voluntários</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              href="/issues-institutions"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Problemas Relatados Com Vagas</a
+            >
+          </li> -->
+        </div>
+
+
+        <!-- Adicionado no menu de volunteer como pesquisar vagas (deletar este li quando o outro estiver ok) -->
+        <!-- <li class="nav-item">
           <a
             routerLink="/opportunities"
             class="nav-link"
             routerLinkActive="active"
             >Minhas Oportunidades</a
           >
-        </li>
-        <li class="nav-item">
+        </li> -->
+
+        <!-- Adicionado no menu de instututions como adicionar vagas (deletar este li quando o outro estiver ok) -->
+        <!-- <li class="nav-item">
           <a
             routerLink="/opportunities-admin"
             class="nav-link"
             routerLinkActive="active"
             >Editar Oportunidades</a
           >
-        </li>
-        <li class="nav-item">
-          <a href="/login" class="nav-link font-weight-bold">Acessar</a>
-        </li>
-        <li class="nav-item">
-          <a
-            href="/about"
-            class="nav-link font-weight-bold"
-            routerLinkActive="active"
-            >Sobre a We Care</a
-          >
-        </li>
-        <!-- temp -->
-        <li class="nav-item">
-          <a
-            href="/profile"
-            class="nav-link font-weight-bold"
-            routerLinkActive="active"
-            >Perfil</a
-          >
-        </li>
+        </li> -->
       </ul>
     </div>
   </div>
