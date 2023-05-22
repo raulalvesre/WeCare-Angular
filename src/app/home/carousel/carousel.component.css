@@ -1,6 +1,6 @@
 .carousel {
   margin: auto;
-  height: 30vh;
+  height: 50vh;
   background-color: aliceblue;
   background-repeat: no-repeat;
   background-size: cover;
@@ -33,5 +33,5 @@
 }
 
 .carousel-item img{
-  height: 30vh;
+  height: 50vh;
 }

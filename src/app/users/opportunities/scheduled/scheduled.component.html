@@ -11,7 +11,7 @@
             <div class="col col-sm-2">Tipo do evento</div>
             <div class="col col-sm-4">Nome</div>
             <div class="col col-sm-4">Data</div>
-            <div class="col col-sm-2">Certificado</div>
+            <div class="col col-sm-2">Status</div>
           </div>
           <div style="min-height: 500px;">
             <div *ngFor="let agendado of agendados" class="border-top border-bottom">
@@ -19,7 +19,7 @@
                 <div class="col col-sm-2" title="{{agendado.type}}">{{agendado.type}}</div>
                 <div class="col col-sm-4" title="{{agendado.name}}">{{agendado.name}}</div>
                 <div class="col col-sm-4" title="{{agendado.date}}">{{agendado.date}}</div>
-                <div class="col col-sm-2" title="{{agendado.certificado}}">{{agendado.certificado}}</div>
+                <div class="col col-sm-2" title="{{agendado.certificado}}">{{"Em Andamento"}}</div>
               </div>
             </div>
           </div>

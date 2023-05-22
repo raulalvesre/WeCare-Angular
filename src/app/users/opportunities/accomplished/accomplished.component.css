@@ -7,3 +7,28 @@
     border-image: linear-gradient(to left, rgba(255, 255, 255, 0.8), rgba(255, 254, 255, 0.8), rgba(243, 245, 245, 0.8))90% 0%/5px 0px;
     text-align: justify;
    }
+
+   .certificate {
+    position: relative; 
+    height: 750px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+   .certificate::before{
+    content: "";
+    background: url(../../../../assets/img/Certificate.png) no-repeat center;
+    background-size: contain;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    z-index:0;
+    /* opacity: 0.050; */
+   }
+
+   p {
+    z-index:1;
+   }
