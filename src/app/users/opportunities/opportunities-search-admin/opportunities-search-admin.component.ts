@@ -228,7 +228,7 @@ export class OpportunitiesSearchAdminComponent {
     this.pageNumber = 1;
     this.volunteerOpportunities = [];
 
-    const loggedInstitution = this.accessService.getCurrentUser() as Institution;
+    const loggedInstitution = this.accessService.getCurrentUser();
 
     this.volunteerOpportunityService.search({
       pageNumber: this.pageNumber,

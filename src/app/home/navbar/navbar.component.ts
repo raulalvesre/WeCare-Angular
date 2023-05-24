@@ -13,11 +13,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isMenuCollapsed = true;
   // mock pra nav bar
   //opções:
-  //adm
-  //volunteer
-  //institution
-  //unknow
-  userMenuType: string = 'unknow';
+  //ADM
+  //CANDIDATE
+  //INSTITUTION
+  //UNKNOW
+  userMenuType: string = 'UNKNOW';
 
   constructor(private accessService: AccessService) {
     this.loginSubscription = accessService.loginNotification()
@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         if (loggedIn) {
           this.configureMenuForCurrentUser();
         } else {
-          this.userMenuType = 'unknow';
+          this.userMenuType = 'UNKNOW';
         }
       });
   }
@@ -50,11 +50,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     const currentUser = this.accessService.getCurrentUser();
 
     if (currentUser == null) {
-      this.userMenuType = 'unknow';
-    } else if ('cnpj' in currentUser) {
-      this.userMenuType = 'institution';
+      this.userMenuType = 'UNKNOW';
     } else {
-      this.userMenuType = 'volunteer';
+      this.userMenuType = currentUser.role;
     }
 
     // TODO adicionar a checagem para o acesso adm

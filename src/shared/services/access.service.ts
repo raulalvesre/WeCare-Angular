@@ -9,6 +9,7 @@ import { JwtToken } from '../models/token.model';
 import { UserRegistration } from '../models/user-registration.model';
 import { Institution } from '../models/institution.model';
 import { Candidate } from '../models/candidate.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -89,23 +90,17 @@ export class AccessService {
     return localStorage.getItem(this.tokenStorageKey);
   }
 
-  getCurrentUser(): Institution | Candidate | null {
+  getCurrentUser(): User | null {
     const userRole = localStorage.getItem(this.userRoleKey);
 
     if (userRole == null) {
       return null;
     }
 
-    if (userRole === 'CANDIDATE') {
-      return {
-        id: parseInt(localStorage.getItem(this.userIdKey)),
-        email: localStorage.getItem(this.emailKey)
-      } as Candidate;
-    }
-
     return {
       id: parseInt(localStorage.getItem(this.userIdKey)),
-      email: localStorage.getItem(this.emailKey)
-    } as Institution;
+      email: localStorage.getItem(this.emailKey),
+      role: userRole
+    } as User;
   }
 }
