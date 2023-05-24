@@ -10,5 +10,7 @@ export interface UserRegistration {
   documentType: UserDocumentType,
   birthDate: Date;
   bio: string;
-  address: Address
+  address: Address,
+  qualificationsIds?: number[],
+  interestedInCausesIds?: number[]
 }

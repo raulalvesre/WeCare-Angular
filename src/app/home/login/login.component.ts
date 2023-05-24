@@ -53,7 +53,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.toastService.show('Acesso autorizado', { classname: 'bg-success text-light', delay: 5000 });
 
         setTimeout(() => {
-          this.router.navigate(['/opportunities-admin']);
+          if (documentType == UserDocumentType.cpf) {
+            this.router.navigate(['/opportunities']);
+          } else {
+            this.router.navigate(['/opportunities-admin']);
+          }
         }, 2000);
       },
       error: (error: HttpErrorResponse) => {
