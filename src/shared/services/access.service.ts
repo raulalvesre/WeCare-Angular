@@ -1,6 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { decodeJwt } from 'jose';
 import { environment } from 'src/environments/environment';
 import { UserDocumentType } from '../models/document-type.model';
@@ -16,18 +16,26 @@ import { Candidate } from '../models/candidate.model';
 export class AccessService {
   private readonly apiUrl = environment.apiUrl;
 
+  private loginSubject: BehaviorSubject<boolean>;
+
   private readonly tokenStorageKey = 'token';
   private readonly userIdKey = 'id';
   private readonly emailKey = 'email';
   private readonly userRoleKey = 'role';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    this.loginSubject = new BehaviorSubject(localStorage.getItem(this.tokenStorageKey) != null);
+  }
+
+  loginNotification(): Observable<boolean> {
+    return this.loginSubject.asObservable();
+  }
 
   login(accessCredential: AccessCredential): Observable<JwtToken> {
     const authenticationUrl = accessCredential.documentType === UserDocumentType.cpf
       ? `${this.apiUrl}/api/auth/login-candidate`
       : `${this.apiUrl}/api/auth/login-institution`;
-      
+
     return this.httpClient
       .post<JwtToken>(authenticationUrl, {
         email: accessCredential.email,
@@ -41,7 +49,13 @@ export class AccessService {
         localStorage.setItem(this.userIdKey, (jwtPayload as any).id || (jwtPayload as any).Id);
         localStorage.setItem(this.emailKey, (jwtPayload as any).email);
         localStorage.setItem(this.userRoleKey, (jwtPayload as any).role);
+
+        this.loginSubject.next(true);
       }));
+  }
+
+  logout() {
+    localStorage.clear();
   }
 
   register(userRegistration: UserRegistration): Observable<HttpResponse<any>> {
@@ -75,8 +89,12 @@ export class AccessService {
     return localStorage.getItem(this.tokenStorageKey);
   }
 
-  getCurrentUser(): Institution | Candidate {
+  getCurrentUser(): Institution | Candidate | null {
     const userRole = localStorage.getItem(this.userRoleKey);
+
+    if (userRole == null) {
+      return null;
+    }
 
     if (userRole === 'CANDIDATE') {
       return {
