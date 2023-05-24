@@ -11,7 +11,7 @@ import { OpportunityCreateComponent } from './users/opportunities/opportunity-cr
 import { OpportunitiesSearchAdminComponent } from './users/opportunities/opportunities-search-admin/opportunities-search-admin.component';
 import { OpportunityEditComponent } from './users/opportunities/opportunity-edit/opportunity-edit.component';
 import { VolunteersIssuesComponent } from './adm/volunteers-issues/volunteers-issues.component';
-import { InstitutionsIssuesComponent } from './adm/institutions-issues/institutions-issues.component' 
+import { InstitutionsIssuesComponent } from './adm/institutions-issues/institutions-issues.component'
 import { ProfileComponent } from './users/profile/profile.component';
 import { ScheduledComponent } from './users/opportunities/scheduled/scheduled.component'
 import { AccomplishedComponent } from './users/opportunities/accomplished/accomplished.component'
@@ -34,7 +34,7 @@ const routes: Routes = [
     component: OpportunitiesSearchComponent
   },
   {
-    path: 'opportunities-admin',
+    path: 'opportunities-institution',
     component: OpportunitiesSearchAdminComponent
   },
   {

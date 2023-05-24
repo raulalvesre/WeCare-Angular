@@ -54,9 +54,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         setTimeout(() => {
           if (documentType == UserDocumentType.cpf) {
-            this.router.navigate(['/opportunities']);
+            this.router.navigate(['/']);
           } else {
-            this.router.navigate(['/opportunities-admin']);
+            this.router.navigate(['/opportunities-institution']);
           }
         }, 2000);
       },
