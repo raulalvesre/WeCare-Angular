@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
@@ -16,5 +16,13 @@ export class InstitutionService {
 
   get(institutionId: number): Observable<Institution> {
     return this.httpClient.get<Institution>(`${this.apiUrl}/api/admin/institution/${institutionId}`);
+  }
+
+  updateInstitution(institution: Institution): Observable<HttpResponse<any>> {
+    return this.httpClient.put<HttpResponse<any>>(
+      `${this.apiUrl}/api/admin/institution/${institution.id}`,
+      institution,
+      { observe: 'response' }
+    );
   }
 }
