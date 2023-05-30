@@ -2,7 +2,7 @@ import { Address } from "./address.model";
 
 export interface Institution {
   id: number;
-  email: string;
+  email?: string;
   password?: string;
   name: string;
   telephone: string;

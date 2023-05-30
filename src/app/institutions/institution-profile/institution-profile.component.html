@@ -6,8 +6,7 @@
           <form [formGroup]="form" class="row">
             <h2>Perfil da Intituição</h2>
 
-            <!-- CNPJ -->
-            <div *ngIf="form.get('documentType').value === cnpj" class="mb-3">
+            <div class="mb-3">
               <label for="cnpj" class="form-label">CNPJ</label>
               <input
                 id="cnpj"
@@ -15,7 +14,7 @@
                 name="cnpj"
                 formControlName="cnpj"
                 mask="00.000.000/0000-00"
-                [showMaskType]="true"
+                [showMaskTyped]="true"
                 [dropSpecialCharacters]="false"
                 class="form-control"
                 [ngClass]="{
@@ -293,7 +292,7 @@
               </ngb-panel>
             </ngb-accordion>
 
-            <div class="mb-3">
+            <div *ngIf="!hideEmail" class="mb-3 d-none">
               <label for="email" class="form-label">E-mail</label>
               <input
                 id="email"

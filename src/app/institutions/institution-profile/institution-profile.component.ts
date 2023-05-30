@@ -16,8 +16,10 @@ import { ViaCepService } from 'src/shared/services/via-cep.service';
 })
 export class InstitutionProfileComponent {
   readonly cnpj = UserDocumentType.cnpj;
+  readonly hideEmail = true;
 
   institution: Institution;
+  institutionCnpj: string;
 
   form: FormGroup;
 
@@ -73,7 +75,11 @@ export class InstitutionProfileComponent {
         this.form.get('name').setValue(institution.name);
         this.form.get('telephone').setValue(institution.telephone);
         this.form.get('biography').setValue(institution.bio);
+
+        this.institutionCnpj = institution.cnpj;
         this.form.get('cnpj').setValue(institution.cnpj);
+        this.form.get('cnpj').disable();
+
         this.form.get('address').get('street').setValue(institution.address.street);
         this.form.get('address').get('number').setValue(institution.address.number);
         this.form.get('address').get('complement').setValue(institution.address.complement);
@@ -94,7 +100,6 @@ export class InstitutionProfileComponent {
       name,
       telephone,
       biography,
-      cnpj,
       address
     } = this.form.value;
 
@@ -105,7 +110,7 @@ export class InstitutionProfileComponent {
       email,
       name,
       telephone,
-      cnpj,
+      cnpj: this.institutionCnpj,
       bio: biography,
       address: {
         street: address.street,
@@ -121,7 +126,7 @@ export class InstitutionProfileComponent {
     this.institutionService.updateInstitution(institution)
       .subscribe({
         next: httpResponse => {
-          if (httpResponse.status == HttpStatusCode.NoContent) {
+          if (httpResponse.status == HttpStatusCode.Ok) {
             this.toastService.show('Atualição feita com sucesso', { classname: 'bg-success text-light', delay: 5000 });
           }
         },
