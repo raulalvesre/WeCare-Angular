@@ -13,7 +13,7 @@ export class NavbarComponent {
   //volunteer
   //institution
   //unknow
-  userMenuType: string = "institution"
+  userMenuType: string = "volunteer"
 
   toggleNavigationMenu() {
     this.isMenuCollapsed = !this.isMenuCollapsed;

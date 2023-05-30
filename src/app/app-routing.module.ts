@@ -15,6 +15,7 @@ import { InstitutionsIssuesComponent } from './adm/institutions-issues/instituti
 import { ProfileComponent } from './users/profile/profile.component';
 import { ScheduledComponent } from './users/opportunities/scheduled/scheduled.component'
 import { AccomplishedComponent } from './users/opportunities/accomplished/accomplished.component'
+import { OpportunityInviteComponent } from './users/opportunities/opportunity-invite/opportunity-invite.component'
 import { InstitutionProfileComponent } from './institutions/institution-profile/institution-profile.component';
 const routes: Routes = [
   {
@@ -80,6 +81,10 @@ const routes: Routes = [
   {
     path: 'opportunities-accomplished',
     component: AccomplishedComponent
+  },
+  {
+    path: 'opportunities-invite',
+    component: OpportunityInviteComponent
   }
 ];
 

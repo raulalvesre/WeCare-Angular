@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { NgbCarousel, NgbCarouselModule, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import { NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-carousel',
@@ -6,27 +9,36 @@ import { Component } from '@angular/core';
   styleUrls: ['./carousel.component.css']
 })
 export class CarouselComponent {
-  slides = [
-    { 
-      title: 'Slide 1', 
-      text: 'This is the first slide', 
-      image: '../../../assets/img/c-1.jpg' 
-    },
-    { 
-      title: 'Slide 2', 
-      text: 'This is the second slide', 
-      image: '../../../assets/img/c-2.jpg' 
-    },
-    { 
-      title: 'Slide 3', 
-      text: 'This is the third slide', 
-      image: '../../../assets/img/c-3.jpg' 
-    },
-    { 
-      title: 'Slide 4', 
-      text: 'This is the fourth slide', 
-      image: '../../../assets/img/c-4.jpg' 
-    }
-  ];
+  images = ['../../../assets/img/c-01.png', '../../../assets/img/c-02.png', '../../../assets/img/c-03.png'];
+
+	paused = false;
+	unpauseOnArrow = false;
+	pauseOnIndicator = false;
+	pauseOnHover = true;
+	pauseOnFocus = true;
+
+	@ViewChild('carousel', { static: true }) carousel: NgbCarousel;
+
+	togglePaused() {
+		if (this.paused) {
+			this.carousel.cycle();
+		} else {
+			this.carousel.pause();
+		}
+		this.paused = !this.paused;
+	}
+
+	onSlide(slideEvent: NgbSlideEvent) {
+		if (
+			this.unpauseOnArrow &&
+			slideEvent.paused &&
+			(slideEvent.source === NgbSlideEventSource.ARROW_LEFT || slideEvent.source === NgbSlideEventSource.ARROW_RIGHT)
+		) {
+			this.togglePaused();
+		}
+		if (this.pauseOnIndicator && !slideEvent.paused && slideEvent.source === NgbSlideEventSource.INDICATOR) {
+			this.togglePaused();
+		}
+	}
 }
 

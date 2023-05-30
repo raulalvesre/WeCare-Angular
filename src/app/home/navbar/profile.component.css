@@ -1,7 +1,7 @@
 .paragraph {
     background: aliceblue;
-    padding: 2% 5% 2% 5%;
-    margin: 2% 0% 2% 0%;
+    padding:  5% 20% 5% 20%;
+    margin: 5% 0% 5% 0%;
     border-style: solid;
     border-width: 5px;
     border-image: linear-gradient(to left, rgba(255, 255, 255, 0.8), rgba(255, 254, 255, 0.8), rgba(243, 245, 245, 0.8))90% 0%/5px 0px;
@@ -39,4 +39,13 @@
   .responsive{
     max-width: 40%;
     height: auto;
+  }
+
+  .img_profile img{
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    box-shadow: 1px 3px 12px rgba(0, 0, 0, 0.18);
   }
