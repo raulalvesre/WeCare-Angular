@@ -59,6 +59,13 @@ export class AccessService {
     localStorage.clear();
   }
 
+  activateAccount(token: string): Observable<HttpResponse<any>> {
+    return this.httpClient.get<HttpResponse<any>>(
+      `${this.apiUrl}/api/auth/activate-account?token=${token}`,
+      { observe: 'response' }
+    );
+  }
+
   register(userRegistration: UserRegistration): Observable<HttpResponse<any>> {
     let url = '';
     let user = {};

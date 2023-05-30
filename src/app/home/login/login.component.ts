@@ -75,5 +75,4 @@ export class LoginComponent implements OnInit, OnDestroy {
   changeDocumentType(documentType: UserDocumentType) {
     this.form.get('documentType').setValue(documentType);
   }
-
 }

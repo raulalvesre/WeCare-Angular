@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgbCollapseModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-mask';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 import { AppComponent } from './app.component';
 import { FormsComponent } from './users/forms/forms.component';
@@ -28,7 +28,9 @@ import { VolunteersIssuesComponent } from './adm/volunteers-issues/volunteers-is
 import { ProfileComponent } from './users/profile/profile.component';
 import { AccomplishedComponent } from './users/opportunities/accomplished/accomplished.component';
 import { ScheduledComponent } from './users/opportunities/scheduled/scheduled.component';
-import { InstitutionProfileComponent } from './institutions/institution-profile/institution-profile.component'
+import { InstitutionProfileComponent } from './institutions/institution-profile/institution-profile.component';
+import { PasswordRecoveryComponent } from './home/password-recovery/password-recovery.component';
+import { ActivateAccountComponent } from './home/activate-account/activate-account.component'
 
 @NgModule({
   declarations: [
@@ -52,9 +54,11 @@ import { InstitutionProfileComponent } from './institutions/institution-profile/
     ProfileComponent,
     AccomplishedComponent,
     ScheduledComponent,
-    InstitutionProfileComponent
+    InstitutionProfileComponent,
+    PasswordRecoveryComponent,
+    ActivateAccountComponent
   ],
-  providers: [provideEnvironmentNgxMask()],
+  providers: [provideNgxMask()],
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
