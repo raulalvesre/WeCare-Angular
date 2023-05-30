@@ -15,10 +15,16 @@ import { InstitutionsIssuesComponent } from './adm/institutions-issues/instituti
 import { ProfileComponent } from './users/profile/profile.component';
 import { ScheduledComponent } from './users/opportunities/scheduled/scheduled.component'
 import { AccomplishedComponent } from './users/opportunities/accomplished/accomplished.component'
+import { OpportunityInviteComponent } from './users/opportunities/opportunity-invite/opportunity-invite.component'
 import { InstitutionProfileComponent } from './institutions/institution-profile/institution-profile.component';
 import { PasswordRecoveryComponent } from './home/password-recovery/password-recovery.component';
 import { ActivateAccountComponent } from './home/activate-account/activate-account.component';
 const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: '/home'
+  },
   {
     path: 'home',
     component: ContentComponent
@@ -90,6 +96,10 @@ const routes: Routes = [
   {
     path: 'opportunities-accomplished',
     component: AccomplishedComponent
+  },
+  {
+    path: 'opportunities-invite',
+    component: OpportunityInviteComponent
   }
 ];
 

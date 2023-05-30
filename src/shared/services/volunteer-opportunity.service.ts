@@ -13,6 +13,60 @@ import { OpportunityRegistration } from '../models/opportunity-registration.mode
   providedIn: 'root'
 })
 export class VolunteerOpportunityService {
+  //Mock apagar
+  volunteerOpportunities: VolunteerOpportunity[] = [
+    {
+      id: 1, institutionId: 1, institution: null, name: 'Doação de Alimentos na casa da tia joana',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sem arcu, ultrices in feugiat id, faucibus eget justo. Nulla tempus, tellus eu scelerisque fermentum, est arcu lobortis justo, sit amet luctus leo nibh at diam. Proin volutpat elementum odio, ut interdum tortor finibus in. Mauris in nulla et tellus auctor ullamcorper. Maecenas quis purus enim. Vestibulum a ante elit.',
+      opportunityDate: (new Date(2020, 3, 1)), photo: '../../../../assets/img/background3.png',
+      address: { street: 'string', number: 2, complement: 'string', city: 'São Paulo', neighborhood: 'Bela Vista', state: 'SP', postalCode: 'string' },
+      creationDate: (new Date(2020, 3, 1)), causes: ['Combate a Fome', 'Jovens'], collapseDescription: true
+    },
+    {
+      id: 1, institutionId: 1, institution: null, name: 'Doação de Alimentos na casa da tia joana',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sem arcu, ultrices in feugiat id, faucibus eget justo. Nulla tempus, tellus eu scelerisque fermentum, est arcu lobortis justo, sit amet luctus leo nibh at diam. Proin volutpat elementum odio, ut interdum tortor finibus in. Mauris in nulla et tellus auctor ullamcorper. Maecenas quis purus enim. Vestibulum a ante elit.',
+      opportunityDate: (new Date(2020, 3, 1)), photo: '../../../../assets/img/c-1.jpg',
+      address: { street: 'string', number: 2, complement: 'string', city: 'São Paulo', neighborhood: 'Bela Vista', state: 'SP', postalCode: 'string' },
+      creationDate: (new Date(2020, 3, 1)), causes: ['Combate a Fome', 'Jovens'], collapseDescription: true
+    },
+    {
+      id: 1, institutionId: 1, institution: null, name: 'Doação de Alimentos na casa da tia joana',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sem arcu, ultrices in feugiat id, faucibus eget justo. Nulla tempus, tellus eu scelerisque fermentum, est arcu lobortis justo, sit amet luctus leo nibh at diam. Proin volutpat elementum odio, ut interdum tortor finibus in. Mauris in nulla et tellus auctor ullamcorper. Maecenas quis purus enim. Vestibulum a ante elit.',
+      opportunityDate: (new Date(2020, 3, 1)), photo: '../../../../assets/img/c-1d.png',
+      address: { street: 'string', number: 2, complement: 'string', city: 'São Paulo', neighborhood: 'Bela Vista', state: 'SP', postalCode: 'string' },
+      creationDate: (new Date(2020, 3, 1)), causes: ['Combate a Fome', 'Jovens'], collapseDescription: true
+    },
+    {
+      id: 1, institutionId: 1, institution: null, name: 'Doação de Alimentos na casa da tia joana',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sem arcu, ultrices in feugiat id, faucibus eget justo. Nulla tempus, tellus eu scelerisque fermentum, est arcu lobortis justo, sit amet luctus leo nibh at diam. Proin volutpat elementum odio, ut interdum tortor finibus in. Mauris in nulla et tellus auctor ullamcorper. Maecenas quis purus enim. Vestibulum a ante elit.',
+      opportunityDate: (new Date(2020, 3, 1)), photo: '../../../../assets/img/c2d.png',
+      address: { street: 'string', number: 2, complement: 'string', city: 'São Paulo', neighborhood: 'Bela Vista', state: 'SP', postalCode: 'string' },
+      creationDate: (new Date(2020, 3, 1)), causes: ['Combate a Fome', 'Jovens'], collapseDescription: true
+    },
+    {
+      id: 1, institutionId: 1, institution: null, name: 'Doação de Alimentos na casa da tia joana',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sem arcu, ultrices in feugiat id, faucibus eget justo. Nulla tempus, tellus eu scelerisque fermentum, est arcu lobortis justo, sit amet luctus leo nibh at diam. Proin volutpat elementum odio, ut interdum tortor finibus in. Mauris in nulla et tellus auctor ullamcorper. Maecenas quis purus enim. Vestibulum a ante elit.',
+      opportunityDate: (new Date(2020, 3, 1)), photo: '../../../../assets/img/background2.png',
+      address: { street: 'string', number: 2, complement: 'string', city: 'São Paulo', neighborhood: 'Bela Vista', state: 'SP', postalCode: 'string' },
+      creationDate: (new Date(2020, 3, 1)), causes: ['Combate a Fome', 'Jovens'], collapseDescription: true
+    },
+    {
+      id: 1, institutionId: 1, institution: null, name: 'Doação de Alimentos na casa da tia joana',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sem arcu, ultrices in feugiat id, faucibus eget justo. Nulla tempus, tellus eu scelerisque fermentum, est arcu lobortis justo, sit amet luctus leo nibh at diam. Proin volutpat elementum odio, ut interdum tortor finibus in. Mauris in nulla et tellus auctor ullamcorper. Maecenas quis purus enim. Vestibulum a ante elit.',
+      opportunityDate: (new Date(2020, 3, 1)), photo: '../../../../assets/img/background2.png',
+      address: { street: 'string', number: 2, complement: 'string', city: 'São Paulo', neighborhood: 'Bela Vista', state: 'SP', postalCode: 'string' },
+      creationDate: (new Date(2020, 3, 1)), causes: ['Combate a Fome', 'Jovens'], collapseDescription: true
+    },
+  ];
+
+  getLastAddedvolunteerOpportunities(): VolunteerOpportunity[] {
+    return this.volunteerOpportunities;
+  }
+
+  getHousingLocationById(id: number): VolunteerOpportunity | undefined {
+    return this.volunteerOpportunities.find(housingLocation => housingLocation.id === id);
+  }
+  // até aqui
   private readonly apiUrl = environment.apiUrl;
 
   constructor(

@@ -1,0 +1,97 @@
+@import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
+.body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Righteous", cursive;
+  min-height: 45vh;
+  /* background-color: #a9c9ff; */
+  /* background-image: linear-gradient(180deg, #a9c9ff 0%, #ffbbec 100%); */
+}
+.body .container {
+  max-width: 100vw;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 35px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+.body .container .card {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  margin: 0 auto;
+  background: #000;
+  border-radius: 15px;
+  box-shadow: 0 15px 60px rgba(0, 0, 0, 0.5);
+}
+.body .container .card .face {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.body .container .card .face.face1 {
+  box-sizing: border-box;
+  padding: 20px;
+}
+.body .container .card .face.face1 h2 {
+  margin: 0;
+  padding: 0;
+}
+.body .container .card .face.face1 .cardA {
+  background-color: #fffc00;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.body .container .card .face.face1 .cardB {
+  background-color: rgb(20, 220, 153);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.body .container .card .face.face1 .cardC {
+  background-color: crimson;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.body .container .card .face.face2 {
+  transition: 0.5s;
+}
+.body .container .card .face.face2 h2 {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-size: 2em;
+  color: #fff;
+  transition: 0.5s;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+.body .container .card:hover .face.face2 {
+  height: 60px;
+}
+.body .container .card:hover .face.face2 h2 {
+  font-size: 1em;
+}
+.body .container .card:nth-child(1) .face.face2 {
+  background-color: rgb(255, 238, 0);
+
+  /* background-image: linear-gradient(40deg, #fffc00 0%, #eb9054 45%, #ebabce 100%); */
+  border-radius: 15px;
+}
+.body .container .card:nth-child(2) .face.face2 {
+  background-color: rgb(20, 220, 153);
+  /* background-image: linear-gradient(40deg, #fc00ff 0%, #00fffc 45%, #fffc00 100%); */
+  border-radius: 15px;
+}
+.body .container .card:nth-child(3) .face.face2 {
+  background-color: crimson;
+  /* background-image: linear-gradient(40deg, #c90a0a 0%, #c24498 45%, #f73f07 100%); */
+  border-radius: 15px;
+}

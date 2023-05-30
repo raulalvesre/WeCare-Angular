@@ -1,10 +1,10 @@
-.paragraph {
- background: aliceblue;
- padding:  5% 10% 5% 10%;
+.content {
+ /* background: aliceblue; */
+ padding:  5% 5% 5% 5%;
  margin: 5% 0% 5% 0%;
  border-style: none;
  border-width: 5px;
- border-image: linear-gradient(to left, rgba(0, 251, 217, 0.8), rgba(255, 0, 217, 0.8), rgba(0, 251, 217, 0.8))90% 0%/5px 0px;
+ /* border-image: linear-gradient(to left, rgba(0, 251, 217, 0.8), rgba(255, 0, 217, 0.8), rgba(0, 251, 217, 0.8))90% 0%/5px 0px; */
 }
 
 #homeContent div{
@@ -41,3 +41,15 @@ button{
   font-weight: 600;
   color: white;
 }
+
+.collor-pastel{
+  background-color: aliceblue;
+  border-style: dashed;
+  border-width: 3px;
+  border-color: rgb(6, 227, 243);
+}
+
+.recent{
+  background-color: aquamarine;
+}
+

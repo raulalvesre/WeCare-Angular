@@ -44,7 +44,7 @@
 
         <!-- Menus diferentes de acordo com o perfil de quem acessa -->
         <!-- Sem estar logado -->
-        <div *ngIf="userMenuType == 'UNKNOW'">
+        <div class="d-flex flex-row" *ngIf="userMenuType == 'UNKNOW'">
           <li class="nav-item">
             <a
               href="/login"
@@ -56,7 +56,7 @@
         </div>
 
         <!-- Identificado como voluntário -->
-        <div *ngIf="userMenuType == 'CANDIDATE'">
+        <div class="d-flex flex-row" *ngIf="userMenuType == 'CANDIDATE'">
           <li class="nav-item">
             <a
               href="/opportunities"
@@ -66,21 +66,6 @@
             >
           </li>
           <li class="nav-item dropdown">
-            <!-- <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Oportunidades
-            </a> -->
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Agendadas</a></li>
-              <li><a class="dropdown-item" href="#">Realizadas</a></li>
-              <!-- <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li> -->
-            </ul>
             <div class="col">
               <div ngbDropdown class="d-inline-block">
                 <a
@@ -91,39 +76,45 @@
                   Oportunidades
                 </a>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                  <a
-                    href="/opportunities-scheduled"
-                    class=""
-                    routerLinkActive="active"
-                    ngbDropdownItem
-                    >Agendadas</a
-                  >
-                  <a
-                    href="/opportunities-accomplished"
-                    class=""
-                    routerLinkActive="active"
-                    ngbDropdownItem
-                    >Realizadas</a
-                  >
-                  <a href="" class="" routerLinkActive="active" ngbDropdownItem
-                    >Convites</a
-                  >
+                  <a href="/opportunities-scheduled" class="" routerLinkActive="active" ngbDropdownItem>Agendadas</a>
+                  <a href="/opportunities-accomplished" class="" routerLinkActive="active" ngbDropdownItem>Realizadas</a>
+                  <a href="/opportunities-invite" class="" routerLinkActive="active" ngbDropdownItem>Convites</a>
                 </div>
               </div>
             </div>
           </li>
-          <li class="nav-item">
+          <li class="nav-item dropdown">
+            <div class="col">
+              <div ngbDropdown class="d-inline-block">
+                <a class="nav-link dropdown-toggle" id="dropdownBasic1" ngbDropdownToggle>
+                  Perfil
+                </a>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="row">
+                  <div class="img_profile col align-items-center">
+                    <img class="mx-auto" src="../../../assets/img/i-devs.png" alt="" />
+                    <div class="text-center">
+                      <p>User Name</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <a href="/user-profile" class="" routerLinkActive="active" ngbDropdownItem>Editar</a>
+                  <a class="" (click)="sair()" ngbDropdownItem>Sair</a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <!-- <li class="nav-item">
             <a
               href="/user-profile"
               class="nav-link font-weight-bold"
               routerLinkActive="active"
               >Perfil</a
             >
-          </li>
+          </li> -->
         </div>
 
         <!-- Identificado como instituição -->
-        <div *ngIf="userMenuType == 'INSTITUTION'">
+        <div class="d-flex flex-row" *ngIf="userMenuType == 'INSTITUTION'">
           <li class="nav-item">
             <a
               href="/opportunities"
@@ -187,7 +178,7 @@
         </div>
 
         <!-- Identificado como adm -->
-        <div *ngIf="userMenuType == 'ADM'">
+        <div class="d-flex flex-row" *ngIf="userMenuType == 'ADM'">
           <div class="col">
             <div ngbDropdown class="d-inline-block">
               <a

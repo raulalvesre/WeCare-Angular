@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AccessService } from 'src/shared/services/access.service';
 
@@ -19,7 +20,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   //UNKNOW
   userMenuType: string = 'UNKNOW';
 
-  constructor(private accessService: AccessService) {
+  constructor(
+    private router: Router,
+    private accessService: AccessService,
+  ) {
     this.loginSubscription = accessService.loginNotification()
       .subscribe(loggedIn => {
         if (loggedIn) {
@@ -44,6 +48,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   closeNavigationMenu() {
     this.isMenuCollapsed = true;
+  }
+
+  async sair() {
+    this.accessService.logout();
+
+    this.userMenuType = 'UNKNOW';
+
+    await this.router.navigateByUrl('/');
   }
 
   private configureMenuForCurrentUser() {

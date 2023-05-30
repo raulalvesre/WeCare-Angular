@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -29,10 +29,18 @@ import { ProfileComponent } from './users/profile/profile.component';
 import { AccomplishedComponent } from './users/opportunities/accomplished/accomplished.component';
 import { ScheduledComponent } from './users/opportunities/scheduled/scheduled.component';
 import { InstitutionProfileComponent } from './institutions/institution-profile/institution-profile.component';
+import { OpportunityInviteComponent } from './users/opportunities/opportunity-invite/opportunity-invite.component';
+import { FeaturedCausesComponent } from './home/featured-causes/featured-causes.component';
+import { CardSliderComponent } from './home/slider/card-slider/card-slider.component';
+import { CardSliderAltComponent } from './home/slider/card-slider-alt/card-slider-alt.component';
+import { CardSliderPhotosComponent } from './home/slider/card-slider-photos/card-slider-photos.component'
 import { PasswordRecoveryComponent } from './home/password-recovery/password-recovery.component';
 import { ActivateAccountComponent } from './home/activate-account/activate-account.component'
 
 @NgModule({
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ],
   declarations: [
     AppComponent,
     FormsComponent,
@@ -55,6 +63,11 @@ import { ActivateAccountComponent } from './home/activate-account/activate-accou
     AccomplishedComponent,
     ScheduledComponent,
     InstitutionProfileComponent,
+    OpportunityInviteComponent,
+    FeaturedCausesComponent,
+    CardSliderComponent,
+    CardSliderAltComponent,
+    CardSliderPhotosComponent,
     PasswordRecoveryComponent,
     ActivateAccountComponent
   ],
@@ -70,7 +83,9 @@ import { ActivateAccountComponent } from './home/activate-account/activate-accou
     ToastsContainerComponent,
     NgxMaskDirective,
     NgxMaskPipe,
-    NgbCollapseModule
+    NgbCollapseModule,
+
   ]
 })
-export class AppModule { }
+export class AppModule {
+}
