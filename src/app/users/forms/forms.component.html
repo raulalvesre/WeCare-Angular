@@ -35,7 +35,7 @@
               name="document"
               formControlName="document"
               mask="000.000.000-00"
-              [showMaskType]="true"
+              [showMaskTyped]="true"
               [dropSpecialCharacters]="false"
               class="form-control"
               [ngClass]="{
@@ -64,7 +64,7 @@
               name="document"
               formControlName="document"
               mask="00.000.000/0000-00"
-              [showMaskType]="true"
+              [showMaskTyped]="true"
               [dropSpecialCharacters]="false"
               class="form-control"
               [ngClass]="{
@@ -190,6 +190,76 @@
               "
             >
               Pelo menos 12 caracteres.
+            </div>
+          </div>
+
+          <div class="mb-2" *ngIf="form.get('documentType').value === cpf">
+            <label for="qualifications" class="form-label"
+              >Suas habilidades</label
+            >
+            <select
+              #qualificationsSelect
+              class="form-select"
+              id="qualifications"
+              type="text"
+              name="qualifications"
+              (change)="addQualification(qualificationsSelect.value)"
+            >
+              <option disabled selected>Selecionar Habilidade</option>
+              <option
+                *ngFor="let qualification of qualifications"
+                [value]="qualification.id"
+              >
+                {{ qualification.name }}
+              </option>
+            </select>
+            <div class="mt-2">
+              <span
+                *ngFor="let qualification of selectedQualifications"
+                class="badge rounded-pill text-bg-info me-1"
+              >
+                {{ qualification.name }}
+                <span
+                  style="cursor: pointer"
+                  class="bi bi-x"
+                  title="Excluir {{ qualification }}"
+                  (click)="removeQualification(qualification)"
+                ></span>
+              </span>
+            </div>
+          </div>
+
+          <div class="mb-3" *ngIf="form.get('documentType').value === cpf">
+            <label for="causes" class="form-label">Causas que você apoia</label>
+            <select
+              #causesSelect
+              class="form-select"
+              id="causes"
+              type="text"
+              name="causes"
+              (change)="addCause(causesSelect.value)"
+            >
+              <option disabled selected>Selecionar Causa</option>
+              <option
+                *ngFor="let cause of opportunityCauses"
+                [value]="cause.code"
+              >
+                {{ cause.name }}
+              </option>
+            </select>
+            <div class="mt-2">
+              <span
+                *ngFor="let opportunityCause of selectedOpportunityCauses"
+                class="badge rounded-pill text-bg-info me-1"
+              >
+                {{ opportunityCause.name }}
+                <span
+                  style="cursor: pointer"
+                  class="bi bi-x"
+                  title="Excluir {{ opportunityCause }}"
+                  (click)="removeCause(opportunityCause)"
+                ></span>
+              </span>
             </div>
           </div>
 

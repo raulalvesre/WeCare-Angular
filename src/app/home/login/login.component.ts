@@ -53,7 +53,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.toastService.show('Acesso autorizado', { classname: 'bg-success text-light', delay: 5000 });
 
         setTimeout(() => {
-          this.router.navigate(['/opportunities-admin']);
+          if (documentType == UserDocumentType.cpf) {
+            this.router.navigate(['/']);
+          } else {
+            this.router.navigate(['/opportunities-institution']);
+          }
         }, 2000);
       },
       error: (error: HttpErrorResponse) => {
@@ -71,5 +75,4 @@ export class LoginComponent implements OnInit, OnDestroy {
   changeDocumentType(documentType: UserDocumentType) {
     this.form.get('documentType').setValue(documentType);
   }
-
 }

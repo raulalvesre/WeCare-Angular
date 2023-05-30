@@ -7,6 +7,11 @@ import { ViaCepService } from 'src/shared/services/via-cep.service';
 import { UserRegistration } from 'src/shared/models/user-registration.model';
 import { HttpStatusCode } from '@angular/common/http';
 import { ToastService } from 'src/shared/services/toast.service';
+import { QualificationService } from 'src/shared/services/qualification.service';
+import { Qualification } from 'src/shared/models/qualification.model';
+import { OpportunityCause } from 'src/shared/models/opportunity-cause.model';
+import { OpportunityCauseService } from 'src/shared/services/opportunity-cause.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forms',
@@ -19,10 +24,19 @@ export class FormsComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
 
+  qualifications: Qualification[] = [];
+  selectedQualifications: Qualification[] = [];
+
+  opportunityCauses: OpportunityCause[] = [];
+  selectedOpportunityCauses: OpportunityCause[] = [];
+
   postalCodeInvalid = false;
 
   constructor(
+    private router: Router,
     private accessService: AccessService,
+    private qualificationService: QualificationService,
+    private opportunityCauseService: OpportunityCauseService,
     private toastService: ToastService,
     private viaCepService: ViaCepService
   ) { }
@@ -58,6 +72,60 @@ export class FormsComponent implements OnInit, OnDestroy {
           this.searchPostalCode(postalCode);
         }
       });
+
+    this.searchQualifications();
+
+    this.searchOpportunityCauses();
+  }
+
+  private searchQualifications() {
+    this.qualificationService.search()
+      .subscribe({
+        next: qualifications => {
+          this.qualifications = qualifications;
+        },
+        error: error => { console.error(error); }
+      });
+  }
+
+  private searchOpportunityCauses() {
+    this.opportunityCauseService.search()
+      .subscribe({
+        next: opportunityCauses => {
+          this.opportunityCauses = opportunityCauses;
+        },
+        error: error => {
+          console.error(error);
+        }
+      });
+  }
+
+  addQualification(qualificationId: number) {
+    const selectedQualification = this.qualifications.find(qualification => qualification.id == qualificationId);
+
+    const qualificationAlreadyAdded = this.selectedQualifications.find(qualification => qualification.id == selectedQualification.id);
+    if (!qualificationAlreadyAdded) {
+      this.selectedQualifications.push(selectedQualification);
+    }
+  }
+
+  removeQualification(qualification: Qualification) {
+    const qualificationIndex = this.selectedQualifications.indexOf(qualification);
+    this.selectedQualifications.splice(qualificationIndex, 1);
+  }
+
+  addCause(opportunityCause: string) {
+    const selectedCause = this.opportunityCauses.find(cause => cause.code === opportunityCause);
+
+    const opportunityCauseAlreadyAdded = this.selectedOpportunityCauses.find(cause => cause.code === selectedCause.code)
+    if (!opportunityCauseAlreadyAdded) {
+      this.selectedOpportunityCauses.push(selectedCause);
+    }
+  }
+
+  removeCause(opportunityCause: OpportunityCause) {
+    const opportunityIndex = this.selectedOpportunityCauses.indexOf(opportunityCause);
+    this.selectedOpportunityCauses.splice(opportunityIndex, 1);
   }
 
   ngOnDestroy(): void {
@@ -101,17 +169,38 @@ export class FormsComponent implements OnInit, OnDestroy {
       }
     };
 
+    if (documentType == UserDocumentType.cpf) {
+      if (this.selectedQualifications.length == 0) {
+        userRegistration.qualificationsIds = [];
+      } else {
+        userRegistration.qualificationsIds = this.selectedQualifications
+          .map(qualification => qualification.id);
+      }
+
+      if (this.selectedOpportunityCauses.length == 0) {
+        userRegistration.interestedInCausesIds = [];
+      } else {
+        userRegistration.interestedInCausesIds = this.selectedOpportunityCauses
+          .map(opportunityCause => opportunityCause.id);
+      }
+    }
+
     this.accessService.register(userRegistration)
       .subscribe({
         next: httpResponse => {
           if (httpResponse.status == HttpStatusCode.NoContent) {
             this.toastService.show('Cadastro realizado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 2000);
           }
         },
         error: (httpErrorResponse) => {
           if (httpErrorResponse?.status == HttpStatusCode.BadRequest
-            && httpErrorResponse?.error.errors) {
-            for (const error of httpErrorResponse?.error.errors) {
+            && httpErrorResponse?.error.errors
+            && httpErrorResponse?.error?.errors) {
+            for (const error of httpErrorResponse.error.errors) {
               if (error.errorMessage.toUpperCase().includes("EMAIL JÁ CADASTRADO")) {
                 this.toastService.show('E-mail já cadastrado', { classname: 'bg-danger text-light', delay: 5000 });
               }

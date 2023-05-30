@@ -6,7 +6,8 @@
     <a routerLink="/home" class="nav-link" routerLinkActive="active">
       <img
         src="../../../assets/img/logo-footer-no-slogan.png"
-        width="112" alt="Logo da WeCare "
+        width="112"
+        alt="Logo da WeCare "
       /><span class="d-inline-block text-white" style="padding-left: 25px"
         >Mudando vidas, juntos!</span
       >
@@ -24,8 +25,7 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div
-      class="collapse navbar-collapse" id="mainMenu">
+    <div class="collapse navbar-collapse" id="mainMenu">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
           <a routerLink="/home" class="nav-link" routerLinkActive="active"
@@ -41,10 +41,10 @@
           </a>
         </li>
         <li class="nav-item divisor"></li>
-        
+
         <!-- Menus diferentes de acordo com o perfil de quem acessa -->
         <!-- Sem estar logado -->
-        <div *ngIf="userMenuType == 'unknow'">
+        <div class="d-flex flex-row" *ngIf="userMenuType == 'UNKNOW'">
           <li class="nav-item">
             <a
               href="/login"
@@ -56,7 +56,7 @@
         </div>
 
         <!-- Identificado como voluntário -->
-        <div class="d-flex flex-row" *ngIf="userMenuType == 'volunteer'">
+        <div class="d-flex flex-row" *ngIf="userMenuType == 'CANDIDATE'">
           <li class="nav-item">
             <a
               href="/opportunities"
@@ -68,7 +68,11 @@
           <li class="nav-item dropdown">
             <div class="col">
               <div ngbDropdown class="d-inline-block">
-                <a class="nav-link dropdown-toggle" id="dropdownBasic1" ngbDropdownToggle>
+                <a
+                  class="nav-link dropdown-toggle"
+                  id="dropdownBasic1"
+                  ngbDropdownToggle
+                >
                   Oportunidades
                 </a>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
@@ -94,7 +98,7 @@
                   </div>
                   <hr>
                   <a href="/user-profile" class="" routerLinkActive="active" ngbDropdownItem>Editar</a>
-                  <a href="/opportunities-accomplished" class="" routerLinkActive="active" ngbDropdownItem>Sair</a>
+                  <a class="" (click)="sair()" ngbDropdownItem>Sair</a>
                 </div>
               </div>
             </div>
@@ -110,7 +114,7 @@
         </div>
 
         <!-- Identificado como instituição -->
-        <div class="d-flex flex-row" *ngIf="userMenuType == 'institution'">
+        <div class="d-flex flex-row" *ngIf="userMenuType == 'INSTITUTION'">
           <li class="nav-item">
             <a
               href="/opportunities"
@@ -121,12 +125,28 @@
           </li>
           <div class="col">
             <div ngbDropdown class="d-inline-block">
-              <a class="nav-link dropdown-toggle" id="dropdownBasic2" ngbDropdownToggle>
+              <a
+                class="nav-link dropdown-toggle"
+                id="dropdownBasic2"
+                ngbDropdownToggle
+              >
                 Oportunidades
               </a>
               <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                <a href="/opportunity/create" class="" routerLinkActive="active" ngbDropdownItem>Adicionar</a>
-                <a href="/opportunities-admin" class="" routerLinkActive="active" ngbDropdownItem>Editar</a>
+                <a
+                  href="/opportunity/create"
+                  class=""
+                  routerLinkActive="active"
+                  ngbDropdownItem
+                  >Adicionar</a
+                >
+                <a
+                  href="/opportunities-institution"
+                  class=""
+                  routerLinkActive="active"
+                  ngbDropdownItem
+                  >Editar</a
+                >
               </div>
             </div>
           </div>
@@ -136,7 +156,7 @@
             </a>
             <ul class="dropdown-menu">
               <li>
-                <a routerLink="/opportunities-admin"
+                <a routerLink="/opportunities-institution"
                 class="nav-link"
                 routerLinkActive="active">
                   Adicionar
@@ -158,15 +178,31 @@
         </div>
 
         <!-- Identificado como adm -->
-        <div class="d-flex flex-row" *ngIf="userMenuType == 'adm'">
+        <div class="d-flex flex-row" *ngIf="userMenuType == 'ADM'">
           <div class="col">
             <div ngbDropdown class="d-inline-block">
-              <a class="nav-link dropdown-toggle" id="dropdownBasic2" ngbDropdownToggle>
+              <a
+                class="nav-link dropdown-toggle"
+                id="dropdownBasic2"
+                ngbDropdownToggle
+              >
                 Problemas Relatados
               </a>
               <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                <a href="/issues-volunteers" class="" routerLinkActive="active" ngbDropdownItem>Com Voluntários</a>
-                <a href="/issues-institutions" class="" routerLinkActive="active" ngbDropdownItem>Com Vagas</a>
+                <a
+                  href="/issues-volunteers"
+                  class=""
+                  routerLinkActive="active"
+                  ngbDropdownItem
+                  >Com Voluntários</a
+                >
+                <a
+                  href="/issues-institutions"
+                  class=""
+                  routerLinkActive="active"
+                  ngbDropdownItem
+                  >Com Vagas</a
+                >
               </div>
             </div>
           </div>
@@ -188,7 +224,6 @@
           </li> -->
         </div>
 
-
         <!-- Adicionado no menu de volunteer como pesquisar vagas (deletar este li quando o outro estiver ok) -->
         <!-- <li class="nav-item">
           <a
@@ -202,7 +237,7 @@
         <!-- Adicionado no menu de instututions como adicionar vagas (deletar este li quando o outro estiver ok) -->
         <!-- <li class="nav-item">
           <a
-            routerLink="/opportunities-admin"
+            routerLink="/opportunities-institution"
             class="nav-link"
             routerLinkActive="active"
             >Editar Oportunidades</a

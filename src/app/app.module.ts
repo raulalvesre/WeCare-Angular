@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgbCollapseModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-mask';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 import { AppComponent } from './app.component';
 import { FormsComponent } from './users/forms/forms.component';
@@ -34,6 +34,8 @@ import { FeaturedCausesComponent } from './home/featured-causes/featured-causes.
 import { CardSliderComponent } from './home/slider/card-slider/card-slider.component';
 import { CardSliderAltComponent } from './home/slider/card-slider-alt/card-slider-alt.component';
 import { CardSliderPhotosComponent } from './home/slider/card-slider-photos/card-slider-photos.component'
+import { PasswordRecoveryComponent } from './home/password-recovery/password-recovery.component';
+import { ActivateAccountComponent } from './home/activate-account/activate-account.component'
 
 @NgModule({
   schemas: [
@@ -65,9 +67,11 @@ import { CardSliderPhotosComponent } from './home/slider/card-slider-photos/card
     FeaturedCausesComponent,
     CardSliderComponent,
     CardSliderAltComponent,
-    CardSliderPhotosComponent
+    CardSliderPhotosComponent,
+    PasswordRecoveryComponent,
+    ActivateAccountComponent
   ],
-  providers: [provideEnvironmentNgxMask()],
+  providers: [provideNgxMask()],
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
@@ -80,8 +84,8 @@ import { CardSliderPhotosComponent } from './home/slider/card-slider-photos/card
     NgxMaskDirective,
     NgxMaskPipe,
     NgbCollapseModule,
-    
+
   ]
 })
-export class AppModule { 
+export class AppModule {
 }
