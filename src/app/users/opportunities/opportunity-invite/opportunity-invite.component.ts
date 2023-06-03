@@ -21,7 +21,7 @@ export class OpportunityInviteComponent {
 	constructor(private modalService: NgbModal) {}
 
 	open(content) {
-		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true, size: 'lg' }).result.then(
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true, size: 'xl' }).result.then(
 			(result) => {
 				this.closeResult = `Closed with: ${result}`;
 			},
@@ -41,18 +41,18 @@ export class OpportunityInviteComponent {
 		}
 	}
 
-  oportunityIssues: Array<issues> =[
+  oportunityInvites: Array<issues> =[
     { name: 'Distribuição de Alimentos', type: 2, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 1', status: "Pendente" },
     { name: 'Teste 2', type: 1, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 2' , status: "Pendente"},
     { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    // { name: 'Teste 4', type: 5, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 4' },
+    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
+    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
+    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
+    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
+    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
+    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
+    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
+    // // // { name: 'Teste 4', type: 5, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 4' },
     // { name: 'Teste 5', type: 4, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 5' },
   ]
 }

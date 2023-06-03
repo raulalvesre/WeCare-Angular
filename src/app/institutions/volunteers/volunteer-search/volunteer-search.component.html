@@ -1,6 +1,12 @@
 <div class="content">
   <div class="container">
-    <h2 class="fs-3 text-primary my-3">Projetos Disponíveis</h2>
+    <h2 class="fs-3 text-primary my-3">
+      Encontre Voluntários Para Ajudar Com a Sua Causa
+    </h2>
+
+    <!-- TODO: APAGAR
+        contato@caridadeelma.org.br
+        WS1fGSHhPB -->
 
     <div class="row">
       <section class="col d-flex flex-wrap">
@@ -98,7 +104,7 @@
 
     <div class="row">
       <section
-        *ngFor="let volunteerOpportunity of volunteerOpportunities"
+        *ngFor="let avaliableVolunteer of avaliableVolunteers"
         class="card card swiper-slide col col-lg-3 mt-4 my-3 card-content1"
       >
         <div class="">
@@ -106,8 +112,8 @@
             <span class="overlay"></span>
             <div class="card-image">
               <img
-                [src]="convertBase64ToPhotoUrl(volunteerOpportunity.photo)"
-                alt="Foto da oportunidade {{ volunteerOpportunity.name }}"
+                [src]="convertBase64ToPhotoUrl(avaliableVolunteer.photo)"
+                alt="Foto da oportunidade {{ avaliableVolunteer.name }}"
                 class="card-img"
               />
             </div>
@@ -115,42 +121,42 @@
           <div class="card-content row">
             <h2
               class="name col-10 text-truncate"
-              title="{{ volunteerOpportunity.name }}"
+              title="{{ avaliableVolunteer.name }}"
             >
-              {{ volunteerOpportunity.name }}
+              {{ avaliableVolunteer.name }}
             </h2>
             <p
               class="description crop-text-5"
-              title="{{ volunteerOpportunity.description }}"
+              title="{{ avaliableVolunteer.description }}"
             >
-              {{ volunteerOpportunity.description }}
+              {{ avaliableVolunteer.description }}
             </p>
 
-            <div class="description2 text-center row">
+            <!-- <div class="description2 text-center row">
               <div class="col text-truncate text-start">
                 <i
                   class="bi bi-calendar-week text-warning"
                   title="{{
-                    volunteerOpportunity.opportunityDate | date : 'dd/MM/yyyy'
+                    avaliableVolunteer.opportunityDate | date : 'dd/MM/yyyy'
                   }}"
                   ><span class="text-dark">
                     {{
-                      volunteerOpportunity.opportunityDate | date : "dd/MM/yyyy"
+                      avaliableVolunteer.opportunityDate | date : "dd/MM/yyyy"
                     }}</span
                   >
                 </i>
               </div>
-            </div>
+            </div> -->
             <div class="description2 text-center row">
               <div class="col text-truncate text-start">
                 <i
                   class="bi bi-geo-alt-fill text-danger"
-                  title="{{ volunteerOpportunity.address.city }} - {{
-                    volunteerOpportunity.address.state
+                  title="{{ avaliableVolunteer.address.city }} - {{
+                    avaliableVolunteer.address.state
                   }}"
                   ><span class="text-dark"
-                    >{{ volunteerOpportunity.address.city }} -
-                    {{ volunteerOpportunity.address.state }}</span
+                    >{{ avaliableVolunteer.address.city }} -
+                    {{ avaliableVolunteer.address.state }}</span
                   >
                 </i>
               </div>
@@ -159,9 +165,9 @@
               <div class="col text-truncate text-start">
                 <i
                   class="bi bi-bookmark-heart text-success"
-                  title="Causa(s): {{ volunteerOpportunity.causes }}"
+                  title="Causa(s): {{ avaliableVolunteer.causes }}"
                   ><span class="text-dark text-start">{{
-                    volunteerOpportunity.causes
+                    avaliableVolunteer.causes
                   }}</span>
                 </i>
               </div>
@@ -170,47 +176,48 @@
               <div class="col">
                 <button
                   class="button"
-                  (click)="openXl(contentModal, volunteerOpportunity)"
+                  (click)="openXl(contentModal, avaliableVolunteer)"
                 >
                   Detalhes
                 </button>
               </div>
               <div class="col">
-                <button class="button">Participar</button>
+                <button class="button">Convidar</button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- <div class="">
-          <div class="">
             <div class="">
-              <p
-                class="card-text mb-0 badge rounded-pill fs-6 text-bg-warning text-light text-start"
-              >
-                <span class="bi bi-calendar"></span>&nbsp;{{
-                  volunteerOpportunity.opportunityDate | date : "mediumDate"
-                }}
-              </p>
+              <div class="">
+                <p
+                  class="card-text mb-0 badge rounded-pill fs-6 text-bg-warning text-light text-start"
+                >
+                  <span class="bi bi-calendar"></span>&nbsp;{{
+                    volunteerOpportunity.opportunityDate | date : "mediumDate"
+                  }}
+                </p>
+              </div>
+    
+              <div class="d-flex flex-column mb-4">
+                <p
+                  class="badge rounded-pill fs-6 text-bg-info text-light my-1 text-nowrap overflow-hidden text-start"
+                  style="text-overflow: ellipsis"
+                  title="{{ volunteerOpportunity.address?.neighborhood }} | {{
+                    volunteerOpportunity.address?.city
+                  }}, {{ volunteerOpportunity.address?.state }}"
+                >
+                  <span class="bi bi-geo-alt-fill"></span>
+                  {{ volunteerOpportunity.address?.neighborhood }} |
+                  {{ volunteerOpportunity.address?.city }},
+                  {{ volunteerOpportunity.address?.state }}
+                </p>
+              </div>
+              <div class="d-flex justify-content-end"></div>
             </div>
-  
-            <div class="d-flex flex-column mb-4">
-              <p
-                class="badge rounded-pill fs-6 text-bg-info text-light my-1 text-nowrap overflow-hidden text-start"
-                style="text-overflow: ellipsis"
-                title="{{ volunteerOpportunity.address?.neighborhood }} | {{
-                  volunteerOpportunity.address?.city
-                }}, {{ volunteerOpportunity.address?.state }}"
-              >
-                <span class="bi bi-geo-alt-fill"></span>
-                {{ volunteerOpportunity.address?.neighborhood }} |
-                {{ volunteerOpportunity.address?.city }},
-                {{ volunteerOpportunity.address?.state }}
-              </p>
-            </div>
-            <div class="d-flex justify-content-end"></div>
-          </div>
-        </div> -->
+          </div> -->
+
         <ng-template #contentModal let-modal>
           <div class="modal-header container-special">
             <h4 class="modal-title container-special">
@@ -225,13 +232,15 @@
           </div>
           <div class="modal-body container-special">
             <div class="row">
-              <div class="col-8 border p-5">
-                <h5>Descrição da Oportunidade:</h5>
+              <div class="col-8 border p-3">
+                <h5>Descrição da Voluntário:</h5>
+                <p>{{ volunteerOpportunity.description }}</p>
+                <h5>Principais Habilidades do Voluntário:</h5>
                 <p>{{ volunteerOpportunity.description }}</p>
               </div>
               <div class="col-4 d-flex aligns-items-center">
                 <img
-                  [src]="volunteerOpportunity.photo"
+                  src="../../../../assets/img/picofme.png"
                   class="img-modal"
                   alt=""
                 />
@@ -239,58 +248,50 @@
             </div>
             <div class="row border">
               <div class="col-8 border">
-                <div class="row">
-                  <div class="col-3">
-                    <i
-                      class="bi bi-calendar-week text-warning col"
-                      title="{{
-                        volunteerOpportunity.opportunityDate
-                          | date : 'dd/MM/yyyy'
-                      }}"
-                      ><span class="text-dark">
-                        {{
-                          volunteerOpportunity.opportunityDate
-                            | date : "dd/MM/yyyy"
-                        }}</span
+                <div class="row p-3">
+                  <div class="mb-3">
+                    <label for="causes" class="form-label"
+                      ><h5>Convidar para Oportunidade:</h5></label
+                    >
+                    <select
+                      #causesSelect
+                      class="form-select"
+                      id="causes"
+                      type="text"
+                      name="causes"
+                      (change)="addCause(causesSelect.value)"
+                    >
+                      <option disabled selected>Selecionar Oportunidade</option>
+                      <option
+                        *ngFor="let cause of opportunityCauses"
+                        [value]="cause.code"
                       >
-                    </i>
-                  </div>
-
-                  <div class="col-4">
-                    <i
-                      class="bi bi-geo-alt-fill text-danger col"
-                      title="{{ volunteerOpportunity.address.city }} - {{
-                        volunteerOpportunity.address.state
-                      }}"
-                      ><span class="text-dark"
-                        >{{ volunteerOpportunity.address.city }} -
-                        {{ volunteerOpportunity.address.state }}</span
+                        {{ cause.name }}
+                      </option>
+                    </select>
+                    <div class="mt-2">
+                      <span
+                        *ngFor="
+                          let opportunityCause of selectedOpportunityCauses
+                        "
+                        class="badge rounded-pill text-bg-info me-1"
                       >
-                    </i>
-                  </div>
-
-                  <div class="col-2 text-truncate border">
-                    <i
-                      class="bi bi-bookmark-heart text-success"
-                      title="Causa(s): {{ volunteerOpportunity.causes }}"
-                      ><span class="text-dark text-start">{{
-                        volunteerOpportunity.causes
-                      }}</span>
-                    </i>
+                        {{ opportunityCause.name }}
+                        <span
+                          style="cursor: pointer"
+                          class="bi bi-x"
+                          title="Excluir {{ opportunityCause }}"
+                          (click)="removeCause(opportunityCause)"
+                        ></span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="col p-2">
-                <div class="">Publicado em:</div>
-                <div>Publicado por:</div>
-              </div>
-              <div class="row border p-5">
-                <h5>Principais Habilidades</h5>
-                <p>{{ volunteerOpportunity.description }}</p>
-                <p></p>
+                <div class="">LinkedIn: <i class="bi bi-linkedin"></i></div>
               </div>
             </div>
-
           </div>
           <div class=""></div>
           <div class="modal-footer container-special">
@@ -299,7 +300,7 @@
               class="btn btn-light container-special"
               (click)="modal.close('Close click')"
             >
-              Participar
+              Convidar
             </button>
           </div>
         </ng-template>
