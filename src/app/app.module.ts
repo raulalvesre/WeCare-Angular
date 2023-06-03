@@ -35,7 +35,9 @@ import { CardSliderComponent } from './home/slider/card-slider/card-slider.compo
 import { CardSliderAltComponent } from './home/slider/card-slider-alt/card-slider-alt.component';
 import { CardSliderPhotosComponent } from './home/slider/card-slider-photos/card-slider-photos.component'
 import { PasswordRecoveryComponent } from './home/password-recovery/password-recovery.component';
-import { ActivateAccountComponent } from './home/activate-account/activate-account.component'
+import { ActivateAccountComponent } from './home/activate-account/activate-account.component';
+import { VolunteerSearchComponent } from './institutions/volunteers/volunteer-search/volunteer-search.component';
+import { OpportunityAppliedUsersComponent } from './users/opportunities/opportunity-applied-users/opportunity-applied-users.component';
 
 @NgModule({
   schemas: [
@@ -69,7 +71,10 @@ import { ActivateAccountComponent } from './home/activate-account/activate-accou
     CardSliderAltComponent,
     CardSliderPhotosComponent,
     PasswordRecoveryComponent,
-    ActivateAccountComponent
+    ActivateAccountComponent,
+    VolunteerSearchComponent,
+    OpportunityAppliedUsersComponent,
+    
   ],
   providers: [provideNgxMask()],
   bootstrap: [AppComponent],

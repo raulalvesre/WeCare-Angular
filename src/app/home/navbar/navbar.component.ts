@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   //CANDIDATE
   //INSTITUTION
   //UNKNOW
-  userMenuType: string = 'UNKNOW';
+  userMenuType: string = 'INSTITUTION';
 
   constructor(
     private router: Router,
@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         if (loggedIn) {
           this.configureMenuForCurrentUser();
         } else {
-          this.userMenuType = 'UNKNOW';
+          this.userMenuType = 'INSTITUTION';
         }
       });
   }

@@ -1,10 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import Swiper, { Navigation, Pagination } from 'swiper';
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //Interfaces
 import { VolunteerOpportunity } from 'src/shared/models/volunteer-opportunity.model';
 //Services
 import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
+import { FileService } from 'src/shared/services/file.service';
+
 
 @Component({
   selector: 'app-card-slider',
@@ -14,17 +16,17 @@ import { VolunteerOpportunityService } from 'src/shared/services/volunteer-oppor
 
 export class CardSliderComponent {
 
-  volunteerOpportunities: VolunteerOpportunity[] = [];
-  volunteerOpportunityService: VolunteerOpportunityService = inject(VolunteerOpportunityService);
-  
+  @Input() volunteerOpportunities: VolunteerOpportunity[] = [];
+
   closeResult = '';
 
   name = 'Angular';
 
-   constructor(private modalService: NgbModal) {
-    this.volunteerOpportunities = this.volunteerOpportunityService.getLastAddedvolunteerOpportunities(); 
-
-  }
+   constructor(
+    private volunteerOpportunityService: VolunteerOpportunityService,
+    private modalService: NgbModal,
+    private fileService: FileService
+    ) {  }
 
   openXl(content) {
 		this.modalService.open(content, { size: 'xl' });
@@ -44,6 +46,11 @@ export class CardSliderComponent {
 			return `with: ${reason}`;
 		}
 	}
+
+  convertBase64ToPhotoUrl(photoBase64: string) {
+    const photoExtension = this.fileService.fileExtension(photoBase64);
+    return `data:image/${photoExtension};base64,${photoBase64}`;
+  }
 
   ngAfterViewInit() {
     let swiperA = new Swiper('#swiperA', {
