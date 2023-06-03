@@ -66,7 +66,67 @@ export class ScheduledComponent implements OnInit {
     const currentUser = this.accessService.getCurrentUser();
 
     this.candidateService
-      .searchByPendingRegistrations({
+      .searchPendingRegistrations({
+        candidateId: currentUser.id,
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize
+      })
+      .subscribe({
+        next: (page: Page<VolunteerRegistration[]>) => {
+          if (page.data != null) {
+            this.hasNextPage = page.hasNextPage;
+
+            if (this.volunteerRegistrations.length == 0) {
+              this.volunteerRegistrations = page.data;
+            } else {
+              this.volunteerRegistrations.push(...page.data);
+            }
+          }
+        }
+      });
+
+    this.candidateService
+      .searchAcceptedRegistrations({
+        candidateId: currentUser.id,
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize
+      })
+      .subscribe({
+        next: (page: Page<VolunteerRegistration[]>) => {
+          if (page.data != null) {
+            this.hasNextPage = page.hasNextPage;
+
+            if (this.volunteerRegistrations.length == 0) {
+              this.volunteerRegistrations = page.data;
+            } else {
+              this.volunteerRegistrations.push(...page.data);
+            }
+          }
+        }
+      });
+
+    this.candidateService
+      .searchDeniedRegistrations({
+        candidateId: currentUser.id,
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize
+      })
+      .subscribe({
+        next: (page: Page<VolunteerRegistration[]>) => {
+          if (page.data != null) {
+            this.hasNextPage = page.hasNextPage;
+
+            if (this.volunteerRegistrations.length == 0) {
+              this.volunteerRegistrations = page.data;
+            } else {
+              this.volunteerRegistrations.push(...page.data);
+            }
+          }
+        }
+      });
+
+    this.candidateService
+      .searchCanceledRegistrations({
         candidateId: currentUser.id,
         pageNumber: this.pageNumber,
         pageSize: this.pageSize

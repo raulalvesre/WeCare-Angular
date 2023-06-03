@@ -17,8 +17,56 @@ export class CandidateService {
     private accessService: AccessService
   ) { }
 
-  searchByPendingRegistrations({
+  searchPendingRegistrations({
     candidateId,
+    pageNumber = 1,
+    pageSize = 10,
+  }): Observable<Page<VolunteerRegistration[]>> {
+    return this.searchRegistrations({
+      url: `${this.apiUrl}/api/candidate/${candidateId}/pending-registrations`,
+      pageNumber,
+      pageSize,
+    });
+  }
+
+  searchAcceptedRegistrations({
+    candidateId,
+    pageNumber = 1,
+    pageSize = 10,
+  }): Observable<Page<VolunteerRegistration[]>> {
+    return this.searchRegistrations({
+      url: `${this.apiUrl}/api/candidate/${candidateId}/accepted-registrations`,
+      pageNumber,
+      pageSize,
+    });
+  }
+
+  searchDeniedRegistrations({
+    candidateId,
+    pageNumber = 1,
+    pageSize = 10,
+  }): Observable<Page<VolunteerRegistration[]>> {
+    return this.searchRegistrations({
+      url: `${this.apiUrl}/api/candidate/${candidateId}/accepted-registrations`,
+      pageNumber,
+      pageSize,
+    });
+  }
+
+  searchCanceledRegistrations({
+    candidateId,
+    pageNumber = 1,
+    pageSize = 10,
+  }): Observable<Page<VolunteerRegistration[]>> {
+    return this.searchRegistrations({
+      url: `${this.apiUrl}/api/candidate/${candidateId}/accepted-registrations`,
+      pageNumber,
+      pageSize,
+    });
+  }
+
+  private searchRegistrations({
+    url,
     pageNumber = 1,
     pageSize = 10,
   }): Observable<Page<VolunteerRegistration[]>> {
@@ -30,7 +78,7 @@ export class CandidateService {
 
     return this.httpClient
       .get<Page<VolunteerRegistration[]>>(
-        `${this.apiUrl}/api/candidate/${candidateId}/pending-registrations`,
+        url,
         {
           params: parameters,
           headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
