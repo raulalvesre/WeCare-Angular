@@ -19,6 +19,8 @@ import { OpportunityInviteComponent } from './users/opportunities/opportunity-in
 import { InstitutionProfileComponent } from './institutions/institution-profile/institution-profile.component';
 import { PasswordRecoveryComponent } from './home/password-recovery/password-recovery.component';
 import { ActivateAccountComponent } from './home/activate-account/activate-account.component';
+import { VolunteerSearchComponent } from './institutions/volunteers/volunteer-search/volunteer-search.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -100,6 +102,10 @@ const routes: Routes = [
   {
     path: 'opportunities-invite',
     component: OpportunityInviteComponent
+  },
+  {
+    path: 'volunteer-search',
+    component: VolunteerSearchComponent
   }
 ];
 

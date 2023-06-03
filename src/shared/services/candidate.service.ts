@@ -1,11 +1,15 @@
 import { HttpParams, HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Page } from '../models/page.model';
 import { AccessService } from './access.service';
 import { environment } from 'src/environments/environment';
 import { VolunteerRegistration } from '../models/volunteer-registration.model';
 import { Candidate } from '../models/candidate.model';
+import { Institution } from '../models/institution.model';
+import { VolunteerOpportunity } from '../models/volunteer-opportunity.model';
+import { InstitutionService } from './institution.service';
+import { VolunteerOpportunityService } from './volunteer-opportunity.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +19,35 @@ export class CandidateService {
 
   constructor(
     private httpClient: HttpClient,
-    private accessService: AccessService
+    private accessService: AccessService,
+    private volunteerOpportunityService: VolunteerOpportunityService,
+    private institutionService: InstitutionService
   ) { }
+
+  getCandidateRecomendedOpportunities(): Observable<Page<VolunteerOpportunity[]>> {
+    const token = this.accessService.getToken();
+
+    return this.httpClient
+      .get<Page<VolunteerOpportunity[]>>(
+        `${this.apiUrl}/api/candidate/recommended-opportunities`,
+        {
+          headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
+        })
+      .pipe(tap(page => {
+        if (page.data != null) {
+          const volunteerOpportunities = page.data;
+
+          for (const volunteerOpportunity of volunteerOpportunities) {
+            this.institutionService.get(volunteerOpportunity.institutionId)
+              .subscribe({
+                next: (institution: Institution) => {
+                  volunteerOpportunity.institution = institution;
+                }
+              })
+          }
+        }
+      }));
+  }
 
   searchCandidate(candidateId: number): Observable<Candidate> {
     const token = this.accessService.getToken();

@@ -152,7 +152,10 @@
         <!-- Identificado como instituição -->
         <div class="d-flex flex-row" *ngIf="userMenuType == 'INSTITUTION'">
           <li class="nav-item">
-            <a class="nav-link font-weight-bold" routerLinkActive="active"
+            <a
+              href="/volunteer-search"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
               >Pesquisar Voluntários</a
             >
           </li>
@@ -181,13 +184,25 @@
               <li><a class="dropdown-item" href="#">Oportunidades Listadas</a></li>
             </ul>
           </li> -->
-          <li class="nav-item">
-            <a
-              href="/institution-profile"
-              class="nav-link font-weight-bold"
-              routerLinkActive="active"
-              >Perfil</a
-            >
+          <li class="nav-item dropdown">
+            <div class="col">
+              <div ngbDropdown class="d-inline-block">
+                <a class="nav-link dropdown-toggle" id="dropdownBasic1" ngbDropdownToggle>
+                  Perfil
+                </a>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="row">
+                  <div class="img_profile col align-items-center">
+                    <img class="mx-auto" src="../../../assets/img/i-devs.png" alt="" />
+                    <div class="text-center">
+                      <p>User Name</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <a href="/institution-profile" class="" routerLinkActive="active" ngbDropdownItem>Editar</a>
+                  <a class="" (click)="sair()" ngbDropdownItem>Sair</a>
+                </div>
+              </div>
+            </div>
           </li>
           <li class="nav-item">
             <a

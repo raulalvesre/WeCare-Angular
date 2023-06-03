@@ -11,9 +11,9 @@
 }
 
 .content {
-  background: aliceblue;
-  padding:  5% 20% 5% 20%;
-  margin: 5% 0% 5% 0%;
+  /* background: aliceblue; */
+  padding:  5% 0% 5% 0%;
+  /* margin: 5% 0% 5% 0%; */
   border-style: solid;
   border-width: 5px;
   border-image: linear-gradient(to left, rgba(255, 255, 255, 0.8), rgba(255, 254, 255, 0.8), rgba(243, 245, 245, 0.8))90% 0%/5px 0px;

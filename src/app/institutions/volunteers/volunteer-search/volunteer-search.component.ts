@@ -1,23 +1,22 @@
+import { HttpStatusCode, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Page } from 'src/shared/models/page.model';
 import { VolunteerOpportunity } from 'src/shared/models/volunteer-opportunity.model';
-import { ToastService } from 'src/shared/services/toast.service';
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { FileService } from 'src/shared/services/file.service';
-import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { ToastService } from 'src/shared/services/toast.service';
+import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
 
 @Component({
-  selector: 'app-opportunities-search',
-  templateUrl: './opportunities-search.component.html',
-  styleUrls: ['./opportunities-search.component.css']
+  selector: 'app-volunteer-search',
+  templateUrl: './volunteer-search.component.html',
+  styleUrls: ['./volunteer-search.component.css']
 })
-export class OpportunitiesSearchComponent implements OnInit {
+export class VolunteerSearchComponent implements OnInit {
 
   readonly opportunityDescriptionLength = 50;
 
-  volunteerOpportunities: VolunteerOpportunity[] = [];
+  avaliableVolunteers: VolunteerOpportunity[] = [];
 
   pageNumber = 1;
   pageSize = 10;
@@ -63,11 +62,7 @@ export class OpportunitiesSearchComponent implements OnInit {
           console.error(httpErrorResponse);
 
           if (httpErrorResponse.status == HttpStatusCode.Conflict) {
-            if (httpErrorResponse.error.message?.toUpperCase()?.includes('OPORTUNIDADE JÁ ACONTECEU')) {
-              this.toastService.show('Oportunidade já aconteceu', { classname: 'bg-info text-light', delay: 5000 });
-            } else {
-              this.toastService.show('Cadastro já realizado', { classname: 'bg-info text-light', delay: 5000 });
-            }
+            this.toastService.show('Cadastro já realizado', { classname: 'bg-info text-light', delay: 5000 });
 
             return;
           }
@@ -99,13 +94,13 @@ export class OpportunitiesSearchComponent implements OnInit {
           if (page.data != null) {
             this.hasNextPage = page.hasNextPage;
 
-            if (this.volunteerOpportunities.length == 0) {
-              this.volunteerOpportunities = page.data;
+            if (this.avaliableVolunteers.length == 0) {
+              this.avaliableVolunteers = page.data;
             } else {
-              this.volunteerOpportunities.push(...page.data);
+              this.avaliableVolunteers.push(...page.data);
             }
 
-            for (const volunteerOpportunity of this.volunteerOpportunities) {
+            for (const volunteerOpportunity of this.avaliableVolunteers) {
               volunteerOpportunity.collapseDescription =
                 volunteerOpportunity.description.length > this.opportunityDescriptionLength;
             }
@@ -115,3 +110,4 @@ export class OpportunitiesSearchComponent implements OnInit {
   }
 
 }
+

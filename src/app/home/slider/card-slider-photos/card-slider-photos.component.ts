@@ -6,6 +6,7 @@ declare let Swiper: any;
   templateUrl: './card-slider-photos.component.html',
   styleUrls: ['./card-slider-photos.component.css']
 })
+
 export class CardSliderPhotosComponent {
   name = 'Angular';
   images = ['../../../assets/img/c-01.png', '../../../assets/img/c-02.png', '../../../assets/img/c-03.png'];

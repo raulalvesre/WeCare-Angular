@@ -1,15 +1,15 @@
 <div class="content">
-    <div class="container border">
-      <div class="text-center">
-        <h3>Convites Para Oportunidades</h3>
-      </div>
-      <div *ngIf="oportunityIssues.length == 0">
-        <p class="bold">Você ainda não recebeu nenhum convite!</p>
-      </div>
-  
-      <div *ngIf="oportunityIssues.length > 0">
-        <!-- <p class="bold">Você agendou dos seguintes eventos:</p> -->
-  <!--       
+  <div class="container border">
+    <div class="">
+      <h3>Convites Para Oportunidades</h3>
+    </div>
+    <div *ngIf="oportunityInvites.length == 0" class="text-center">
+      <p class="bold p-5">Você ainda não recebeu nenhum convite!</p>
+    </div>
+
+    <div *ngIf="oportunityInvites.length > 0">
+      <!-- <p class="bold">Você agendou dos seguintes eventos:</p> -->
+      <!--       
         <div class="row">
           <div class="col col-sm-2">Tipo do evento</div>
           <div class="col col-sm-2">Nome</div>
@@ -17,41 +17,49 @@
           <div class="col col-sm-2">Status</div>
           <div class="col col-sm-2">Ações Rapidas</div>
         </div> -->
-        <table class="table table-hover">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col">#Id</th>
-              <th scope="col">Tipo do Evento</th>
-              <th scope="col">Data do Evento</th>
-              <th scope="col" class="text-center">Detalhes</th>
-              <th scope="col" class="text-center">Ações Rapidas</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- <div  class="border"> -->
-              <tr *ngFor="let oportunityIssue of oportunityIssues">
-                <th scope="row" title="{{oportunityIssue.type}}">{{oportunityIssue.type}}</th>
-                <td>{{oportunityIssue.name}}</td>
-                <td>{{oportunityIssue.date}}</td>
-                <td class="text-center">
-                  <button class="btn" (click)="open(content)">
-                    <i class="bi bi-file-earmark-text"></i>
-                  </button>
-                </td>
-                <td>
-                  <div class="text-center"> 
-                    <div class="row gx-2">
-                      <div class="col">
-                        <button class="btn btn-sm btn-outline-warning" title="Recusar"><i class="bi bi-x-circle"></i></button>
-                      </div>
-                      <div class="col">
-                        <button class="btn btn-sm btn-outline-success" title="Aceitar"><i class="bi bi-check-circle"></i></button>
-                      </div>
-                    </div>           
-                  </div>    
-                </td>
-              </tr>
-              <!-- <div class="row">
+      <table class="table table-hover mt-3">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Nome do Evento</th>
+            <th scope="col">Data do Evento</th>
+            <th scope="col" class="text-center">Detalhes</th>
+            <th scope="col" class="text-center">Ações Rapidas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <div  class="border"> -->
+          <tr *ngFor="let oportunityInvite of oportunityInvites">
+            <td>{{ oportunityInvite.name }}</td>
+            <td>{{ oportunityInvite.date }}</td>
+            <td class="text-center">
+              <button class="btn" (click)="open(content)">
+                <i class="bi bi-file-earmark-text"></i>
+              </button>
+            </td>
+            <td>
+              <div class="text-center">
+                <div class="row gx-2">
+                  <div class="col">
+                    <button
+                      class="btn btn-sm btn-outline-warning"
+                      title="Recusar"
+                    >
+                      <i class="bi bi-x-circle"></i>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      class="btn btn-sm btn-outline-success"
+                      title="Aceitar"
+                    >
+                      <i class="bi bi-check-circle"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <!-- <div class="row">
                 <div class="col col-sm-2" title="{{oportunityIssue.type}}">{{oportunityIssue.type}}</div>
                 <div class="col col-sm-2 text-truncate" title="{{oportunityIssue.name}}">{{oportunityIssue.name}}</div>
                 <div class="col col-sm-2" title="{{oportunityIssue.date}}">{{oportunityIssue.date}}</div>
@@ -61,33 +69,117 @@
                   <button class="btn btn-sm btn-success" title="Avaliar como Procedente"><i class="bi bi-check-circle"></i></button>
                 </div>            
               </div> -->
-            <!-- </div> -->
-          </tbody>
-        </table>
-        <!-- <div style="min-height: 300px;">
-          <div *ngFor="let oportunityIssue of oportunityIssues" class="border">
-            <div class="row">
-              <div class="col col-sm-2" title="{{oportunityIssue.type}}">{{oportunityIssue.type}}</div>
-              <div class="col col-sm-2 text-truncate" title="{{oportunityIssue.name}}">{{oportunityIssue.name}}</div>
-              <div class="col col-sm-2" title="{{oportunityIssue.date}}">{{oportunityIssue.date}}</div>
-              <div class="col col-sm-2" title="{{oportunityIssue.status}}">{{oportunityIssue.status}}</div>
-              <div class="col col-sm-4">            
-                <button class="btn btn-sm btn-danger" title="Avaliar como Improcedente"><i class="bi bi-x-circle"></i></button>
-                <button class="btn btn-sm btn-success" title="Avaliar como Procedente"><i class="bi bi-check-circle"></i></button>
-              </div>            
-            </div>
+          <!-- </div> -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <ng-template #content let-modal>
+    <div class="modal-header container-special">
+      <h4 class="modal-title container-special">
+        <p>{{ volunteerOpportunity.name }}</p>
+      </h4>
+      <button
+        type="button"
+        class="btn-close container-special btn-close-white"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body container-special">
+      <div class="row">
+        <div class="col-8 border p-5">
+          <h5>Descrição da Oportunidade:</h5>
+          <p>{{ volunteerOpportunity.description }}</p>
+          <h5>Habilidades Desejadas:</h5>
+          <p>{{ volunteerOpportunity.description }}</p>
+        </div>
+        <div class="col-4 d-flex aligns-items-center">
+          <img
+            [src]="convertBase64ToPhotoUrl(volunteerOpportunity.photo)"
+            class="img-modal"
+            alt=""
+          />
+        </div>
+      </div>
+      <div class="row border p-5">
+        <div class="col-8">
+          <div class="row">
+            <i
+              class="bi bi-calendar-week text-warning col"
+              title="{{
+                volunteerOpportunity.opportunityDate | date : 'dd/MM/yyyy'
+              }}"
+              ><span class="text-dark">
+                {{
+                  volunteerOpportunity.opportunityDate | date : "dd/MM/yyyy"
+                }}</span
+              >
+            </i>
           </div>
-        </div> -->
+          <div class="row">
+            <i
+              class="bi bi-geo-alt-fill text-danger col"
+              title="{{ volunteerOpportunity.address.city }} - {{
+                volunteerOpportunity.address.state
+              }}"
+              ><span class="text-dark"
+                >{{ volunteerOpportunity.address.city }} -
+                {{ volunteerOpportunity.address.state }}</span
+              >
+            </i>
+          </div>
+          <div class="row">
+            <i
+              class="bi bi-bookmark-heart text-success"
+              title="Causa(s): {{ volunteerOpportunity.causes }}"
+              ><span class="text-dark text-start">{{
+                volunteerOpportunity.causes
+              }}</span>
+            </i>
+          </div>
+        </div>
+        <div class="col-4">
+          <div>Publicado por:</div>
+          <div class="">Publicado em:</div>
+        </div>
       </div>
     </div>
+    <div class=""></div>
+    <div class="modal-footer container-special">
+      <button
+        type="button"
+        ngbAutofocus
+        class="btn btn-outline-warning container-special"
+        (click)="registerToOpportunity(volunteerOpportunity)"
+      >
+        Recusar
+      </button>
+      <button
+        type="button"
+        ngbAutofocus
+        class="btn btn-primary container-special"
+        (click)="registerToOpportunity(volunteerOpportunity)"
+      >
+        Aceitar
+      </button>
+      
+    </div>
+  </ng-template>
 
-    <ng-template #content let-modal>
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Detalhes</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-      </div>
-      <div class="modal-body">
-        <!-- <form>
+  <ng-template #content2 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Detalhes</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <!-- <form>
           <div class="mb-3">
             <label for="dateOfBirth">Date of birth</label>
             <div class="input-group">
@@ -104,61 +196,72 @@
           </div>
         </form> -->
 
-        <!-- Info do problema -->
-        <div class="mb-2 border p-2">
-          <div class="row fw-bold">
-            <div class="col">Id</div>
-            <div class="col">Data do Registro</div>
-          </div>
-          <div class="row">
-            <div class="col">2</div>
-            <div class="col">25/02/22</div>
-          </div>
+      <!-- Info do problema -->
+      <div class="mb-2 border p-2">
+        <div class="row fw-bold">
+          <div class="col">Id</div>
+          <div class="col">Data do Registro</div>
         </div>
-
-        <!-- Info da vaga -->
-        <div class="mb-2 border p-2">
-          <div class="row fw-bold">
-            <div class="col">Nome da vaga</div>
-            <div class="col">Tipo</div>
-          </div>
-          <div class="row">
-            <div class="col">30/2022</div>
-            <div class="col">Doação de Alimentos</div>
-          </div>
-        </div>
-
-        <!-- Relato do problema -->
-        <div class="mb-2 border p-2">
-          <div class="row fw-bold">
-            <div class="col">Relato</div>
-          </div>
-          <div class="row">
-            <div class="col">Vaga não pertinente ao solicitado</div>
-          </div>
-        </div>
-
-        <!-- Info do voluntário -->
-        <div class="mt-2 border p-2">
-          <div class="row fw-bold">
-            <div class="col">Dados do Voluntário</div>
-          </div>
-          <div class="row">
-            <div class="col">Nome: Anderson José</div>
-          </div>
-          <div class="row">
-            <div class="col">Whats: 11 999999-9999</div>
-          </div>
-          <div class="row">
-            <div class="col">Email: anderson123@gmail.com</div>
-          </div>
+        <div class="row">
+          <div class="col">2</div>
+          <div class="col">25/02/22</div>
         </div>
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Improcedente</button>
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Procedente</button>
+      <!-- Info da vaga -->
+      <div class="mb-2 border p-2">
+        <div class="row fw-bold">
+          <div class="col">Nome da vaga</div>
+          <div class="col">Tipo</div>
+        </div>
+        <div class="row">
+          <div class="col">30/2022</div>
+          <div class="col">Doação de Alimentos</div>
+        </div>
       </div>
-    </ng-template>
-  </div>
-  
+
+      <!-- Relato do problema -->
+      <div class="mb-2 border p-2">
+        <div class="row fw-bold">
+          <div class="col">Relato</div>
+        </div>
+        <div class="row">
+          <div class="col">Vaga não pertinente ao solicitado</div>
+        </div>
+      </div>
+
+      <!-- Info do voluntário -->
+      <div class="mt-2 border p-2">
+        <div class="row fw-bold">
+          <div class="col">Dados do Voluntário</div>
+        </div>
+        <div class="row">
+          <div class="col">Nome: Anderson José</div>
+        </div>
+        <div class="row">
+          <div class="col">Whats: 11 999999-9999</div>
+        </div>
+        <div class="row">
+          <div class="col">Email: anderson123@gmail.com</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.close('Save click')"
+      >
+        Improcedente
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.close('Save click')"
+      >
+        Procedente
+      </button>
+    </div>
+  </ng-template>
+</div>

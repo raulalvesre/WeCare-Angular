@@ -6,6 +6,7 @@
           class="card swiper-slide"
           *ngFor="let volunteerOpportunity of volunteerOpportunities"
         >
+          <!-- Modal -->
           <ng-template #contentModal let-modal>
             <div class="modal-header container-special">
               <h4 class="modal-title container-special">
@@ -20,12 +21,12 @@
             </div>
             <div class="modal-body container-special">
               <div class="row">
-                <div class="col">
+                <div class="col bg-primary  container-special">
                   <p>{{ volunteerOpportunity.description }}</p>
                 </div>
-                <div class="col">
+                <div class="col border">
                   <img
-                    [src]="volunteerOpportunity.photo"
+                  [src]="convertBase64ToPhotoUrl(volunteerOpportunity.photo)"
                     class="card-img"
                     alt=""
                   />
@@ -79,15 +80,17 @@
             </div>
           </ng-template>
 
+          
           <div class="image-content">
             <span class="overlay"></span>
             <div class="card-image">
               <img
-                [src]="volunteerOpportunity.photo"
-                alt="Foto da oportunidade {{ volunteerOpportunity.name }}"
+              [src]="convertBase64ToPhotoUrl(volunteerOpportunity.photo)"
+              alt="Foto da oportunidade {{ volunteerOpportunity.name }}"
                 class="card-img"
               />
             </div>
+
           </div>
           <div class="card-content row">
             <h2
@@ -160,17 +163,17 @@
         </div>
       </div>
     </div>
-        <!-- If we need pagination -->
-        <div id="swiper-paginationB" class="swiper-pagination"></div>
+    <!-- If we need pagination -->
+    <div id="swiper-paginationB" class="swiper-pagination"></div>
 
-        <!-- If we need navigation buttons -->
-        <div
-          id="swiper-button-prevB"
-          class="swiper-button-prev swiper-navBtn"
-        ></div>
-        <div
-          id="swiper-button-nextB"
-          class="swiper-button-next swiper-navBtn"
-        ></div>
-      </div>
-    </div>
+    <!-- If we need navigation buttons -->
+    <div
+      id="swiper-button-prevB"
+      class="swiper-button-prev swiper-navBtn"
+    ></div>
+    <div
+      id="swiper-button-nextB"
+      class="swiper-button-next swiper-navBtn"
+    ></div>
+  </div>
+</div>
