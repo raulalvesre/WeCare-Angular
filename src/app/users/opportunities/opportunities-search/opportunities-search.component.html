@@ -176,7 +176,7 @@
                 </button>
               </div>
               <div class="col">
-                <button class="button">Participar</button>
+                <button class="button" (click)="registerToOpportunity(volunteerOpportunity)">Participar</button>
               </div>
             </div>
           </div>
@@ -193,7 +193,7 @@
                 }}
               </p>
             </div>
-  
+
             <div class="d-flex flex-column mb-4">
               <p
                 class="badge rounded-pill fs-6 text-bg-info text-light my-1 text-nowrap overflow-hidden text-start"
@@ -297,7 +297,7 @@
             <button
               type="button"
               class="btn btn-light container-special"
-              (click)="modal.close('Close click')"
+              (click)="registerToOpportunity(volunteerOpportunity)"
             >
               Participar
             </button>
