@@ -76,9 +76,27 @@
                   Oportunidades
                 </a>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                  <a href="/opportunities-scheduled" class="" routerLinkActive="active" ngbDropdownItem>Agendadas</a>
-                  <a href="/opportunities-accomplished" class="" routerLinkActive="active" ngbDropdownItem>Realizadas</a>
-                  <a href="/opportunities-invite" class="" routerLinkActive="active" ngbDropdownItem>Convites</a>
+                  <a
+                    href="/opportunities-scheduled"
+                    class=""
+                    routerLinkActive="active"
+                    ngbDropdownItem
+                    >Agendadas</a
+                  >
+                  <a
+                    href="/opportunities-accomplished"
+                    class=""
+                    routerLinkActive="active"
+                    ngbDropdownItem
+                    >Realizadas</a
+                  >
+                  <a
+                    href="/opportunities-invite"
+                    class=""
+                    routerLinkActive="active"
+                    ngbDropdownItem
+                    >Convites</a
+                  >
                 </div>
               </div>
             </div>
@@ -86,18 +104,36 @@
           <li class="nav-item dropdown">
             <div class="col">
               <div ngbDropdown class="d-inline-block">
-                <a class="nav-link dropdown-toggle" id="dropdownBasic1" ngbDropdownToggle>
+                <a
+                  class="nav-link dropdown-toggle"
+                  id="dropdownBasic1"
+                  ngbDropdownToggle
+                >
                   Perfil
                 </a>
-                <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="row">
+                <div
+                  ngbDropdownMenu
+                  aria-labelledby="dropdownBasic1"
+                  class="row"
+                >
                   <div class="img_profile col align-items-center">
-                    <img class="mx-auto" src="../../../assets/img/i-devs.png" alt="" />
+                    <img
+                      class="mx-auto"
+                      src="../../../assets/img/i-devs.png"
+                      alt=""
+                    />
                     <div class="text-center">
                       <p>User Name</p>
                     </div>
                   </div>
-                  <hr>
-                  <a href="/user-profile" class="" routerLinkActive="active" ngbDropdownItem>Editar</a>
+                  <hr />
+                  <a
+                    href="/user-profile"
+                    class=""
+                    routerLinkActive="active"
+                    ngbDropdownItem
+                    >Editar</a
+                  >
                   <a class="" (click)="sair()" ngbDropdownItem>Sair</a>
                 </div>
               </div>
@@ -131,33 +167,6 @@
               >Oportunidades</a
             >
           </li>
-          <!-- <div class="col">
-            <div ngbDropdown class="d-inline-block">
-              <a
-                class="nav-link dropdown-toggle"
-                id="dropdownBasic2"
-                ngbDropdownToggle
-              >
-                Oportunidades
-              </a>
-              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                <a
-                  href="/opportunity/create"
-                  class=""
-                  routerLinkActive="active"
-                  ngbDropdownItem
-                  >Adicionar</a
-                >
-                <a
-                  href="/opportunities-institution"
-                  class=""
-                  routerLinkActive="active"
-                  ngbDropdownItem
-                  >Editar</a
-                >
-              </div>
-            </div>
-          </div> -->
           <!-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Oportunidades
@@ -194,6 +203,14 @@
                 </div>
               </div>
             </div>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link font-weight-bold"
+              (click)="sair()"
+              ngbDropdownItem
+              >Sair</a
+            >
           </li>
         </div>
 

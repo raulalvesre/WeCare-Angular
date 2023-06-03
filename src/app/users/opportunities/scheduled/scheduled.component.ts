@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Page } from 'src/shared/models/page.model';
+import { VolunteerRegistration } from 'src/shared/models/volunteer-registration.model';
+import { AccessService } from 'src/shared/services/access.service';
+import { CandidateService } from 'src/shared/services/candidate.service';
 
 interface Agendado {
   name: string;
@@ -12,20 +16,131 @@ interface Agendado {
   templateUrl: './scheduled.component.html',
   styleUrls: ['./scheduled.component.css']
 })
-export class ScheduledComponent {
+export class ScheduledComponent implements OnInit {
 
-    // mock
-    agendados: Array<Agendado> = [
-      { name: 'Teste 1', type: 2, date: "22/07/2023", certificate: true },
-      { name: 'Teste 2', type: 2, date: "25/07/2023", certificate: true },
-      { name: 'Teste 3', type: 2, date: "22/08/2023", certificate: true },
-      { name: 'Teste 4', type: 2, date: "21/07/2023", certificate: false },
-      { name: 'Teste 5', type: 2, date: "21/07/2023", certificate: false },
-      { name: 'Teste 6', type: 2, date: "21/07/2023", certificate: false },
-      { name: 'Teste 7', type: 2, date: "21/07/2023", certificate: false },
-      { name: 'Teste 8', type: 2, date: "21/07/2023", certificate: false },
-      { name: 'Teste 9', type: 2, date: "21/07/2023", certificate: false },
-      { name: 'Teste 10', type: 2, date: "21/07/2023", certificate: false },
-      { name: 'Teste 11', type: 2, date: "21/07/2023", certificate: false },
-    ]
+  volunteerRegistrations: VolunteerRegistration[] = [];
+
+  pageNumber = 1;
+  pageSize = 10;
+  hasNextPage = false;
+
+  constructor(
+    private candidateService: CandidateService,
+    private accessService: AccessService
+  ) { }
+
+  ngOnInit(): void {
+    this.loadOpportunities();
+  }
+
+  loadMoreOpportunities() {
+    this.pageNumber += 1;
+
+    this.loadOpportunities();
+  }
+
+  volunteerOpportunityAddress(volunteerRegistration: VolunteerRegistration) {
+    const address = volunteerRegistration.opportunity.address;
+
+    return `${address.neighborhood} (${address.city} - ${address.state})`;
+  }
+
+  registrationStatus(volunteerRegistration: VolunteerRegistration) {
+    switch (volunteerRegistration.status) {
+      case 'PENDING':
+        return 'Pendente';
+      case 'ACCEPTED':
+        return 'Aceita';
+      case 'DENIED':
+        return 'Negada';
+      case 'CANCELED':
+        return 'Cancelada';
+      default:
+        return 'Desconhecido'
+    }
+  }
+
+  private loadOpportunities() {
+    const currentUser = this.accessService.getCurrentUser();
+
+    this.candidateService
+      .searchPendingRegistrations({
+        candidateId: currentUser.id,
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize
+      })
+      .subscribe({
+        next: (page: Page<VolunteerRegistration[]>) => {
+          if (page.data != null) {
+            this.hasNextPage = page.hasNextPage;
+
+            if (this.volunteerRegistrations.length == 0) {
+              this.volunteerRegistrations = page.data;
+            } else {
+              this.volunteerRegistrations.push(...page.data);
+            }
+          }
+        }
+      });
+
+    this.candidateService
+      .searchAcceptedRegistrations({
+        candidateId: currentUser.id,
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize
+      })
+      .subscribe({
+        next: (page: Page<VolunteerRegistration[]>) => {
+          if (page.data != null) {
+            this.hasNextPage = page.hasNextPage;
+
+            if (this.volunteerRegistrations.length == 0) {
+              this.volunteerRegistrations = page.data;
+            } else {
+              this.volunteerRegistrations.push(...page.data);
+            }
+          }
+        }
+      });
+
+    this.candidateService
+      .searchDeniedRegistrations({
+        candidateId: currentUser.id,
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize
+      })
+      .subscribe({
+        next: (page: Page<VolunteerRegistration[]>) => {
+          if (page.data != null) {
+            this.hasNextPage = page.hasNextPage;
+
+            if (this.volunteerRegistrations.length == 0) {
+              this.volunteerRegistrations = page.data;
+            } else {
+              this.volunteerRegistrations.push(...page.data);
+            }
+          }
+        }
+      });
+
+    this.candidateService
+      .searchCanceledRegistrations({
+        candidateId: currentUser.id,
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize
+      })
+      .subscribe({
+        next: (page: Page<VolunteerRegistration[]>) => {
+          if (page.data != null) {
+            this.hasNextPage = page.hasNextPage;
+
+            if (this.volunteerRegistrations.length == 0) {
+              this.volunteerRegistrations = page.data;
+            } else {
+              this.volunteerRegistrations.push(...page.data);
+            }
+          }
+        }
+      });
+  }
 }

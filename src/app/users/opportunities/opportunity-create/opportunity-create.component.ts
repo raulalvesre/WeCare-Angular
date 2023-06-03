@@ -113,8 +113,8 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
     } = this.form.value;
 
     const opportunityRegistration: OpportunityRegistration = {
-      name,
-      description,
+      name: name.trim(),
+      description: description.trim(),
       opportunityDate: new Date(opportunityDate),
       photo,
       address,

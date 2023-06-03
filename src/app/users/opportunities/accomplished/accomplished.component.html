@@ -1,116 +1,96 @@
 <div class="content">
-    <div style="" class="px-2">
-        <div *ngIf="realizados.length == 0">
-          <p class="bold">Você ainda não realizou nenhum evento!</p>
-        </div>
-    
-        <div *ngIf="realizados.length > 0">
-          <p class="bold">Você já realizou os seguintes eventos:</p>
+  <div style="max-height: 500px; overflow: hidden" class="px-2">
+    <div *ngIf="volunteerRegistrations.length == 0">
+      <p class="bold">Você ainda não realizou nenhum evento</p>
+    </div>
 
-          <!-- <div class="">
+    <div *ngIf="volunteerRegistrations.length > 0">
+      <h2 class="bold">Oportunidades</h2>
 
-            <ul class="team">
-              <li class="member">
-                <div class="description">
-                  <h3>Chris Coyier</h3>
-                  <p>Chris is a front-end developer and designer. He writes a bunch of HTML, CSS, and JavaScript and shakes the pom-poms for CodePen.<br><a href="https://codepen.io/chriscoyier/">@chriscoyier</a></p>
-                </div>
-              </li>
-              <li class="member co-funder">
-                <div class="thumb"><img src="https://assets.codepen.io/2/internal/avatars/users/default.png?height=120&width=120"></div>
-                <div class="description">
-                  <h3>Alex Vazquez</h3>
-                  <p>Alex is a full stack developer. Alex does JavaScript development for CodePen, both front end and back, and just about everything else.<br><a href="https://codepen.io/quezo/">@quezo</a></p>
-                </div>
-              </li>
-              <li class="member">
-                <div class="thumb"><img src="https://assets.codepen.io/652/internal/avatars/users/default.png?height=120&width=120"></div>
-                <div class="description">
-                  <h3>Marie Mosley</h3>
-                  <p>Marie wears a lot of hats. She is our documentation lead, customer support maestra, editor, and community manager.<br><a href="https://codepen.io/mariemosley/">@mariemosley</a></p>
-                </div>
-              </li>
-              <li class="member">
-                <div class="thumb"><img src="https://assets.codepen.io/39255/internal/avatars/users/default.png?height=120&width=120"></div>
-                <div class="description">
-                  <h3>Stephen Shaw</h3>
-                  <p>Stephen is a designer/developer residing in Houston. He likes to build animations with CSS & JavaScript.<br><a href="https://codepen.io/shshaw/">@shshaw</a></p>
-                </div>
-              </li>
-              <li class="member">
-                <div class="thumb"><img src="https://cpwebassets.codepen.io/assets/packs/about-rachelsmith-6878ca76a1d9200e6c296e810050b8cb.jpg?height=120&width=120"></div>
-                <div class="description">
-                  <h3>Rachel Smith</h3>
-                  <p>Rachel is a full stack'er in Australia. Not only a creative and talented designer and developer, but a great technical writer.<br><a href="https://codepen.io/rachsmith/">@rachsmith</a></p>
-                </div>
-              </li>
-              <li class="member">
-                <div class="thumb"><img src="https://cpwebassets.codepen.io/assets/packs/about-robertkieffer-77c28f3a6efe082fd1903affae540b8a.jpg?height=120"></div>
-                <div class="description">
-                  <h3>Robert Kieffer</h3>
-                  <p>Robert is a full-stack dev with a penchant for open-source work. He dwells in the murky depthsmurky depths of JS.<br><a href="https://codepen.io/broofa/">@broofa</a></p>
-                </div>
-              </li>
-              <li class="member">
-                <div class="thumb"><img src="https://cpwebassets.codepen.io/assets/packs/about-deevazquez-c8e8b7f9e803f462b7be19ea60b9272f.jpg?height=120&width=120"></div>
-                <div class="description">
-                  <h3>Dee Vazquez</h3>
-                  <p>Dee is a full stack developer who started her career in finance. She can jump from Rails to React to Go, and also manage our finances.<br><a href="https://codepen.io/deequez/">@deequez</a></p>
-                </div>
-              </li>
-            </ul>
-          
-          </div> -->
-          
-          <div class="row text-white bg-info">
-            <div class="col col-sm-2">Tipo do evento</div>
-            <div class="col col-sm-3">Nome</div>
-            <div class="col col-sm-3">Data da Conclusão</div>
-            <div class="col col-sm-2 text-center">Certificado</div>
-            <div class="col col-sm-2 text-center">Relatar Problema</div>
-          </div>
-          <div style="min-height: 500px;">
-            <div *ngFor="let realizado of realizados" class="border-top border-bottom">
-              <div class="row">
-                <div class="col col-sm-2" title="{{realizado.type}}">{{realizado.type}}</div>
-                <div class="col col-sm-3" title="{{realizado.name}}">{{realizado.name}}</div>
-                <div class="col col-sm-3" title="{{realizado.date}}">{{realizado.date}}</div>
-                <div class="col col-sm-2 text-center" title="{{realizado.certificado}}" >
-                  <button class="btn btn-sm btn-outline-primary" [disabled]="!realizado.certificate">
-                    <i class="bi bi-aspect-ratio" (click)="open(content)"></i>
-                  </button>
-                </div>
-                <div class="col col-sm-2 text-center" title="{{realizado.certificado}}" >
-                  <button class="btn btn-sm btn-outline-danger">
-                    <i class="bi bi-exclamation-circle" (click)="openIssue(content2)"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="col">Instituição</th>
+            <th class="col">Oportunidade</th>
+            <th class="col">Data</th>
+            <th class="col">Certificado</th>
+            <th class="col">Relatar Problema</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let volunteerRegistration of volunteerRegistrations">
+            <td>
+              {{ volunteerRegistration.opportunity.institution.name }}
+            </td>
+            <td>
+              {{ volunteerRegistration.opportunity.name }}
+            </td>
+            <td>
+              {{
+                volunteerRegistration.opportunity.opportunityDate
+                  | date : "shortDate"
+              }}
+            </td>
+            <td>
+              <button
+                class="btn btn-sm btn-outline-primary"
+                title="Mostrar Certificado"
+              >
+                <i
+                  class="bi bi-card-text"
+                  (click)="
+                    openCertificate(volunteerRegistration, certificateModal)
+                  "
+                ></i>
+              </button>
+            </td>
+            <td>
+              <button
+                class="btn btn-sm btn-outline-danger"
+                title="Relatar Problema"
+              >
+                <i
+                  class="bi bi-exclamation-circle"
+                  (click)="openIssue(problemModal)"
+                ></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
-<ng-template #content let-modal>
-	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Certificado</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-	</div>
-	<div class="modal-body certificate text-center">
-    <div class="row mt-5 pt-5">
+<ng-template #certificateModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Certificado</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body certificate text-center">
+    <div class="row mt-5 pt-5 mx-5">
+      <p>Certificado de Participação</p>
       <p>
-        Certificado de Participação
+        Certificamos que {{ currentCandidate.name }} participou da oportunidade
       </p>
-      <p class="p-5 mx-5 col">
-        Certificamos que {{voluntario}} participou do evento realizado pela {{instituicao}}, com o tema {{2}}, 
-        realizado na data de {{date}}, desenvolvendo habilidades como {{1}} e contribuindo para uma sociedade melhor.
+      <p>
+
+        realizado pela
+        {{ instituicao }}, com o tema {{ 2 }}, realizado na data de {{ date }},
+        desenvolvendo habilidades como {{ 1 }} e contribuindo para uma sociedade
+        melhor.
       </p>
-    </div><br>
+    </div>
+    <br />
     <div class="row text-center">
       <p>São Paulo, 03 de Março de 2023.</p>
     </div>
-		<!-- <form>
+    <!-- <form>
 			<div class="mb-3">
 				<label for="dateOfBirth">Date of birth</label>
 				<div class="input-group">
@@ -126,24 +106,49 @@
 				</div>
 			</div>
 		</form> -->
-	</div>
-	<div class="modal-footer">
-		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
-	</div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')"
+    >
+      Save
+    </button>
+  </div>
 </ng-template>
 
-<ng-template #content2 let-modal>
-	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title2">Relatar Problema</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-	</div>
-	<div class="modal-body">
-    <div class="mb-3" style="max-height: 30vh;">
-      <label for="exampleFormControlTextarea1" class="form-label">Conte-nos sobre o que aconteceu:</label>
-      <textarea  style="max-height: 30vh;" class="form-control" id="exampleFormControlTextarea1" rows="5" cols="5"></textarea>
+<ng-template #problemModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title2">Relatar Problema</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-3" style="max-height: 30vh">
+      <label for="exampleFormControlTextarea1" class="form-label"
+        >Conte-nos sobre o que aconteceu:</label
+      >
+      <textarea
+        style="max-height: 30vh"
+        class="form-control"
+        id="exampleFormControlTextarea1"
+        rows="5"
+        cols="5"
+      ></textarea>
     </div>
-	</div>
-	<div class="modal-footer">
-		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Enviar</button>
-	</div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')"
+    >
+      Enviar
+    </button>
+  </div>
 </ng-template>

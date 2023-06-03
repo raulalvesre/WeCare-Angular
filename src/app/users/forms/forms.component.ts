@@ -150,22 +150,22 @@ export class FormsComponent implements OnInit, OnDestroy {
     } = this.form.value;
 
     const userRegistration: UserRegistration = {
-      email,
-      password,
-      name,
-      telephone,
-      document,
+      email: email.trim(),
+      password: password.trim(),
+      name: name.trim(),
+      telephone: telephone.trim(),
+      document: document.trim(),
       documentType,
       birthDate,
       bio: biography,
       address: {
-        street: address.street,
+        street: address.street.trim(),
         number: address.number,
-        complement: address.complement,
-        city: address.city,
-        neighborhood: address.neighborhood,
-        state: address.state,
-        postalCode: address.postalCode
+        complement: address.complement?.trim(),
+        city: address.city.trim(),
+        neighborhood: address.neighborhood.trim(),
+        state: address.state.trim(),
+        postalCode: address.postalCode.trim()
       }
     };
 
