@@ -60,7 +60,11 @@ export class OpportunitiesSearchComponent implements OnInit {
           console.error(httpErrorResponse);
 
           if (httpErrorResponse.status == HttpStatusCode.Conflict) {
-            this.toastService.show('Cadastro já realizado', { classname: 'bg-info text-light', delay: 5000 });
+            if (httpErrorResponse.error.message?.toUpperCase()?.includes('OPORTUNIDADE JÁ ACONTECEU')) {
+              this.toastService.show('Oportunidade já aconteceu', { classname: 'bg-info text-light', delay: 5000 });
+            } else {
+              this.toastService.show('Cadastro já realizado', { classname: 'bg-info text-light', delay: 5000 });
+            }
 
             return;
           }
