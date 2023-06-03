@@ -175,8 +175,8 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
 
     const opportunityRegistration: OpportunityRegistration = {
       id: this.opportunityId,
-      name,
-      description,
+      name: name.trim(),
+      description: description.trim(),
       opportunityDate: new Date(opportunityDate),
       photo,
       address,
