@@ -18,8 +18,6 @@ interface Agendado {
 })
 export class ScheduledComponent implements OnInit {
 
-  readonly opportunityDescriptionLength = 50;
-
   volunteerRegistrations: VolunteerRegistration[] = [];
 
   pageNumber = 1;

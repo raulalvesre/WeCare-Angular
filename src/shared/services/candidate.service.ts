@@ -5,6 +5,7 @@ import { Page } from '../models/page.model';
 import { AccessService } from './access.service';
 import { environment } from 'src/environments/environment';
 import { VolunteerRegistration } from '../models/volunteer-registration.model';
+import { Candidate } from '../models/candidate.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,17 @@ export class CandidateService {
     private httpClient: HttpClient,
     private accessService: AccessService
   ) { }
+
+  searchCandidate(candidateId: number): Observable<Candidate> {
+    const token = this.accessService.getToken();
+
+    return this.httpClient
+      .get<Candidate>(
+        `${this.apiUrl}/api/candidate/${candidateId}`,
+        {
+          headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
+        });
+  }
 
   searchPendingRegistrations({
     candidateId,
@@ -47,7 +59,7 @@ export class CandidateService {
     pageSize = 10,
   }): Observable<Page<VolunteerRegistration[]>> {
     return this.searchRegistrations({
-      url: `${this.apiUrl}/api/candidate/${candidateId}/accepted-registrations`,
+      url: `${this.apiUrl}/api/candidate/${candidateId}/denied-registrations`,
       pageNumber,
       pageSize,
     });
@@ -59,7 +71,7 @@ export class CandidateService {
     pageSize = 10,
   }): Observable<Page<VolunteerRegistration[]>> {
     return this.searchRegistrations({
-      url: `${this.apiUrl}/api/candidate/${candidateId}/accepted-registrations`,
+      url: `${this.apiUrl}/api/candidate/${candidateId}/canceled-registrations`,
       pageNumber,
       pageSize,
     });
