@@ -10,16 +10,13 @@
 
 
  .certificate {
-   position: relative;
-   height: 750px;
-   width: 100%;
-   align-items: center;
-   justify-content: center;
+   height: 80vh;
+   z-index: 1;
  }
 
  .certificate::before {
    content: "";
-   background: url(../../../../assets/img/Certificate.png) no-repeat center;
+   background: url(/assets/img/Certificate.png) no-repeat center;
    background-size: contain;
    position: absolute;
    top: 0px;
@@ -30,7 +27,9 @@
    /* opacity: 0.050; */
  }
 
- p {
+ .certificate h4,
+ .certificate p,
+ .certificate div {
    z-index: 1;
  }
 
@@ -152,21 +151,6 @@
  .description p {
    padding: 0 2em;
    margin-bottom: 1em;
- }
-
- h3 {
-   background: linear-gradient(182deg, #fff0 60%, #2f313a 0 100%);
-   display: inline;
-   transform: rotate(-2deg);
-   position: absolute;
-   margin: 0;
-   margin-top: -2.25em;
-   left: 9vmin;
-   padding: 0.5em 0.75em;
-   color: #ffdd40;
-   border-radius: 0.25em;
-   font-size: 1.35em;
-   transform-origin: left bottom;
  }
 
  .member:nth-of-type(even) h3 {

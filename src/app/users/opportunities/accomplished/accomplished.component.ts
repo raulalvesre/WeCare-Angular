@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ModalDismissReasons, NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Candidate } from 'src/shared/models/candidate.model';
+import { Issue } from 'src/shared/models/issue.model';
 import { Page } from 'src/shared/models/page.model';
+import { ReportIssue } from 'src/shared/models/report-issue';
 import { VolunteerRegistration } from 'src/shared/models/volunteer-registration.model';
 import { AccessService } from 'src/shared/services/access.service';
 import { CandidateService } from 'src/shared/services/candidate.service';
-
-interface Realizada {
-  name: string;
-  type: number;
-  date: string;
-  certificate: boolean;
-}
+import { IssueService } from 'src/shared/services/issue.service';
+import { ToastService } from 'src/shared/services/toast.service';
 
 @Component({
   selector: 'app-accomplished',
@@ -19,13 +17,17 @@ interface Realizada {
   styleUrls: ['./accomplished.component.css']
 })
 
-export class AccomplishedComponent implements OnInit {
+export class AccomplishedComponent implements OnInit, OnDestroy {
+
+  instituionProblemForm: FormGroup;
 
   volunteerRegistrations: VolunteerRegistration[] = [];
 
   certificateVolunteerRegistration: VolunteerRegistration;
 
   currentCandidate: Candidate;
+
+  readonly currentDate = new Date();
 
   pageNumber = 1;
   pageSize = 10;
@@ -36,10 +38,25 @@ export class AccomplishedComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private candidateService: CandidateService,
-    private accessService: AccessService
+    private accessService: AccessService,
+    private issueService: IssueService,
+    private toastService: ToastService
   ) { }
 
-  openCertificate(volunteerRegistration: VolunteerRegistration, certificateModal) {
+  ngOnInit(): void {
+    this.instituionProblemForm = new FormGroup({
+      title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      message: new FormControl('', [Validators.required, Validators.maxLength(100)])
+    });
+
+    this.loadOpportunities();
+  }
+
+  ngOnDestroy(): void {
+    this.toastService.clear();
+  }
+
+  openCertificate(volunteerRegistration: VolunteerRegistration, certificateModal: NgbActiveModal) {
     this.certificateVolunteerRegistration = volunteerRegistration;
 
     const currentUser = this.accessService.getCurrentUser();
@@ -64,7 +81,9 @@ export class AccomplishedComponent implements OnInit {
       });
   }
 
-  openIssue(problemModal) {
+  openIssue(volunteerRegistration: VolunteerRegistration, problemModal: NgbActiveModal) {
+    this.certificateVolunteerRegistration = volunteerRegistration;
+
     this.modalService.open(problemModal, { ariaLabelledBy: 'modal-basic-title2', centered: true, size: 'lg' }).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;
@@ -73,6 +92,33 @@ export class AccomplishedComponent implements OnInit {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       },
     );
+  }
+
+  saveIssue(problemModal: NgbActiveModal) {
+    this.instituionProblemForm.get('title').setValue(`Problema com a instituição ${this.certificateVolunteerRegistration.opportunity.institution.name}`);
+
+    const { title, message } = this.instituionProblemForm.value;
+
+    const reportIssue = {
+      title,
+      description: message,
+      opportunityId: this.certificateVolunteerRegistration.opportunity.id,
+      reportedUserId: this.certificateVolunteerRegistration.opportunity.institution.id,
+    } as ReportIssue;
+
+    this.issueService.reportIssue(reportIssue)
+      .subscribe({
+        next: (issue: Issue) => {
+          if (issue.status === 'OPEN') {
+            this.toastService.show('Problema relatado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+
+            problemModal.close();
+          }
+        },
+        error: error => {
+          console.error(error);
+        }
+      });
   }
 
   private getDismissReason(reason: any): string {
@@ -85,9 +131,6 @@ export class AccomplishedComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.loadOpportunities();
-  }
 
   loadMoreOpportunities() {
     this.pageNumber += 1;
@@ -124,19 +167,4 @@ export class AccomplishedComponent implements OnInit {
         }
       });
   }
-
-  // mock
-  realizados: Array<Realizada> = [
-    { name: 'Teste 1', type: 2, date: "22/07/2023", certificate: true },
-    { name: 'Teste 2', type: 2, date: "25/07/2023", certificate: true },
-    { name: 'Teste 3', type: 2, date: "22/08/2023", certificate: true },
-    { name: 'Teste 4', type: 2, date: "21/07/2023", certificate: false },
-    { name: 'Teste 5', type: 2, date: "21/07/2023", certificate: false },
-    { name: 'Teste 6', type: 2, date: "21/07/2023", certificate: false },
-    { name: 'Teste 7', type: 2, date: "21/07/2023", certificate: false },
-    { name: 'Teste 8', type: 2, date: "21/07/2023", certificate: false },
-    { name: 'Teste 9', type: 2, date: "21/07/2023", certificate: false },
-    { name: 'Teste 10', type: 2, date: "21/07/2023", certificate: false },
-    { name: 'Teste 11', type: 2, date: "21/07/2023", certificate: false },
-  ]
 }
