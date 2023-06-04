@@ -33,8 +33,8 @@ export class CardSliderComponent {
 	}
 
 	openModal(content, data) {
-		const modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true, size: 'lg' })   
-    modalRef.componentInstance.volunteerOpportunity = data;    
+		const modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true, size: 'lg' })
+    modalRef.componentInstance.volunteerOpportunity = data;
   }
 
   private getDismissReason(reason: any): string {
@@ -54,6 +54,7 @@ export class CardSliderComponent {
 
   ngAfterViewInit() {
     let swiperA = new Swiper('#swiperA', {
+      modules: [Navigation, Pagination],
       // autoplay: {delay: 5000},
       slidesPerView: 1,
       spaceBetween: 25,
