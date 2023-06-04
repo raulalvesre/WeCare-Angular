@@ -20,12 +20,12 @@ export class ContentComponent {
     private accessService: AccessService,
     private opportunityService: VolunteerOpportunityService
   ) {
-    this.shouldShowRecommendedOpportunities = accessService.getCurrentUser().role === 'CANDIDATE';
+    this.shouldShowRecommendedOpportunities = accessService.getCurrentUser()?.role === 'CANDIDATE';
 
     if (this.shouldShowRecommendedOpportunities) {
       candidateService.getCandidateRecomendedOpportunities().subscribe(ops => this.recommendedOpportunities = ops.data)
     }
-    
+
     opportunityService.search({'orderBy': 'CreationDate', 'orderDirection': 'Descending'}).subscribe(ops => this.latestOpportunities = ops.data)
   }
 }
