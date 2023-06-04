@@ -162,22 +162,53 @@
   <div class="modal-body">
     <div class="mb-3">
       <form [formGroup]="instituionProblemForm">
-        <label for="message" class="form-label">O que aconteceu?</label>
-        <textarea
-          class="form-control"
-          formControlName="message"
-          id="message"
-          rows="5"
-          cols="5"
-        ></textarea>
+        <div class="mb-3">
+          <label for="message" class="form-label">O que aconteceu?</label>
+          <textarea
+            class="form-control"
+            formControlName="message"
+            id="message"
+            rows="5"
+            cols="5"
+            [ngClass]="{
+              'is-invalid':
+                instituionProblemForm.get('message').invalid &&
+                (instituionProblemForm.get('message').dirty ||
+                  instituionProblemForm.get('message').touched)
+            }"
+          ></textarea>
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              instituionProblemForm.get('message').invalid &&
+              instituionProblemForm.get('message').errors?.minlength &&
+              (instituionProblemForm.get('message').dirty ||
+                instituionProblemForm.get('message').touched)
+            "
+          >
+            Pelo menos 12 caracteres.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              instituionProblemForm.get('message').invalid &&
+              instituionProblemForm.get('message').errors?.maxlength &&
+              (instituionProblemForm.get('message').dirty ||
+                instituionProblemForm.get('message').touched)
+            "
+          >
+            Máxima de 1000 caracteres.
+          </div>
+        </div>
       </form>
     </div>
   </div>
   <div class="modal-footer">
     <button
       type="button"
-      class="btn btn-outline-dark"
+      class="btn btn-primary"
       (click)="saveIssue(modal)"
+      [disabled]="instituionProblemForm.get('message').invalid"
     >
       Enviar
     </button>

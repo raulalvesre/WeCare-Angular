@@ -46,7 +46,7 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.instituionProblemForm = new FormGroup({
       title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      message: new FormControl('', [Validators.required, Validators.maxLength(100)])
+      message: new FormControl('', [Validators.required, Validators.minLength(12), Validators.maxLength(1000)])
     });
 
     this.loadOpportunities();
