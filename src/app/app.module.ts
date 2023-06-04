@@ -1,7 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { registerLocaleData } from '@angular/common';
+import localePt from "@angular/common/locales/pt";
 
 import { NgbCollapseModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
@@ -39,6 +41,8 @@ import { ActivateAccountComponent } from './home/activate-account/activate-accou
 import { VolunteerSearchComponent } from './institutions/volunteers/volunteer-search/volunteer-search.component';
 import { OpportunityAppliedUsersComponent } from './users/opportunities/opportunity-applied-users/opportunity-applied-users.component';
 
+registerLocaleData(localePt);
+
 @NgModule({
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
@@ -74,9 +78,12 @@ import { OpportunityAppliedUsersComponent } from './users/opportunities/opportun
     ActivateAccountComponent,
     VolunteerSearchComponent,
     OpportunityAppliedUsersComponent,
-    
+
   ],
-  providers: [provideNgxMask()],
+  providers: [
+    provideNgxMask(),
+    { provide: LOCALE_ID, useValue: 'pt-BR' }
+  ],
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
