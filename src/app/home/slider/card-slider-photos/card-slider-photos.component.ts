@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-declare let Swiper: any;
+import Swiper from 'swiper';
 
 @Component({
   selector: 'app-card-slider-photos',
@@ -10,18 +10,19 @@ declare let Swiper: any;
 export class CardSliderPhotosComponent {
   name = 'Angular';
   images = ['../../../assets/img/c-01.png', '../../../assets/img/c-02.png', '../../../assets/img/c-03.png'];
- 
+
   constructor() {}
-  
+
   ngAfterViewInit() {
     new Swiper('.slide-content-alt', {
     // autoplay: {delay: 5000},
     slidesPerView: 3,
     spaceBetween: 500,
     loop: true,
-    centerSlide: 'true',
-    fade: 'true',
-    grabCursor: 'true',
+    centeredSlides: true,
+    fadeEffect: {
+      crossFade: true
+    },
     pagination: {
       el: ".swiper-pagination-alt",
       clickable: true,

@@ -35,24 +35,20 @@
               <button
                 class="btn btn-sm btn-outline-primary"
                 title="Mostrar Certificado"
+                (click)="
+                  openCertificate(volunteerRegistration, certificateModal)
+                "
               >
-                <i
-                  class="bi bi-card-text"
-                  (click)="
-                    openCertificate(volunteerRegistration, certificateModal)
-                  "
-                ></i>
+                <span class="bi bi-card-text"></span>
               </button>
             </td>
             <td>
               <button
                 class="btn btn-sm btn-outline-danger"
                 title="Relatar Problema"
+                (click)="openIssue(volunteerRegistration, problemModal)"
               >
-                <i
-                  class="bi bi-exclamation-circle"
-                  (click)="openIssue(problemModal)"
-                ></i>
+                <span class="bi bi-exclamation-circle"></span>
               </button>
             </td>
           </tr>
@@ -72,23 +68,58 @@
       (click)="modal.dismiss('Cross click')"
     ></button>
   </div>
-  <div class="modal-body certificate text-center">
-    <div class="row mt-5 pt-5 mx-5">
-      <p>Certificado de Participação</p>
-      <p>
-        Certificamos que {{ currentCandidate.name }} participou da oportunidade
-      </p>
-      <p>
+  <div
+    class="modal-body certificate w-100 d-flex justify-content-start align-items-center flex-column text-center"
+  >
+    <div style="height: 20vh"></div>
 
-        realizado pela
-        {{ instituicao }}, com o tema {{ 2 }}, realizado na data de {{ date }},
-        desenvolvendo habilidades como {{ 1 }} e contribuindo para uma sociedade
-        melhor.
-      </p>
-    </div>
-    <br />
-    <div class="row text-center">
-      <p>São Paulo, 03 de Março de 2023.</p>
+    <h4>Certificado de Participação</h4>
+
+    <div class="row d-flex justify-content-center">
+      <div class="col-8 mt-4">
+        <p class="m-0">
+          Certificamos que {{ currentCandidate.name }} participou da
+          oportunidade
+
+          <strong>{{
+            certificateVolunteerRegistration.opportunity.name
+          }}</strong>
+          realizado pela
+          <strong>{{
+            certificateVolunteerRegistration.opportunity.institution.name
+          }}</strong>
+
+          no dia
+          <strong>{{
+            certificateVolunteerRegistration.opportunity.opportunityDate
+              | date : "longDate"
+          }}</strong
+          >, contribuindo para uma sociedade melhor.
+        </p>
+
+        <div
+          class="d-flex flex-column align-items-center mt-4"
+          *ngIf="
+            certificateVolunteerRegistration.opportunity.causes?.length > 0
+          "
+        >
+          <h6>Causas Defendidas</h6>
+
+          <ul>
+            <li
+              *ngFor="
+                let cause of certificateVolunteerRegistration.opportunity.causes
+              "
+            >
+              {{ cause }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-4">
+          <p class="m-0">{{ currentDate | date : "longDate" }}</p>
+        </div>
+      </div>
     </div>
     <!-- <form>
 			<div class="mb-3">
@@ -113,7 +144,7 @@
       class="btn btn-outline-dark"
       (click)="modal.close('Save click')"
     >
-      Save
+      Salvar
     </button>
   </div>
 </ng-template>
@@ -129,24 +160,55 @@
     ></button>
   </div>
   <div class="modal-body">
-    <div class="mb-3" style="max-height: 30vh">
-      <label for="exampleFormControlTextarea1" class="form-label"
-        >Conte-nos sobre o que aconteceu:</label
-      >
-      <textarea
-        style="max-height: 30vh"
-        class="form-control"
-        id="exampleFormControlTextarea1"
-        rows="5"
-        cols="5"
-      ></textarea>
+    <div class="mb-3">
+      <form [formGroup]="instituionProblemForm">
+        <div class="mb-3">
+          <label for="message" class="form-label">O que aconteceu?</label>
+          <textarea
+            class="form-control"
+            formControlName="message"
+            id="message"
+            rows="5"
+            cols="5"
+            [ngClass]="{
+              'is-invalid':
+                instituionProblemForm.get('message').invalid &&
+                (instituionProblemForm.get('message').dirty ||
+                  instituionProblemForm.get('message').touched)
+            }"
+          ></textarea>
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              instituionProblemForm.get('message').invalid &&
+              instituionProblemForm.get('message').errors?.minlength &&
+              (instituionProblemForm.get('message').dirty ||
+                instituionProblemForm.get('message').touched)
+            "
+          >
+            Pelo menos 12 caracteres.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              instituionProblemForm.get('message').invalid &&
+              instituionProblemForm.get('message').errors?.maxlength &&
+              (instituionProblemForm.get('message').dirty ||
+                instituionProblemForm.get('message').touched)
+            "
+          >
+            Máxima de 1000 caracteres.
+          </div>
+        </div>
+      </form>
     </div>
   </div>
   <div class="modal-footer">
     <button
       type="button"
-      class="btn btn-outline-dark"
-      (click)="modal.close('Save click')"
+      class="btn btn-primary"
+      (click)="saveIssue(modal)"
+      [disabled]="instituionProblemForm.get('message').invalid"
     >
       Enviar
     </button>
