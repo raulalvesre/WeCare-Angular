@@ -1,34 +1,32 @@
 <div class="content">
   <div class="container">
-    <div class="row my-3">
+    <div class="row my-3 d-flex justify-content-space-around">
       <div class="col">
         <h2 class="fs-3 text-primary">Meus Projetos</h2>
       </div>
 
-      <section class="col-lg-3 justify-content-end">
-        <div class="row">
-          <a
-            class="btn btn-primary"
-            role="button"
-            routerLink="/opportunity/create"
-          >
-            <span class="bi bi-plus-lg"></span>
-            Cadastrar Oportunidade
-          </a>
-        </div>
-      </section>
+      <div class="w-auto">
+        <a
+          class="btn btn-primary"
+          role="button"
+          routerLink="/opportunity/create"
+        >
+          <span class="bi bi-plus-lg"></span>
+          Cadastrar Oportunidade
+        </a>
+      </div>
     </div>
-    
-    <p style="font-size: 0.8em;">
-      Legenda:
-      <i class="bi bi-trash text-danger"> - Exlcuir Oportunidade   //    </i>
-      <i class="bi bi-pencil text-warning"> - Editar oportunidade    //    </i>
+
+    <p style="font-size: 0.8em">
+      Legenda
+      <i class="bi bi-trash text-danger"> - Exlcuir Oportunidade // </i>
+      <i class="bi bi-pencil text-warning"> - Editar oportunidade // </i>
       <i class="bi bi-people-fill text-info"> - Consultar Inscritos</i>
     </p>
 
     <form [formGroup]="searchForm">
       <div class="row d-flex flex-wrap">
-        <div class="col-lg-2 col-6 mb-1">
+        <div class="w-auto mb-1">
           <div ngbDropdown>
             <button
               type="button"
@@ -72,7 +70,7 @@
           </div>
         </div>
 
-        <div class="col-lg-2 col-6 mb-1">
+        <div class="w-auto mb-1">
           <div ngbDropdown>
             <button
               type="button"
@@ -120,7 +118,7 @@
           </div>
         </div>
 
-        <div class="d-flex align-items-center col-lg-5">
+        <div class="d-flex align-items-center w-auto">
           <label for="inicial-date" class="form-label mb-0 me-1">Período</label>
           <input
             formControlName="initialDate"

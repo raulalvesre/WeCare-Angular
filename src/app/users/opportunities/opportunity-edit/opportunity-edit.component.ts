@@ -2,7 +2,7 @@ import { formatDate } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, delay, distinctUntilChanged } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Institution } from 'src/shared/models/institution.model';
@@ -39,6 +39,7 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
 
   constructor(
+    private router: Router,
     private activatedRoute: ActivatedRoute,
     private volunteerOpportunityService: VolunteerOpportunityService,
     private toastService: ToastService,
@@ -190,6 +191,10 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
         next: httpResponse => {
           if (httpResponse.status == HttpStatusCode.Ok) {
             this.toastService.show('Cadastro realizado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+
+            setTimeout(() => {
+              this.router.navigateByUrl('/opportunities-institution');
+            }, 2000);
           }
         },
         error: (httpErrorResponse: HttpErrorResponse) => {
