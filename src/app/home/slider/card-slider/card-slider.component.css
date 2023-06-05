@@ -166,3 +166,7 @@
     -50px -50px 0 -40px  #58e1e6fa,
     50px 50px 0 -40px  #58e1e6fa;
 }
+
+.descriptionText{
+  height: 60%;
+}
