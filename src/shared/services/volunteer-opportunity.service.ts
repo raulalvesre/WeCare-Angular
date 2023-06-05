@@ -30,7 +30,7 @@ export class VolunteerOpportunityService {
     federativeUnits = null,
     initialDate = null,
     finalDate = null,
-    orderBy = null, 
+    orderBy = null,
     orderDirection = null,
   }): Observable<Page<VolunteerOpportunity[]>> {
     const token = this.accessService.getToken();
@@ -61,11 +61,11 @@ export class VolunteerOpportunityService {
       parameters = parameters.append('periodEnd', (finalDate as Date).toISOString());
     }
 
-    if ( orderBy != null) {
+    if (orderBy != null) {
       parameters = parameters.append('orderBy', orderBy);
     }
 
-    if ( orderDirection != null) {
+    if (orderDirection != null) {
       parameters = parameters.append('orderDirection', orderDirection);
     }
 
@@ -93,14 +93,8 @@ export class VolunteerOpportunityService {
   }
 
   searchById({ volunteerOpportunityId: opportunityId }: { volunteerOpportunityId: number }): Observable<VolunteerOpportunity> {
-    const token = this.accessService.getToken();
-
     return this.httpClient
-      .get<VolunteerOpportunity>(
-        `${this.apiUrl}/api/volunteer-opportunity/${opportunityId}`,
-        {
-          headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
-        });
+      .get<VolunteerOpportunity>(`${this.apiUrl}/api/volunteer-opportunity/${opportunityId}`);
   }
 
   updateOpportunity(opportunityRegistration: OpportunityRegistration) {

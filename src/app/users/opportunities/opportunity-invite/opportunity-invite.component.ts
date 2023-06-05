@@ -1,58 +1,142 @@
-import { Component } from '@angular/core';
-import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
-interface issues {
-  name: string;
-  type: number;
-  date: string;
-  location: string;
-  description: string;
-  status: string;
-}
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ModalDismissReasons, NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { OpportunityInvitation } from 'src/shared/models/opportunity-invitation.model';
+import { Page } from 'src/shared/models/page.model';
+import { AccessService } from 'src/shared/services/access.service';
+import { ImageService } from 'src/shared/services/image.service';
+import { OpportunityInvitationService } from 'src/shared/services/opportunity-invitation.service';
+import { ToastService } from 'src/shared/services/toast.service';
 
 @Component({
   selector: 'app-opportunity-invite',
   templateUrl: './opportunity-invite.component.html',
   styleUrls: ['./opportunity-invite.component.css']
 })
-export class OpportunityInviteComponent {
+export class OpportunityInviteComponent implements OnInit, OnDestroy {
+
+  opportunityInvitations: OpportunityInvitation[] = [];
+
+  currentOpportunityInvitation: OpportunityInvitation;
+
+  pageNumber = 1;
+  pageSize = 10;
+  hasNextPage = false;
+
   closeResult = '';
 
-	constructor(private modalService: NgbModal) {}
+  constructor(
+    private modalService: NgbModal,
+    private accessService: AccessService,
+    private opportunityInvitationService: OpportunityInvitationService,
+    private toastService: ToastService,
+    public imageService: ImageService
+  ) { }
 
-	open(content) {
-		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true, size: 'xl' }).result.then(
-			(result) => {
-				this.closeResult = `Closed with: ${result}`;
-			},
-			(reason) => {
-				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-			},
-		);
+  ngOnInit(): void {
+    this.loadOpportunityInvitations();
+  }
+
+  ngOnDestroy(): void {
+    this.toastService.clear();
+  }
+
+  invitationStatus(opportunityInvitation: OpportunityInvitation) {
+    switch (opportunityInvitation.status) {
+      case 'PENDING':
+        return 'Pendente';
+
+      case 'ACCEPTED':
+        return 'Aceito';
+
+      case 'DENIED':
+        return 'Negado';
+
+      case 'CANCELED':
+        return 'Convite cancelado';
+    }
+  }
+
+  opportunityInvitationPending(opportunityInvitation: OpportunityInvitation) {
+    console.log(opportunityInvitation);
+
+    return opportunityInvitation.status == 'PENDING';
+  }
+
+  acceptInvite(opportunityInvitation: OpportunityInvitation) {
+    this.opportunityInvitationService.acceptInvite(opportunityInvitation, 'Convite aceito')
+      .subscribe({
+        next: httpStatus => {
+          if (httpStatus.ok) {
+            this.toastService.show('Convite aceito com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+          }
+        },
+        error: error => {
+          console.error(error);
+        }
+      });
+  }
+
+  denyInvite(opportunityInvitation: OpportunityInvitation) {
+    this.opportunityInvitationService.denyInvite(opportunityInvitation, 'Convite recusado')
+      .subscribe({
+        next: httpStatus => {
+          if (httpStatus.ok) {
+            this.toastService.show('Convite recusado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+          }
+        },
+        error: error => {
+          console.error(error);
+        }
+      });
+  }
+
+  private loadOpportunityInvitations() {
+    const currentUser = this.accessService.getCurrentUser();
+
+    const candidateId = currentUser.id;
+
+    this.opportunityInvitationService.searchInvites({ candidateId })
+      .subscribe({
+        next: (page: Page<OpportunityInvitation[]>) => {
+          if (page.data != null) {
+            this.hasNextPage = page.hasNextPage;
+
+            if (this.opportunityInvitations.length == 0) {
+              this.opportunityInvitations = page.data;
+            } else {
+              this.opportunityInvitations.push(...page.data);
+            }
+
+            console.log(this.opportunityInvitations);
+          }
+        }, error: error => {
+          console.error(error);
+        }
+      });
+  }
+
+  openInviteDetails(opportunityInvitation: OpportunityInvitation, inviteDetailsModal: NgbActiveModal) {
+    this.currentOpportunityInvitation = opportunityInvitation;
+
+    this.currentOpportunityInvitation.status = 'DENIED'
+
+    this.modalService.open(inviteDetailsModal, { ariaLabelledBy: 'modal-basic-title', centered: true, size: 'xl' }).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      },
+    );
   }
 
   private getDismissReason(reason: any): string {
-		if (reason === ModalDismissReasons.ESC) {
-			return 'by pressing ESC';
-		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-			return 'by clicking on a backdrop';
-		} else {
-			return `with: ${reason}`;
-		}
-	}
-
-  oportunityInvites: Array<issues> =[
-    { name: 'Distribuição de Alimentos', type: 2, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 1', status: "Pendente" },
-    { name: 'Teste 2', type: 1, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 2' , status: "Pendente"},
-    { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    // { name: 'Teste 3', type: 3, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 3', status: "Pendente" },
-    // // // { name: 'Teste 4', type: 5, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 4' },
-    // { name: 'Teste 5', type: 4, date: "22/07/2023", location: "Jabaquara - Sp", description: 'Esse é o teste 5' },
-  ]
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 }

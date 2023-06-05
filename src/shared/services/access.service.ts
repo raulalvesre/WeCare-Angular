@@ -7,8 +7,6 @@ import { UserDocumentType } from '../models/document-type.model';
 import { AccessCredential } from '../models/login.model';
 import { JwtToken } from '../models/token.model';
 import { UserRegistration } from '../models/user-registration.model';
-import { Institution } from '../models/institution.model';
-import { Candidate } from '../models/candidate.model';
 import { User } from '../models/user.model';
 
 @Injectable({
