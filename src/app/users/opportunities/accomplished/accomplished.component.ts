@@ -8,6 +8,7 @@ import { ReportIssue } from 'src/shared/models/report-issue';
 import { VolunteerRegistration } from 'src/shared/models/volunteer-registration.model';
 import { AccessService } from 'src/shared/services/access.service';
 import { CandidateService } from 'src/shared/services/candidate.service';
+import { FileService } from 'src/shared/services/file.service';
 import { IssueService } from 'src/shared/services/issue.service';
 import { ToastService } from 'src/shared/services/toast.service';
 
@@ -40,7 +41,8 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
     private candidateService: CandidateService,
     private accessService: AccessService,
     private issueService: IssueService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private fileService: FileService
   ) { }
 
   ngOnInit(): void {
@@ -166,5 +168,10 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
           }
         }
       });
+  }
+
+  convertBase64ToPhotoUrl(photoBase64: string) {
+    const photoExtension = this.fileService.fileExtension(photoBase64);
+    return `data:image/${photoExtension};base64,${photoBase64}`;
   }
 }
