@@ -146,3 +146,24 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
+
+.modal-header{
+  background-color: #ffa500;
+  color: #FFF;
+}
+
+.btn-close{
+  color: #FFF;
+}
+
+.img-modal{
+  height: 90%;
+  width: 90%;
+  box-shadow:
+    -50px -50px 0 -40px  #ffa500,
+    50px 50px 0 -40px  #ffa500;
+}
+
+.descriptionText{
+  height: 60%;
+}

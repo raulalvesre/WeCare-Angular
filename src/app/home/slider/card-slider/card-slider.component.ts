@@ -29,13 +29,13 @@ export class CardSliderComponent {
     ) {  }
 
   openXl(content) {
-		this.modalService.open(content, { size: 'xl' });
+		this.modalService.open(content, { size: 'xl', centered: true });
 	}
 
-	openModal(content, data) {
-		const modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true, size: 'lg' })
-    modalRef.componentInstance.volunteerOpportunity = data;
-  }
+	// openModal(content, data) {
+	// 	const modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true, size: 'lg' })
+  //   modalRef.componentInstance.volunteerOpportunity = data;
+  // }
 
   private getDismissReason(reason: any): string {
 		if (reason === ModalDismissReasons.ESC) {
