@@ -3,6 +3,7 @@ import { Page } from 'src/shared/models/page.model';
 import { VolunteerRegistration } from 'src/shared/models/volunteer-registration.model';
 import { AccessService } from 'src/shared/services/access.service';
 import { CandidateService } from 'src/shared/services/candidate.service';
+import { FileService } from 'src/shared/services/file.service';
 
 interface Agendado {
   name: string;
@@ -26,7 +27,8 @@ export class ScheduledComponent implements OnInit {
 
   constructor(
     private candidateService: CandidateService,
-    private accessService: AccessService
+    private accessService: AccessService,
+    private fileService: FileService
   ) { }
 
   ngOnInit(): void {
@@ -59,6 +61,8 @@ export class ScheduledComponent implements OnInit {
         return 'Desconhecido'
     }
   }
+
+
 
   private loadOpportunities() {
     const currentUser = this.accessService.getCurrentUser();
@@ -142,5 +146,10 @@ export class ScheduledComponent implements OnInit {
           }
         }
       });
+  }
+
+  convertBase64ToPhotoUrl(photoBase64: string) {
+    const photoExtension = this.fileService.fileExtension(photoBase64);
+    return `data:image/${photoExtension};base64,${photoBase64}`;
   }
 }

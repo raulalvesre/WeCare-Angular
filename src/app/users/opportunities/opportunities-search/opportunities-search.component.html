@@ -1,317 +1,329 @@
 <div class="content">
-  <div class="container">
-    <h2 class="fs-3 text-primary my-3">Projetos Disponíveis</h2>
+  <div class="row d-flex justify-content-center">
+    <div class="col-lg-11">
+      <div class="container">
+        <h3>Projetos Disponíveis</h3>
 
-    <div class="row">
-      <section class="col d-flex flex-wrap">
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light"
-            id="categories-dropdown"
-            ngbDropdownToggle
-          >
-            Categorias
-          </button>
-          <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-            <button ngbDropdownItem>Opção 1</button>
-            <button ngbDropdownItem>Opção 2</button>
-          </div>
-        </div>
-
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light"
-            id="categories-dropdown"
-            ngbDropdownToggle
-          >
-            Data
-          </button>
-          <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-            <button ngbDropdownItem>Opção 1</button>
-            <button ngbDropdownItem>Opção 2</button>
-          </div>
-        </div>
-
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light"
-            id="categories-dropdown"
-            ngbDropdownToggle
-          >
-            Local
-          </button>
-          <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-            <button ngbDropdownItem>Opção 1</button>
-            <button ngbDropdownItem>Opção 2</button>
-          </div>
-        </div>
-
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light"
-            id="categories-dropdown"
-            ngbDropdownToggle
-          >
-            Habilidades
-          </button>
-          <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-            <button ngbDropdownItem>Opção 1</button>
-            <button ngbDropdownItem>Opção 2</button>
-          </div>
-        </div>
-
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light"
-            id="categories-dropdown"
-            ngbDropdownToggle
-          >
-            Instituição
-          </button>
-          <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-            <button ngbDropdownItem>Opção 1</button>
-            <button ngbDropdownItem>Opção 2</button>
-          </div>
-        </div>
-
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light"
-            id="categories-dropdown"
-            ngbDropdownToggle
-          >
-            Restrições
-          </button>
-          <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-            <button ngbDropdownItem>Opção 1</button>
-            <button ngbDropdownItem>Opção 2</button>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div class="row">
-      <section
-        *ngFor="let volunteerOpportunity of volunteerOpportunities"
-        class="card  mt-4 my-3 card-content1"
-      >
-        <div class="col-3">
-          <div class="image-content">
-            <span class="overlay"></span>
-            <div class="card-image">
-              <img
-                [src]="convertBase64ToPhotoUrl(volunteerOpportunity.photo)"
-                alt="Foto da oportunidade {{ volunteerOpportunity.name }}"
-                class="card-img"
-              />
-            </div>
-          </div>
-          <div class="card-content row">
-            <h2
-              class="name col-10 text-truncate"
-              title="{{ volunteerOpportunity.name }}"
-            >
-              {{ volunteerOpportunity.name }}
-            </h2>
-            <p
-              class="description crop-text-5"
-              title="{{ volunteerOpportunity.description }}"
-            >
-              {{ volunteerOpportunity.description }}
-            </p>
-
-            <div class="description2 text-center row">
-              <div class="col text-truncate text-start">
-                <i
-                  class="bi bi-calendar-week text-warning"
-                  title="{{
-                    volunteerOpportunity.opportunityDate | date : 'dd/MM/yyyy'
-                  }}"
-                  ><span class="text-dark">
-                    {{
-                      volunteerOpportunity.opportunityDate | date : "dd/MM/yyyy"
-                    }}</span
-                  >
-                </i>
-              </div>
-            </div>
-            <div class="description2 text-center row">
-              <div class="col text-truncate text-start">
-                <i
-                  class="bi bi-geo-alt-fill text-danger"
-                  title="{{ volunteerOpportunity.address.city }} - {{
-                    volunteerOpportunity.address.state
-                  }}"
-                  ><span class="text-dark"
-                    >{{ volunteerOpportunity.address.city }} -
-                    {{ volunteerOpportunity.address.state }}</span
-                  >
-                </i>
-              </div>
-            </div>
-            <div class="description2 text-center row">
-              <div class="col text-truncate text-start">
-                <i
-                  class="bi bi-bookmark-heart text-success"
-                  title="Causa(s): {{ volunteerOpportunity.causes }}"
-                  ><span class="text-dark text-start">{{
-                    volunteerOpportunity.causes
-                  }}</span>
-                </i>
-              </div>
-            </div>
-            <div class="row" style="width: 104%; max-width: 104%">
-              <div class="col">
-                <button
-                  class="button"
-                  (click)="openXl(contentModal, volunteerOpportunity)"
-                >
-                  Detalhes
-                </button>
-              </div>
-              <div class="col">
-                <button class="button" (click)="registerToOpportunity(volunteerOpportunity)">Participar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Modal -->
-        <ng-template #contentModal let-modal>
-          <div class="modal-header container-special">
-            <h4 class="modal-title container-special">
-              <p>{{ volunteerOpportunity.name }}</p>
-            </h4>
-            <button
-              type="button"
-              class="btn-close container-special btn-close-white"
-              aria-label="Close"
-              (click)="modal.dismiss('Cross click')"
-            ></button>
-          </div>
-          <div class="modal-body container-special">
-            <div class="row" style="flex-wrap: wrap-reverse">
-              <div class="col-sm-12 col-xl-7 p-3">
-                <div class="descriptionText">
-                  <h5 class="fw-bold">Descrição da Oportunidade:</h5>
-                  <p>{{ volunteerOpportunity.description }}</p>
-                </div>
-                <div>
-                  <h5 class="fw-bold">Habilidades Desejadas:</h5>
-                  <p>{{ volunteerOpportunity.description }}</p>
-                </div>
-              </div>
-
-              <div
-                class="col-sm-12 col-xl-5 d-flex align-items-center hidden-xs hidden-sm"
+        <div class="row">
+          <section class="col d-flex flex-wrap">
+            <div ngbDropdown>
+              <button
+                type="button"
+                class="btn btn-light"
+                id="categories-dropdown"
+                ngbDropdownToggle
               >
-                <div
-                  class="mx-auto py-3 text-center"
-                  style="height: 400px; width: 400px"
-                >
+                Categorias
+              </button>
+              <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+                <button ngbDropdownItem>Opção 1</button>
+                <button ngbDropdownItem>Opção 2</button>
+              </div>
+            </div>
+
+            <div ngbDropdown>
+              <button
+                type="button"
+                class="btn btn-light"
+                id="categories-dropdown"
+                ngbDropdownToggle
+              >
+                Data
+              </button>
+              <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+                <button ngbDropdownItem>Opção 1</button>
+                <button ngbDropdownItem>Opção 2</button>
+              </div>
+            </div>
+
+            <div ngbDropdown>
+              <button
+                type="button"
+                class="btn btn-light"
+                id="categories-dropdown"
+                ngbDropdownToggle
+              >
+                Local
+              </button>
+              <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+                <button ngbDropdownItem>Opção 1</button>
+                <button ngbDropdownItem>Opção 2</button>
+              </div>
+            </div>
+
+            <div ngbDropdown>
+              <button
+                type="button"
+                class="btn btn-light"
+                id="categories-dropdown"
+                ngbDropdownToggle
+              >
+                Habilidades
+              </button>
+              <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+                <button ngbDropdownItem>Opção 1</button>
+                <button ngbDropdownItem>Opção 2</button>
+              </div>
+            </div>
+
+            <div ngbDropdown>
+              <button
+                type="button"
+                class="btn btn-light"
+                id="categories-dropdown"
+                ngbDropdownToggle
+              >
+                Instituição
+              </button>
+              <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+                <button ngbDropdownItem>Opção 1</button>
+                <button ngbDropdownItem>Opção 2</button>
+              </div>
+            </div>
+
+            <div ngbDropdown>
+              <button
+                type="button"
+                class="btn btn-light"
+                id="categories-dropdown"
+                ngbDropdownToggle
+              >
+                Restrições
+              </button>
+              <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+                <button ngbDropdownItem>Opção 1</button>
+                <button ngbDropdownItem>Opção 2</button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="row mt-3" >
+          <section
+            *ngFor="let volunteerOpportunity of volunteerOpportunities"
+            class="card card-content1 col-xs-12 col-sm-6 col-lg-6 col-xl-3">
+
+            <div class="col-sm-12">
+              <div class="image-content">
+                <span class="overlay"></span>
+                <div class="card-image">
                   <img
-                    [src]="
-                      convertBase64ToPhotoUrl(volunteerOpportunity.photo)
-                    "
-                    class="img-modal border border-4"
-                    alt=""
-                    style="
-                      object-fit: cover;
-                      max-width: 100%;
-                      max-height: 100%;
-                      aspect-ratio: 5/3;
-                    "
+                    [src]="convertBase64ToPhotoUrl(volunteerOpportunity.photo)"
+                    alt="Foto da oportunidade {{ volunteerOpportunity.name }}"
+                    class="card-img"
                   />
                 </div>
               </div>
+              <div class="card-content row">
+                <h2
+                  class="name col-10 text-truncate"
+                  title="{{ volunteerOpportunity.name }}"
+                >
+                  {{ volunteerOpportunity.name }}
+                </h2>
+                <p
+                  class="description crop-text-5"
+                  title="{{ volunteerOpportunity.description }}"
+                >
+                  {{ volunteerOpportunity.description }}
+                </p>
+
+                <div class="description2 text-center row">
+                  <div class="col text-truncate text-start">
+                    <i
+                      class="bi bi-calendar-week text-warning"
+                      title="{{
+                        volunteerOpportunity.opportunityDate
+                          | date : 'dd/MM/yyyy'
+                      }}"
+                      ><span class="text-dark">
+                        {{
+                          volunteerOpportunity.opportunityDate
+                            | date : "dd/MM/yyyy"
+                        }}</span
+                      >
+                    </i>
+                  </div>
+                </div>
+                <div class="description2 text-center row">
+                  <div class="col text-truncate text-start">
+                    <i
+                      class="bi bi-geo-alt-fill text-danger"
+                      title="{{ volunteerOpportunity.address.city }} - {{
+                        volunteerOpportunity.address.state
+                      }}"
+                      ><span class="text-dark"
+                        >{{ volunteerOpportunity.address.city }} -
+                        {{ volunteerOpportunity.address.state }}</span
+                      >
+                    </i>
+                  </div>
+                </div>
+                <div class="description2 text-center row">
+                  <div class="col text-truncate text-start">
+                    <i
+                      class="bi bi-bookmark-heart text-success"
+                      title="Causa(s): {{ volunteerOpportunity.causes }}"
+                      ><span class="text-dark text-start">{{
+                        volunteerOpportunity.causes
+                      }}</span>
+                    </i>
+                  </div>
+                </div>
+                <div class="row text-center my-1" style="font-size: 16px">
+                  <div class="col-6">
+                    <button
+                      class="btn btn-sm btn-outline-warning"
+                      (click)="openXl(contentModal, volunteerOpportunity)"
+                    >
+                      Detalhes
+                    </button>
+                  </div>
+                  <div class="col-6">
+                    <button
+                      class="btn btn-sm btn-primary"
+                      (click)="registerToOpportunity(volunteerOpportunity)"
+                    >
+                      Participar
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="row p-3">
-              <div class="col">
-                <div class="fw-bold">Publicado por:</div>
+            <!-- Modal -->
+            <ng-template #contentModal let-modal>
+              <div class="modal-header container-special">
+                <h4 class="modal-title container-special">
+                  <p>{{ volunteerOpportunity.name }}</p>
+                </h4>
+                <button
+                  type="button"
+                  class="btn-close container-special btn-close-white"
+                  aria-label="Close"
+                  (click)="modal.dismiss('Cross click')"
+                ></button>
               </div>
-              <div class="col">
-                <div class="fw-bold">Publicado em:</div>
-              </div>
-            </div>
+              <div class="modal-body container-special">
+                <div class="row" style="flex-wrap: wrap-reverse">
+                  <div class="col-sm-12 col-xl-7 p-3">
+                    <div class="descriptionText">
+                      <h5 class="fw-bold">Descrição da Oportunidade:</h5>
+                      <p>{{ volunteerOpportunity.description }}</p>
+                    </div>
+                    <div>
+                      <h5 class="fw-bold">Habilidades Desejadas:</h5>
+                      <p>{{ volunteerOpportunity.description }}</p>
+                    </div>
+                  </div>
 
-            <div class="row p-3">
-              <div class="row">
-                <div class="col">
-                  <i
-                    class="bi bi-calendar-week text-warning col"
-                    title="{{
-                      volunteerOpportunity.opportunityDate
-                        | date : 'dd/MM/yyyy'
-                    }}"
+                  <div
+                    class="col-sm-12 col-xl-5 d-flex align-items-center hidden-xs hidden-sm"
                   >
-                  </i>
-                  <span class="text-dark fw-bold"> Data: </span>
-                  {{
-                    volunteerOpportunity.opportunityDate | date : "dd/MM/yyyy"
-                  }}
+                    <div
+                      class="mx-auto py-3 text-center"
+                      style="height: 400px; width: 400px"
+                    >
+                      <img
+                        [src]="
+                          convertBase64ToPhotoUrl(volunteerOpportunity.photo)
+                        "
+                        class="img-modal border border-4"
+                        alt=""
+                        style="
+                          object-fit: cover;
+                          max-width: 100%;
+                          max-height: 100%;
+                          aspect-ratio: 5/3;
+                        "
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row p-3">
+                  <div class="col">
+                    <div class="fw-bold">Publicado por:</div>
+                  </div>
+                  <div class="col">
+                    <div class="fw-bold">Publicado em:</div>
+                  </div>
+                </div>
+
+                <div class="row p-3">
+                  <div class="row">
+                    <div class="col">
+                      <i
+                        class="bi bi-calendar-week text-warning col"
+                        title="{{
+                          volunteerOpportunity.opportunityDate
+                            | date : 'dd/MM/yyyy'
+                        }}"
+                      >
+                      </i>
+                      <span class="text-dark fw-bold"> Data: </span>
+                      {{
+                        volunteerOpportunity.opportunityDate
+                          | date : "dd/MM/yyyy"
+                      }}
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <i
+                        class="bi bi-geo-alt-fill text-danger col"
+                        title="{{ volunteerOpportunity.address.city }} - {{
+                          volunteerOpportunity.address.state
+                        }}"
+                      >
+                      </i>
+                      <span class="text-dark fw-bold"> Local: </span>
+                      {{ volunteerOpportunity.address.city }} -
+                      {{ volunteerOpportunity.address.state }}
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col text-truncate">
+                      <i
+                        class="bi bi-bookmark-heart text-success"
+                        title="Causa(s): {{ volunteerOpportunity.causes }}"
+                      >
+                      </i>
+                      <span class="text-dark fw-bold">
+                        Causa(s) Relacionada(s):
+                      </span>
+                      {{ volunteerOpportunity.causes }}
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div class="row">
-                <div class="col">
-                  <i
-                    class="bi bi-geo-alt-fill text-danger col"
-                    title="{{ volunteerOpportunity.address.city }} - {{
-                      volunteerOpportunity.address.state
-                    }}"
-                  >
-                  </i>
-                  <span class="text-dark fw-bold"> Local: </span>
-                  {{ volunteerOpportunity.address.city }} -
-                  {{ volunteerOpportunity.address.state }}
-                </div>
+              <div class=""></div>
+              <div class="modal-footer container-special">
+                <button
+                  type="button"
+                  class="btn btn-primary container-special"
+                  (click)="modal.close('Close click')"
+                >
+                  Participar
+                </button>
               </div>
+            </ng-template>
+          </section>
+        </div>
 
-              <div class="row">
-                <div class="col text-truncate">
-                  <i
-                    class="bi bi-bookmark-heart text-success"
-                    title="Causa(s): {{ volunteerOpportunity.causes }}"
-                  >
-                  </i>
-                  <span class="text-dark fw-bold">
-                    Causa(s) Relacionada(s):
-                  </span>
-                  {{ volunteerOpportunity.causes }}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class=""></div>
-          <div class="modal-footer container-special">
+        <div *ngIf="hasNextPage" class="row d-flex justify-content-center mt-5">
+          <div class="col col-md-2 d-flex justify-content-center">
             <button
-              type="button"
-              class="btn btn-primary container-special"
-              (click)="modal.close('Close click')"
+              (click)="loadMoreOpportunities()"
+              class="btn btn-outline-light text-primary"
             >
-              Participar
+              Carregar mais
             </button>
           </div>
-        </ng-template>
-      </section>
-    </div>
-
-    <div *ngIf="hasNextPage" class="row d-flex justify-content-center mt-5">
-      <div class="col col-md-2 d-flex justify-content-center">
-        <button
-          (click)="loadMoreOpportunities()"
-          class="btn btn-outline-light text-primary"
-        >
-          Carregar mais
-        </button>
+        </div>
       </div>
     </div>
   </div>

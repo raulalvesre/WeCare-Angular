@@ -3,6 +3,7 @@ import { ModalDismissReasons, NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-
 import { OpportunityInvitation } from 'src/shared/models/opportunity-invitation.model';
 import { Page } from 'src/shared/models/page.model';
 import { AccessService } from 'src/shared/services/access.service';
+import { FileService } from 'src/shared/services/file.service';
 import { ImageService } from 'src/shared/services/image.service';
 import { OpportunityInvitationService } from 'src/shared/services/opportunity-invitation.service';
 import { ToastService } from 'src/shared/services/toast.service';
@@ -29,7 +30,8 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
     private accessService: AccessService,
     private opportunityInvitationService: OpportunityInvitationService,
     private toastService: ToastService,
-    public imageService: ImageService
+    public imageService: ImageService,
+    private fileService: FileService
   ) { }
 
   ngOnInit(): void {
@@ -138,5 +140,10 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  convertBase64ToPhotoUrl(photoBase64: string) {
+    const photoExtension = this.fileService.fileExtension(photoBase64);
+    return `data:image/${photoExtension};base64,${photoBase64}`;
   }
 }
