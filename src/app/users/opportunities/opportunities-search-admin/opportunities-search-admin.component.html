@@ -157,9 +157,9 @@
       </section>
       <section
         *ngFor="let volunteerOpportunity of volunteerOpportunities"
-        class="card card swiper-slide col col-lg-3 mt-4 my-3 card-content1"
+        class="card card swiper-slide col col-lg-12 mt-4 my-3 card-content1"
       >
-        <div class="">
+        <div class="col col--3 col-lg-3 mt-4 my-3">
           <div class="image-content">
             <span class="overlay"></span>
             <div class="card-image">
@@ -244,7 +244,7 @@
               </div>
               <div class="col">
                 <a
-                [routerLink]="['/opportunity/edit', volunteerOpportunity.id]"
+                [routerLink]="['/applied-volunteers', volunteerOpportunity.id]"
                 class=""
               >
               <button class="button">Inscritos</button>

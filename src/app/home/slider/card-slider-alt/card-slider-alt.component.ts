@@ -22,8 +22,13 @@ export class CardSliderAltComponent {
 
   constructor(
     private volunteerOpportunityService: VolunteerOpportunityService,
+    private modalService: NgbModal,
     private fileService: FileService
   ) { }
+
+  openXl(content) {
+		this.modalService.open(content, { size: 'xl', centered: true });
+	}
 
   convertBase64ToPhotoUrl(photoBase64: string) {
     const photoExtension = this.fileService.fileExtension(photoBase64);
