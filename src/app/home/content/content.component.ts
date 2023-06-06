@@ -13,7 +13,8 @@ export class ContentComponent {
 
   shouldShowRecommendedOpportunities: boolean;
   recommendedOpportunities: VolunteerOpportunity[];
-  latestOpportunities: VolunteerOpportunity[]
+  latestOpportunities: VolunteerOpportunity[];
+  userRole: string;
 
   constructor(
     private candidateService: CandidateService,
@@ -26,6 +27,20 @@ export class ContentComponent {
       candidateService.getCandidateRecomendedOpportunities().subscribe(ops => this.recommendedOpportunities = ops.data)
     }
 
-    opportunityService.search({'orderBy': 'CreationDate', 'orderDirection': 'Descending'}).subscribe(ops => this.latestOpportunities = ops.data)
+    opportunityService.search({ 'orderBy': 'CreationDate', 'orderDirection': 'Descending' }).subscribe(ops => this.latestOpportunities = ops.data)
+  }
+
+  ngOnInit(): void {
+    this.configureMenuForCurrentUser();
+  }
+
+  private configureMenuForCurrentUser() {
+    const currentUser = this.accessService.getCurrentUser();
+
+    if (currentUser == null) {
+      this.userRole = 'UNKNOW';
+    } else {
+      this.userRole = currentUser.role;
+    }
   }
 }

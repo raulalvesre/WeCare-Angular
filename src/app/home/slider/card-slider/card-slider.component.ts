@@ -17,6 +17,7 @@ import { FileService } from 'src/shared/services/file.service';
 export class CardSliderComponent {
 
   @Input() volunteerOpportunities: VolunteerOpportunity[] = [];
+  @Input() userRole: string;
 
   closeResult = '';
 

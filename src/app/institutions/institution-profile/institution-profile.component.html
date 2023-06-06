@@ -1,10 +1,12 @@
 <div class="content">
-  <section class="container-fluid">
-    <div class="row bg-white border-1 rounded-4">
-      <div class="col-md-12 mt-5 d-flex justify-content-center">
-        <div class="col-md-8 col-lg-8 px-4 py-3 d-flex justify-content-center">
+  <section class="container">
+    <div class="row">
+      <div class="col-md-12 d-flex justify-content-center">
+        <div
+          class="col-md-10 col-lg-10 px-4 py-3 d-flex justify-content-center border border-1 rounded-4"
+        >
           <form [formGroup]="form" class="row">
-            <h2>Perfil da Intituição</h2>
+            <h2>Perfil da Instituição</h2>
 
             <div class="mb-3">
               <label for="cnpj" class="form-label">CNPJ</label>
@@ -317,11 +319,11 @@
               </div>
             </div>
 
-            <div class="d-grid mt-1">
+            <div class="mt-1 d-flex justify-content-end">
               <button
                 type="button"
                 [disabled]="form.invalid"
-                class="btn btn-primary btn-lg rounded-5"
+                class="btn btn-primary"
                 (click)="save()"
               >
                 Salvar
