@@ -193,7 +193,7 @@
 
             <!-- Modal -->
             <ng-template #contentModal let-modal>
-              <div class="modal-header container-special">
+              <div class="modal-header container-special" style="padding: 15px 20px 0 15px;">
                 <h4 class="modal-title container-special">
                   <p>{{ volunteerOpportunity.name }}</p>
                 </h4>
@@ -206,7 +206,7 @@
               </div>
               <div class="modal-body container-special">
                 <div class="row" style="flex-wrap: wrap-reverse">
-                  <div class="col-sm-12 col-xl-7 p-3">
+                  <div class="col-sm-12 col-xl-7 p-4">
                     <div class="descriptionText">
                       <h5 class="fw-bold">Descrição da Oportunidade:</h5>
                       <p>{{ volunteerOpportunity.description }}</p>
@@ -243,10 +243,10 @@
 
                 <div class="row p-3">
                   <div class="col">
-                    <div class="fw-bold">Publicado por:</div>
+                    <div class="fw-bold">Publicado por: </div>{{ volunteerOpportunity.institution.name }}
                   </div>
                   <div class="col">
-                    <div class="fw-bold">Publicado em:</div>
+                    <div class="fw-bold">Publicado em: </div>{{ volunteerOpportunity.creationDate | date : "dd/MM/yyyy"}}
                   </div>
                 </div>
 

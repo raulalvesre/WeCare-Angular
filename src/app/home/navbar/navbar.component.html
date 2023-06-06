@@ -3,12 +3,14 @@
 >
   <div class="container">
     <!-- Icone -->
-    <a routerLink="/home" class="nav-link" routerLinkActive="active">
+    <a routerLink="{{ userMenuType != 'INSTITUTION'? '/home' : '/opportunities-institution' }}" class="nav-link">
       <img
         src="../../../assets/img/logo-footer-no-slogan.png"
         width="112"
         alt="Logo da WeCare "
-      /><span class="d-inline-block text-white" style="padding-left: 25px"
+      /><span
+        class="d-inline-block text-white "
+        style="padding-left: 25px"
         >Mudando vidas, juntos!</span
       >
     </a>
@@ -21,190 +23,196 @@
       data-bs-target="#mainMenu"
       aria-controls="mainMenu"
       aria-expanded="false"
-      aria-label="Toggle navigation"
+      aria-label="togglenavigation"
+      (click)="isMenuCollapsed = !isMenuCollapsed"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="mainMenu">
+
+    <div
+      [ngbCollapse]="isMenuCollapsed"
+      class="collapse navbar-collapse"
+      id="mainMenu"
+    >
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a routerLink="/home" class="nav-link" routerLinkActive="active"
+        <li class="nav-item" *ngIf="userMenuType != 'INSTITUTION'" >
+          <a
+            href="/home"
+            class="nav-link "
+            routerLink="/home"
+            routerLinkActive="active"
+            (click)="isMenuCollapsed = true"
             >Início</a
           >
         </li>
         <li class="nav-item">
           <a
             href="/about"
-            class="nav-link font-weight-bold"
+            class="nav-link "
+            routerLink="/about"
             routerLinkActive="active"
+            (click)="isMenuCollapsed = true"
             >Sobre a WeCare
           </a>
         </li>
-        <li class="nav-item divisor"></li>
+        <li class="nav-item divisor d-none d-md-block"></li>
 
         <!-- Menus diferentes de acordo com o perfil de quem acessa -->
         <!-- Sem estar logado -->
-        <div class="d-flex flex-row" *ngIf="userMenuType == 'UNKNOW'">
-          <li class="nav-item">
-            <a
-              href="/login"
-              class="nav-link font-weight-bold"
-              routerLinkActive="active"
-              >Acessar</a
-            >
-          </li>
-        </div>
+        <li class="nav-item" *ngIf="userMenuType == 'UNKNOW'">
+          <a
+            href="/login"
+            class="nav-link "
+            routerLink="/login"
+            routerLinkActive="active"
+            (click)="isMenuCollapsed = true"
+            >Acessar</a
+          >
+        </li>
 
         <!-- Identificado como voluntário -->
-        <div class="d-flex flex-row" *ngIf="userMenuType == 'CANDIDATE'">
-          <li class="nav-item">
-            <a
-              href="/opportunities"
-              class="nav-link font-weight-bold"
-              routerLinkActive="active"
-              >Pesquisar Vagas</a
-            >
-          </li>
-          <li class="nav-item dropdown">
-            <div class="col">
-              <div ngbDropdown class="d-inline-block">
+        <li class="nav-item" *ngIf="userMenuType == 'CANDIDATE'">
+          <a
+            href="/opportunities"
+            class="nav-link "
+            routerLink="/opportunities"
+            routerLinkActive="active"
+            (click)="isMenuCollapsed = true"
+            >Pesquisar Vagas</a
+          >
+        </li>
+        <li class="nav-item dropdown" *ngIf="userMenuType == 'CANDIDATE'">
+          <div class="col">
+            <div ngbDropdown class="d-inline-block">
+              <a
+                class="nav-link dropdown-toggle"
+                id="dropdownBasic1"
+                routerLinkActive="active"
+                ngbDropdownToggle
+              >
+                Oportunidades
+              </a>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                 <a
-                  class="nav-link dropdown-toggle"
-                  id="dropdownBasic1"
-                  ngbDropdownToggle
+                  href="/opportunities-scheduled"
+                  class=""
+                  routerLinkActive="active"
+                  (click)="isMenuCollapsed = true"
+                  ngbDropdownItem
+                  >Agendadas</a
                 >
-                  Oportunidades
-                </a>
-                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                  <a
-                    href="/opportunities-scheduled"
-                    class=""
-                    routerLinkActive="active"
-                    ngbDropdownItem
-                    >Agendadas</a
-                  >
-                  <a
-                    href="/opportunities-accomplished"
-                    class=""
-                    routerLinkActive="active"
-                    ngbDropdownItem
-                    >Realizadas</a
-                  >
-                  <a
-                    href="/opportunities-invite"
-                    class=""
-                    routerLinkActive="active"
-                    ngbDropdownItem
-                    >Convites</a
-                  >
-                </div>
+                <a
+                  href="/opportunities-accomplished"
+                  class=""
+                  routerLinkActive="active"
+                  (click)="isMenuCollapsed = true"
+                  ngbDropdownItem
+                  >Realizadas</a
+                >
+                <a
+                  href="/opportunities-invite"
+                  class=""
+                  routerLinkActive="active"
+                  (click)="isMenuCollapsed = true"
+                  ngbDropdownItem
+                  >Convites</a
+                >
               </div>
             </div>
-          </li>
-          <li class="nav-item dropdown">
-            <div class="col">
-              <div ngbDropdown class="d-inline-block">
-                <a
-                  class="nav-link dropdown-toggle"
-                  id="dropdownBasic1"
-                  ngbDropdownToggle
-                >
-                  Perfil
-                </a>
-                <div
-                  ngbDropdownMenu
-                  aria-labelledby="dropdownBasic1"
-                  class="row"
-                >
-                  <div class="img_profile col align-items-center">
-                    <img
-                      class="mx-auto"
-                      src="../../../assets/img/i-devs.png"
-                      alt=""
-                    />
-                    <div class="text-center">
-                      <p>User Name</p>
-                    </div>
+          </div>
+        </li>
+        <li class="nav-item dropdown" *ngIf="userMenuType == 'CANDIDATE'">
+          <div class="col">
+            <div ngbDropdown class="d-inline-block">
+              <a
+                class="nav-link dropdown-toggle"
+                id="dropdownBasic1"
+                ngbDropdownToggle
+              >
+                Perfil
+              </a>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="row">
+                <div class="img_profile col align-items-center">
+                  <img
+                    class="mx-auto"
+                    src="../../../assets/img/i-devs.png"
+                    alt=""
+                  />
+                  <div class="text-center">
+                    <p>User Name</p>
                   </div>
-                  <hr />
-                  <a
-                    href="/user-profile"
-                    class=""
-                    routerLinkActive="active"
-                    ngbDropdownItem
-                    >Editar</a
-                  >
-                  <a class="" (click)="sair()" ngbDropdownItem>Sair</a>
                 </div>
+                <hr />
+                <a
+                  href="/user-profile"
+                  class=""
+                  routerLinkActive="active"
+                  (click)="isMenuCollapsed = true"
+                  ngbDropdownItem
+                  >Editar</a
+                >
+                <a class="" (click)="sair()" ngbDropdownItem>Sair</a>
               </div>
             </div>
-          </li>
-          <!-- <li class="nav-item">
-            <a
-              href="/user-profile"
-              class="nav-link font-weight-bold"
-              routerLinkActive="active"
-              >Perfil</a
-            >
-          </li> -->
-        </div>
+          </div>
+        </li>
 
         <!-- Identificado como instituição -->
-        <div class="d-flex flex-row" *ngIf="userMenuType == 'INSTITUTION'">
-          <li class="nav-item">
-            <a
-              href="/volunteer-search"
-              class="nav-link font-weight-bold"
-              routerLinkActive="active"
-              >Pesquisar Voluntários</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              href="/opportunities-institution"
-              class="nav-link font-weight-bold"
-              routerLinkActive="active"
-              >Oportunidades</a
-            >
-          </li>
-          <!-- <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Oportunidades
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <a routerLink="/opportunities-institution"
-                class="nav-link"
-                routerLinkActive="active">
-                  Adicionar
-                </a>
-              </li>
-              <li><a class="dropdown-item" href="#">Editar</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Oportunidades Listadas</a></li>
-            </ul>
-          </li> -->
-          <li class="nav-item dropdown">
-            <div class="col">
-              <div ngbDropdown class="d-inline-block">
-                <a class="nav-link dropdown-toggle" id="dropdownBasic1" ngbDropdownToggle>
-                  Perfil
-                </a>
-                <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="row">
-                  <div class="img_profile col align-items-center">
-                    <img class="mx-auto" src="../../../assets/img/i-devs.png" alt="" />
-                    <div class="text-center">
-                      <p>User Name</p>
-                    </div>
+        <li class="nav-item" *ngIf="userMenuType == 'INSTITUTION'">
+          <a
+            href="/volunteer-search"
+            class="nav-link"
+            routerLink="/volunteer-search"
+            routerLinkActive="active"
+            (click)="isMenuCollapsed = true"
+            >Pesquisar Voluntários</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="userMenuType == 'INSTITUTION'">
+          <a
+            href="/opportunities-institution"
+            class="nav-link"
+            routerLink="/opportunities-institution"
+            routerLinkActive="active"
+            (click)="isMenuCollapsed = true"
+            >Oportunidades</a
+          >
+        </li>
+        <li class="nav-item dropdown" *ngIf="userMenuType == 'INSTITUTION'">
+          <div class="col">
+            <div ngbDropdown class="d-inline-block">
+              <a
+                class="nav-link dropdown-toggle"
+                id="dropdownBasic1"
+                ngbDropdownToggle
+              >
+                Perfil
+              </a>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="row">
+                <div class="img_profile col align-items-center">
+                  <img
+                    class="mx-auto"
+                    src="../../../assets/img/i-devs.png"
+                    alt=""
+                  />
+                  <div class="text-center">
+                    <p>User Name</p>
                   </div>
-                  <hr>
-                  <a href="/institution-profile" class="" routerLinkActive="active" ngbDropdownItem>Editar</a>
-                  <a class="" (click)="sair()" ngbDropdownItem>Sair</a>
                 </div>
+                <hr />
+                <a
+                  href="/institution-profile"
+                  class=""
+                  routerLinkActive="active"
+                  (click)="isMenuCollapsed = true"
+                  ngbDropdownItem
+                  >Editar</a
+                >
+                <a class="" (click)="sair()" ngbDropdownItem>Sair</a>
               </div>
             </div>
-          </li>
-        </div>
+          </div>
+        </li>
 
         <!-- Identificado como adm -->
         <div class="d-flex flex-row" *ngIf="userMenuType == 'ADM'">
@@ -220,58 +228,22 @@
               <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                 <a
                   href="/issues-volunteers"
-                  class=""
                   routerLinkActive="active"
+                  (click)="isMenuCollapsed = true"
                   ngbDropdownItem
                   >Com Voluntários</a
                 >
                 <a
                   href="/issues-institutions"
-                  class=""
                   routerLinkActive="active"
+                  (click)="isMenuCollapsed = true"
                   ngbDropdownItem
                   >Com Vagas</a
                 >
               </div>
             </div>
           </div>
-          <!-- <li class="nav-item">
-            <a
-              href="/issues-users"
-              class="nav-link font-weight-bold"
-              routerLinkActive="active"
-              >Problemas Relatados Com Voluntários</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              href="/issues-institutions"
-              class="nav-link font-weight-bold"
-              routerLinkActive="active"
-              >Problemas Relatados Com Vagas</a
-            >
-          </li> -->
         </div>
-
-        <!-- Adicionado no menu de volunteer como pesquisar vagas (deletar este li quando o outro estiver ok) -->
-        <!-- <li class="nav-item">
-          <a
-            routerLink="/opportunities"
-            class="nav-link"
-            routerLinkActive="active"
-            >Minhas Oportunidades</a
-          >
-        </li> -->
-
-        <!-- Adicionado no menu de instututions como adicionar vagas (deletar este li quando o outro estiver ok) -->
-        <!-- <li class="nav-item">
-          <a
-            routerLink="/opportunities-institution"
-            class="nav-link"
-            routerLinkActive="active"
-            >Editar Oportunidades</a
-          >
-        </li> -->
       </ul>
     </div>
   </div>

@@ -1,139 +1,140 @@
 <div class="content">
   <div class="container">
-    <h2 class="fs-3 text-primary my-3">
-      Encontre Voluntários Para Ajudar Com a Sua Causa
-    </h2>
+    <div class="row my-3 d-flex justify-content-space-around">
+      <div class="col">
+        <h2 class="fs-3 text-primary my-3">
+          Encontre Voluntários Para Ajudar Com a Sua Causa
+        </h2>
+      </div>
 
-    <!-- TODO: APAGAR
+      <!-- TODO: APAGAR
         contato@caridadeelma.org.br
         WS1fGSHhPB -->
 
-    <div class="row">
-      <section class="col d-flex flex-wrap">
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light"
-            id="categories-dropdown"
-            ngbDropdownToggle
-          >
-            Categorias
-          </button>
-          <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-            <button ngbDropdownItem>Opção 1</button>
-            <button ngbDropdownItem>Opção 2</button>
-          </div>
-        </div>
-
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light"
-            id="categories-dropdown"
-            ngbDropdownToggle
-          >
-            Data
-          </button>
-          <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-            <button ngbDropdownItem>Opção 1</button>
-            <button ngbDropdownItem>Opção 2</button>
-          </div>
-        </div>
-
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light"
-            id="categories-dropdown"
-            ngbDropdownToggle
-          >
-            Local
-          </button>
-          <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-            <button ngbDropdownItem>Opção 1</button>
-            <button ngbDropdownItem>Opção 2</button>
-          </div>
-        </div>
-
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light"
-            id="categories-dropdown"
-            ngbDropdownToggle
-          >
-            Habilidades
-          </button>
-          <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-            <button ngbDropdownItem>Opção 1</button>
-            <button ngbDropdownItem>Opção 2</button>
-          </div>
-        </div>
-
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light"
-            id="categories-dropdown"
-            ngbDropdownToggle
-          >
-            Instituição
-          </button>
-          <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-            <button ngbDropdownItem>Opção 1</button>
-            <button ngbDropdownItem>Opção 2</button>
-          </div>
-        </div>
-
-        <div ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-light"
-            id="categories-dropdown"
-            ngbDropdownToggle
-          >
-            Restrições
-          </button>
-          <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-            <button ngbDropdownItem>Opção 1</button>
-            <button ngbDropdownItem>Opção 2</button>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div class="row">
-      <section
-        *ngFor="let avaliableVolunteer of avaliableVolunteers"
-        class="card card swiper-slide col col-lg-3 mt-4 my-3 card-content1"
-        style="width: 25%"
-      >
-        <div class="">
-          <div class="image-content">
-            <span class="overlay"></span>
-            <div class="card-image">
-              <img
-                [src]="convertBase64ToPhotoUrl(avaliableVolunteer.photo)"
-                alt="Foto da oportunidade {{ avaliableVolunteer.name }}"
-                class="card-img"
-              />
+      <div class="row">
+        <section class="col d-flex flex-wrap">
+          <div ngbDropdown>
+            <button
+              type="button"
+              class="btn btn-light"
+              id="categories-dropdown"
+              ngbDropdownToggle
+            >
+              Categorias
+            </button>
+            <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+              <button ngbDropdownItem>Opção 1</button>
+              <button ngbDropdownItem>Opção 2</button>
             </div>
           </div>
-          <div class="card-content row">
-            <h2
-              class="name col-10 text-truncate"
-              title="{{ avaliableVolunteer.name }}"
-            >
-              {{ avaliableVolunteer.name }}
-            </h2>
-            <p
-              class="description crop-text-5"
-              title="{{ avaliableVolunteer.description }}"
-            >
-              {{ avaliableVolunteer.description }}
-            </p>
 
-            <!-- <div class="description2 text-center row">
+          <div ngbDropdown>
+            <button
+              type="button"
+              class="btn btn-light"
+              id="categories-dropdown"
+              ngbDropdownToggle
+            >
+              Data
+            </button>
+            <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+              <button ngbDropdownItem>Opção 1</button>
+              <button ngbDropdownItem>Opção 2</button>
+            </div>
+          </div>
+
+          <div ngbDropdown>
+            <button
+              type="button"
+              class="btn btn-light"
+              id="categories-dropdown"
+              ngbDropdownToggle
+            >
+              Local
+            </button>
+            <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+              <button ngbDropdownItem>Opção 1</button>
+              <button ngbDropdownItem>Opção 2</button>
+            </div>
+          </div>
+
+          <div ngbDropdown>
+            <button
+              type="button"
+              class="btn btn-light"
+              id="categories-dropdown"
+              ngbDropdownToggle
+            >
+              Habilidades
+            </button>
+            <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+              <button ngbDropdownItem>Opção 1</button>
+              <button ngbDropdownItem>Opção 2</button>
+            </div>
+          </div>
+
+          <div ngbDropdown>
+            <button
+              type="button"
+              class="btn btn-light"
+              id="categories-dropdown"
+              ngbDropdownToggle
+            >
+              Instituição
+            </button>
+            <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+              <button ngbDropdownItem>Opção 1</button>
+              <button ngbDropdownItem>Opção 2</button>
+            </div>
+          </div>
+
+          <div ngbDropdown>
+            <button
+              type="button"
+              class="btn btn-light"
+              id="categories-dropdown"
+              ngbDropdownToggle
+            >
+              Restrições
+            </button>
+            <div ngbDropdownMenu aria-labelledby="categories-dropdown">
+              <button ngbDropdownItem>Opção 1</button>
+              <button ngbDropdownItem>Opção 2</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+        <section
+          *ngFor="let avaliableVolunteer of avaliableVolunteers"
+          class="card card-content1 col-xs-10 col-sm-8 col-lg-5 col-xl-3"
+        >
+          <div class="">
+            <div class="image-content">
+              <span class="overlay"></span>
+              <div class="card-image">
+                <img
+                  [src]="convertBase64ToPhotoUrl(avaliableVolunteer.photo)"
+                  alt="Foto da oportunidade {{ avaliableVolunteer.name }}"
+                  class="card-img"
+                />
+              </div>
+            </div>
+            <div class="card-content row">
+              <h2
+                class="name col-10 text-truncate"
+                title="{{ avaliableVolunteer.name }}"
+              >
+                {{ avaliableVolunteer.name }}
+              </h2>
+              <p
+                class="description crop-text-5"
+                title="{{ avaliableVolunteer.description }}"
+              >
+                {{ avaliableVolunteer.description }}
+              </p>
+
+              <!-- <div class="description2 text-center row">
               <div class="col text-truncate text-start">
                 <i
                   class="bi bi-calendar-week text-warning"
@@ -148,51 +149,51 @@
                 </i>
               </div>
             </div> -->
-            <div class="description2 text-center row">
-              <div class="col text-truncate text-start">
-                <i
-                  class="bi bi-geo-alt-fill text-danger"
-                  title="{{ avaliableVolunteer.address.city }} - {{
-                    avaliableVolunteer.address.state
-                  }}"
-                  ><span class="text-dark"
-                    >{{ avaliableVolunteer.address.city }} -
-                    {{ avaliableVolunteer.address.state }}</span
+              <div class="description2 text-center row">
+                <div class="col text-truncate text-start">
+                  <i
+                    class="bi bi-geo-alt-fill text-danger"
+                    title="{{ avaliableVolunteer.address.city }} - {{
+                      avaliableVolunteer.address.state
+                    }}"
+                    ><span class="text-dark"
+                      >{{ avaliableVolunteer.address.city }} -
+                      {{ avaliableVolunteer.address.state }}</span
+                    >
+                  </i>
+                </div>
+              </div>
+              <div class="description2 text-center row">
+                <div class="col text-truncate text-start">
+                  <i
+                    class="bi bi-bookmark-heart text-success"
+                    title="Causa(s): {{ avaliableVolunteer.causes }}"
+                    ><span class="text-dark text-start">{{
+                      avaliableVolunteer.causes
+                    }}</span>
+                  </i>
+                </div>
+              </div>
+              <div
+                class="row text-center my-2"
+                style="width: 104%; max-width: 104%"
+              >
+                <div class="col-6">
+                  <button
+                    class="btn btn-sm btn-outline-warning"
+                    (click)="openXl(contentModal, avaliableVolunteer)"
                   >
-                </i>
-              </div>
-            </div>
-            <div class="description2 text-center row">
-              <div class="col text-truncate text-start">
-                <i
-                  class="bi bi-bookmark-heart text-success"
-                  title="Causa(s): {{ avaliableVolunteer.causes }}"
-                  ><span class="text-dark text-start">{{
-                    avaliableVolunteer.causes
-                  }}</span>
-                </i>
-              </div>
-            </div>
-            <div
-              class="row text-center my-2"
-              style="width: 104%; max-width: 104%"
-            >
-              <div class="col-6">
-                <button
-                  class="btn btn-sm btn-outline-warning"
-                  (click)="openXl(contentModal, avaliableVolunteer)"
-                >
-                  Detalhes
-                </button>
-              </div>
-              <div class="col-6">
-                <button class="btn btn-sm btn-primary">Convidar</button>
+                    Detalhes
+                  </button>
+                </div>
+                <div class="col-6">
+                  <button class="btn btn-sm btn-primary">Convidar</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- <div class="">
+          <!-- <div class="">
             <div class="">
               <div class="">
                 <p
@@ -222,136 +223,140 @@
             </div>
           </div> -->
 
-        <ng-template #contentModal let-modal>
-          <div class="modal-header container-special">
-            <h4 class="modal-title container-special">
-              <p>{{ volunteerOpportunity.name }}</p>
-            </h4>
-            <button
-              type="button"
-              class="btn-close container-special btn-close-white"
-              aria-label="Close"
-              (click)="modal.dismiss('Cross click')"
-            ></button>
-          </div>
-          <div class="modal-body container-special">
-            <div class="row" style="flex-wrap: wrap-reverse">
-              <div class="col-sm-12 col-xl-8 p-3">
-                <div class="descriptionText">
-                  <h5 class="fw-bold">Descrição da Voluntário:</h5>
-                  <p>{{ volunteerOpportunity.description }}</p>
-                </div>
-                <div>
-                  <h5 class="fw-bold">Principais Habilidades do Voluntário:</h5>
-                  <p>{{ volunteerOpportunity.description }}</p>
-                </div>
-              </div>
-
-              <div
-                class="col-sm-12 col-xl-4 d-flex align-items-center hidden-xs hidden-sm"
-              >
-                <div
-                  class="mx-auto py-3 text-center"
-                  style="height: 400px; width: 400px"
-                >
-                  <img
-                    src="../../../../assets/img/picofme.png"
-                    class="img-modal border border-1"
-                    alt=""
-                  />
-                </div>
-              </div>
+          <ng-template #contentModal let-modal>
+            <div class="modal-header container-special">
+              <h4 class="modal-title container-special">
+                <p>{{ volunteerOpportunity.name }}</p>
+              </h4>
+              <button
+                type="button"
+                class="btn-close container-special btn-close-white"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              ></button>
             </div>
-            <div class="row p-3" style="flex-wrap: wrap-reverse">
-              <div class="col-sm-12 col-xl-8">
-                <div class="row p-3">
-                  <div class="mb-3">
-                    <label for="causes" class="form-label"
-                      ><h5>Convidar para Oportunidade:</h5></label
-                    >
-                    <select
-                      #causesSelect
-                      class="form-select"
-                      id="causes"
-                      type="text"
-                      name="causes"
-                      (change)="addCause(causesSelect.value)"
-                    >
-                      <option disabled selected>Selecionar Oportunidade</option>
-                      <option
-                        *ngFor="let cause of opportunityCauses"
-                        [value]="cause.code"
-                      >
-                        {{ cause.name }}
-                      </option>
-                    </select>
-                    <div class="mt-2">
-                      <span
-                        *ngFor="
-                          let opportunityCause of selectedOpportunityCauses
-                        "
-                        class="badge rounded-pill text-bg-info me-1"
-                      >
-                        {{ opportunityCause.name }}
-                        <span
-                          style="cursor: pointer"
-                          class="bi bi-x"
-                          title="Excluir {{ opportunityCause }}"
-                          (click)="removeCause(opportunityCause)"
-                        ></span>
-                      </span>
-                    </div>
+            <div class="modal-body container-special">
+              <div class="row" style="flex-wrap: wrap-reverse">
+                <div class="col-sm-12 col-xl-8 p-3">
+                  <div class="descriptionText">
+                    <h5 class="fw-bold">Descrição da Voluntário:</h5>
+                    <p>{{ volunteerOpportunity.description }}</p>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold">
+                      Principais Habilidades do Voluntário:
+                    </h5>
+                    <p>{{ volunteerOpportunity.description }}</p>
+                  </div>
+                </div>
+
+                <div
+                  class="col-sm-12 col-xl-4 d-flex align-items-center hidden-xs hidden-sm"
+                >
+                  <div
+                    class="mx-auto py-3 text-center"
+                    style="height: 400px; width: 400px"
+                  >
+                    <img
+                      src="../../../../assets/img/picofme.png"
+                      class="img-modal border border-1"
+                      alt=""
+                    />
                   </div>
                 </div>
               </div>
-              <div class="col p-2">
-                <div class="row">
-                  <i
-                    class="bi bi-geo-alt-fill text-danger"
-                    title="{{ volunteerOpportunity.address.city }} - {{
-                      volunteerOpportunity.address.state
-                    }}"
-                    ><span class="text-dark"> Reside em: </span>
-                  </i>
+              <div class="row p-3" style="flex-wrap: wrap-reverse">
+                <div class="col-sm-12 col-xl-8">
+                  <div class="row p-3">
+                    <div class="mb-3">
+                      <label for="causes" class="form-label"
+                        ><h5>Convidar para Oportunidade:</h5></label
+                      >
+                      <select
+                        #causesSelect
+                        class="form-select"
+                        id="causes"
+                        type="text"
+                        name="causes"
+                        (change)="addCause(causesSelect.value)"
+                      >
+                        <option disabled selected>
+                          Selecionar Oportunidade
+                        </option>
+                        <option
+                          *ngFor="let cause of opportunityCauses"
+                          [value]="cause.code"
+                        >
+                          {{ cause.name }}
+                        </option>
+                      </select>
+                      <div class="mt-2">
+                        <span
+                          *ngFor="
+                            let opportunityCause of selectedOpportunityCauses
+                          "
+                          class="badge rounded-pill text-bg-info me-1"
+                        >
+                          {{ opportunityCause.name }}
+                          <span
+                            style="cursor: pointer"
+                            class="bi bi-x"
+                            title="Excluir {{ opportunityCause }}"
+                            (click)="removeCause(opportunityCause)"
+                          ></span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                <div class="col p-2">
+                  <div class="row">
+                    <i
+                      class="bi bi-geo-alt-fill text-danger"
+                      title="{{ volunteerOpportunity.address.city }} - {{
+                        volunteerOpportunity.address.state
+                      }}"
+                      ><span class="text-dark"> Reside em: </span>
+                    </i>
+                  </div>
 
-                <div class="row">
-                  <i class="bi bi-puzzle-fill text-warning">
-                    <span class="text-dark text-truncate"
-                      >Principais habilidades:
+                  <div class="row">
+                    <i class="bi bi-puzzle-fill text-warning">
+                      <span class="text-dark text-truncate"
+                        >Principais habilidades:
+                      </span></i
+                    >
+                  </div>
+                  <i class="bi bi-linkedin text-primary">
+                    <span class="texte-dark">
+                      : <a href="">LinkedIn </a>
                     </span></i
                   >
                 </div>
-                <i class="bi bi-linkedin text-primary">
-                  <span class="texte-dark">
-                    : <a href="">LinkedIn </a>
-                  </span></i
-                >
               </div>
             </div>
-          </div>
-          <div class=""></div>
-          <div class="modal-footer container-special">
-            <button
-              type="button"
-              class="btn btn-primary container-special"
-              (click)="modal.close('Close click')"
-            >
-              Convidar
-            </button>
-          </div>
-        </ng-template>
-      </section>
-    </div>
+            <div class=""></div>
+            <div class="modal-footer container-special">
+              <button
+                type="button"
+                class="btn btn-primary container-special"
+                (click)="modal.close('Close click')"
+              >
+                Convidar
+              </button>
+            </div>
+          </ng-template>
+        </section>
 
-    <div *ngIf="hasNextPage" class="row d-flex justify-content-center mt-5">
-      <div class="col col-md-2 d-flex justify-content-center">
-        <button
-          (click)="loadMoreOpportunities()"
-          class="btn btn-outline-light text-primary"
-        >
-          Carregar mais
-        </button>
+      <div *ngIf="hasNextPage" class="row d-flex justify-content-center mt-5">
+        <div class="col col-md-2 d-flex justify-content-center">
+          <button
+            (click)="loadMoreOpportunities()"
+            class="btn btn-outline-light text-primary"
+          >
+            Carregar mais
+          </button>
+        </div>
       </div>
     </div>
   </div>

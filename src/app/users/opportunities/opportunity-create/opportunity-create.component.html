@@ -330,7 +330,7 @@
               </ngb-panel>
             </ngb-accordion>
 
-            <div class="d-grid mt-1">
+            <!-- <div class="d-grid mt-1">
               <button
                 type="button"
                 [disabled]="form.invalid"
@@ -339,7 +339,31 @@
               >
                 Cadastrar
               </button>
+            </div> -->
+
+            <div class="mt-1">
+              <div class="row text-end">
+                <div class="col-12">
+                 
+                    <a
+                      href="/opportunities-institution"
+                      routerLinkActive="active"
+                      style="color: initial; text-decoration: none;"
+                    > <button type="button" class="btn btn-outline-danger mx-5">Cancelar</button>
+                      
+                    </a>
+                  <button
+                    type="button ps-3"
+                    [disabled]="form.invalid"
+                    class="btn btn-primary"
+                    (click)="register()"
+                  >
+                  Cadastrar
+                  </button>
+                </div>
+              </div>
             </div>
+
           </form>
         </div>
       </div>
