@@ -1,139 +1,469 @@
-<div class="paragraph">
-    <div class="border p-5 bg-warning">
-      <div class="text-center"><h2>Perfil do Voluntario</h2></div>
-      <div>
-        <div>
-          <form class="needs-validation" novalidate>
-            <div class="img_profile my-4">
-              <img src="../../../assets/img/profile.png" alt="" />
-              <div class="mb-3">
-                <label for="formFileSm" class="form-label"
-                  >Adicionar uma nova foto</label
-                >
-                <input
-                  class="form-control form-control-sm"
-                  id="formFileSm"
-                  type="file"
-                />
-              </div>
+<div class="content">
+  <div class="container">
+    <div class="row mt-5 p-5 d-flex justify-content-center">
+      <div
+        class="px-4 py-3 d-flex justify-content-center border border-1 rounded-4"
+      >
+        <form [formGroup]="form" class="row">
+          <h2 class="text-center">Perfil do Voluntário</h2>
+
+          <div
+            class="d-flex justify-content-center align-items-center flex-column mb-2"
+          >
+            <div
+              [ngClass]="{ 'd-none': !currentPhotoFile }"
+              class="d-flex justify-content-center w-auto"
+            >
+              <img id="phofileImagePreview" class="rounded" alt="Imagem do perfil" />
             </div>
-            <div class="form-row">
-              <div class="col-md-4 mb-3">
-                <label for="validationTooltip01">Nome</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="validationTooltip01"
-                  placeholder="Nome"
-                  value="Nome"
-                  required
-                />
-                <div class="valid-tooltip">Tudo certo!</div>
-              </div>
-              <div class="col-md-3 mb-3">
-                <label for="validationTooltip05">CPF</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="validationTooltip05"
-                  placeholder="999.999.999.99"
-                  required
-                  disabled
-                />
-                <div class="invalid-tooltip">
-                  Por favor, informe um CPF válido.
-                </div>
-              </div>
-              <div class="col-md-4 mb-3">
-                <label for="validationTooltipUsername">Email</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span
-                      class="input-group-text"
-                      id="validationTooltipUsernamePrepend"
-                      >@</span
+            <input
+              #phofileImageInput
+              class="d-none"
+              type="file"
+              (change)="changeProfilePhoto($event.target.files)"
+              accept=".jpg,.jpeg,.png"
+            />
+
+            <div class="mt-2">
+              <button
+                class="btn btn-sm btn-light me-2"
+                (click)="phofileImageInput.click()"
+              >
+                <span class="bi bi-camera"></span>
+                Escolher imagem
+              </button>
+              <button
+                *ngIf="currentPhotoFile"
+                class="btn btn-sm btn-danger me-2"
+                (click)="clearProfilePhoto()"
+              >
+                <span class="bi bi-camera"></span>
+                Cancelar
+              </button>
+              <button
+                *ngIf="currentPhotoFile"
+                class="btn btn-sm btn-primary"
+                (click)="saveProfilePhoto()"
+              >
+                <span class="bi bi-cloud-arrow-up"></span>
+                Enviar imagem
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="cpf" class="form-label">CPF</label>
+            <input
+              id="cpf"
+              type="text"
+              name="cpf"
+              formControlName="cpf"
+              mask="000.000.000-00"
+              [showMaskTyped]="true"
+              [dropSpecialCharacters]="false"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('cpf').invalid &&
+                  (form.get('cpf').dirty || form.get('cpf').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('cpf').invalid &&
+                (form.get('cpf').dirty || form.get('cpf').touched)
+              "
+              class="invalid-feedback"
+            >
+              CPF inválido
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="name" class="form-label">Nome</label>
+            <input
+              id="name"
+              type="text"
+              name="name"
+              formControlName="name"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('name').errors?.minlength &&
+                  (form.get('name').dirty || form.get('name').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('name').errors?.minlength &&
+                (form.get('name').dirty || form.get('name').touched)
+              "
+              class="invalid-feedback"
+            >
+              Nome inválido
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="birth-date" class="form-label"
+              >Data de nascimento</label
+            >
+            <input
+              id="birth-date"
+              type="date"
+              name="birthDate"
+              formControlName="birthDate"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('birthDate').invalid &&
+                  (form.get('birthDate').dirty || form.get('birthDate').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('birthDate').invalid &&
+                (form.get('birthDate').dirty || form.get('birthDate').touched)
+              "
+              class="invalid-feedback"
+            >
+              Data de nascimento inválida
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="telephone" class="form-label">Celular</label>
+            <input
+              id="telephone"
+              type="text"
+              name="telephone"
+              formControlName="telephone"
+              mask="(00) 90000-0000"
+              [showMaskTyped]="true"
+              [dropSpecialCharacters]="false"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('telephone').invalid &&
+                  (form.get('telephone').dirty || form.get('telephone').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('telephone').invalid &&
+                (form.get('telephone').dirty || form.get('telephone').touched)
+              "
+              class="invalid-feedback"
+            >
+              Celular inválido
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="biography" class="form-label"
+              >Conte um pouco sobre você</label
+            >
+            <textarea
+              class="form-control"
+              rows="4"
+              id="biography"
+              name="biography"
+              formControlName="biography"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('biography').invalid &&
+                  (form.get('biography').dirty || form.get('biography').touched)
+              }"
+            ></textarea>
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                (form.get('biography').invalid ||
+                  form.get('biography').errors?.minlength) &&
+                (form.get('biography').dirty || form.get('biography').touched)
+              "
+            >
+              Pelo menos 12 caracteres.
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <label for="qualifications" class="form-label"
+              >Suas habilidades</label
+            >
+            <select
+              #qualificationsSelect
+              class="form-select"
+              id="qualifications"
+              type="text"
+              name="qualifications"
+              (change)="addQualification(qualificationsSelect.value)"
+            >
+              <option disabled selected>Selecionar Habilidade</option>
+              <option
+                *ngFor="let qualification of qualifications"
+                [value]="qualification.id"
+              >
+                {{ qualification.name }}
+              </option>
+            </select>
+            <div class="mt-2">
+              <span
+                *ngFor="let qualification of selectedQualifications"
+                class="badge rounded-pill text-bg-info me-1"
+              >
+                {{ qualification.name }}
+                <span
+                  style="cursor: pointer"
+                  class="bi bi-x"
+                  title="Excluir {{ qualification }}"
+                  (click)="removeQualification(qualification)"
+                ></span>
+              </span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="causes" class="form-label">Causas que você apoia</label>
+            <select
+              #causesSelect
+              class="form-select"
+              id="causes"
+              type="text"
+              name="causes"
+              (change)="addCause(causesSelect.value)"
+            >
+              <option disabled selected>Selecionar Causa</option>
+              <option
+                *ngFor="let cause of opportunityCauses"
+                [value]="cause.code"
+              >
+                {{ cause.name }}
+              </option>
+            </select>
+            <div class="mt-2">
+              <span
+                *ngFor="let opportunityCause of selectedOpportunityCauses"
+                class="badge rounded-pill text-bg-info me-1"
+              >
+                {{ opportunityCause.name }}
+                <span
+                  style="cursor: pointer"
+                  class="bi bi-x"
+                  title="Excluir {{ opportunityCause }}"
+                  (click)="removeCause(opportunityCause)"
+                ></span>
+              </span>
+            </div>
+          </div>
+
+          <ngb-accordion class="mb-3">
+            <ngb-panel title="Endereço">
+              <ng-template ngbPanelContent>
+                <div formGroupName="address">
+                  <div class="mb-3">
+                    <label for="postal-code" class="form-label">CEP</label>
+                    <input
+                      id="postal-code"
+                      type="text"
+                      formControlName="postalCode"
+                      mask="00000-000"
+                      [dropSpecialCharacters]="false"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          (form.get('address').get('postalCode').invalid ||
+                            postalCodeInvalid) &&
+                          (form.get('address').get('postalCode').dirty ||
+                            form.get('address').get('postalCode').touched)
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        (form.get('address').get('postalCode').invalid ||
+                          postalCodeInvalid) &&
+                        (form.get('address').get('postalCode').dirty ||
+                          form.get('address').get('postalCode').touched)
+                      "
+                      class="invalid-feedback"
                     >
+                      CEP inválido
+                    </div>
                   </div>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="validationTooltipUsername"
-                    placeholder="Usuário"
-                    aria-describedby="validationTooltipUsernamePrepend"
-                    required
-                  />
-                  <div class="invalid-tooltip">
-                    Por favor, escolha um usuário válido e único.
+
+                  <div class="mb-3">
+                    <label for="street" class="form-label">Logradouro</label>
+                    <input
+                      id="street"
+                      type="text"
+                      name="street"
+                      formControlName="street"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          form.get('address').get('street').invalid &&
+                          (form.get('address').get('street').dirty ||
+                            form.get('address').get('street').touched)
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        form.get('address').get('street').invalid &&
+                        (form.get('address').get('street').dirty ||
+                          form.get('address').get('street').touched)
+                      "
+                      class="invalid-feedback"
+                    >
+                      Logradouro inválido
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="street-number" class="form-label">Número</label>
+                    <input
+                      id="street-number"
+                      type="text"
+                      name="street-number"
+                      formControlName="number"
+                      class="form-control"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="complement" class="form-label"
+                      >Complemento</label
+                    >
+                    <input
+                      id="complement"
+                      type="text"
+                      name="complement"
+                      formControlName="complement"
+                      class="form-control"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="neighborhood" class="form-label">Bairro</label>
+                    <input
+                      id="neighborhood"
+                      type="text"
+                      name="neighborhood"
+                      formControlName="neighborhood"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          form.get('address').get('neighborhood').invalid &&
+                          (form.get('address').get('neighborhood').dirty ||
+                            form.get('address').get('neighborhood').touched)
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        form.get('address').get('neighborhood').invalid &&
+                        (form.get('address').get('neighborhood').dirty ||
+                          form.get('address').get('neighborhood').touched)
+                      "
+                      class="invalid-feedback"
+                    >
+                      É necessário informar o bairro
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="city" class="form-label">Cidade</label>
+                    <input
+                      id="city"
+                      type="text"
+                      name="city"
+                      formControlName="city"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          form.get('address').get('city').invalid &&
+                          (form.get('address').get('city').dirty ||
+                            form.get('address').get('city').touched)
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        form.get('address').get('city').invalid &&
+                        (form.get('address').get('city').dirty ||
+                          form.get('address').get('city').touched)
+                      "
+                      class="invalid-feedback"
+                    >
+                      Cidade não informada
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="state" class="form-label">Estado</label>
+                    <input
+                      id="state"
+                      type="text"
+                      name="state"
+                      formControlName="state"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          form.get('address').get('state').invalid &&
+                          (form.get('address').get('state').dirty ||
+                            form.get('address').get('state').touched)
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        form.get('address').get('state').invalid &&
+                        (form.get('address').get('state').dirty ||
+                          form.get('address').get('state').touched)
+                      "
+                      class="invalid-feedback"
+                    >
+                      Estado não informado
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-4 mb-3">
-                <label for="validationTooltipUsername">Telefone</label>
-                <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="validationTooltipUsername"
-                    placeholder="Usuário"
-                    aria-describedby="validationTooltipUsernamePrepend"
-                    required
-                  />
-                  <div class="invalid-tooltip">
-                    Por favor, escolha um usuário válido e único.
-                  </div>
-                </div>
-              </div>
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+
+          <div class="mb-3" *ngIf="allowEditEmail">
+            <label for="email" class="form-label">E-mail</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              formControlName="email"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('email').invalid &&
+                  (form.get('email').dirty || form.get('email').touched)
+              }"
+            />
+            <div
+              *ngIf="
+                form.get('email').invalid &&
+                (form.get('email').dirty || form.get('email').touched)
+              "
+              class="invalid-feedback"
+            >
+              E-mail não informado
             </div>
-            <div class="form-row">
-              <div class="col-md-6 mb-3">
-                <label for="validationTooltip03">Cidade</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="validationTooltip03"
-                  placeholder="Cidade"
-                  required
-                />
-                <div class="invalid-tooltip">
-                  Por favor, informe uma cidade válida.
-                </div>
-              </div>
-              <div class="col-md-3 mb-3">
-                <label for="validationTooltip04">Estado</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="validationTooltip04"
-                  placeholder="Estado"
-                  required
-                />
-                <div class="invalid-tooltip">
-                  Por favor, informe um estado válido.
-                </div>
-              </div>
-              <div class="col-md-3 mb-3">
-                <label for="validationTooltip05">CEP</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="validationTooltip05"
-                  placeholder="CEP"
-                  required
-                />
-                <div class="invalid-tooltip">
-                  Por favor, informe um CEP válido.
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <hr />
-        <div style="text-align: right" class="mr-3">
-          <button class="btn btn-info text-white mx-3" type="submit">
-            Salvar
-          </button>
-        </div>
+          </div>
+
+          <div class="d-grid mt-1">
+            <button
+              type="button"
+              [disabled]="form.invalid"
+              class="btn btn-primary btn-lg rounded-5"
+              (click)="save()"
+            >
+              Salvar
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-  
+</div>
