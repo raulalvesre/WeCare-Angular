@@ -213,8 +213,6 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
                 .subscribe({
                   next: (inst: Institution) => {
                     certificate.registration.opportunity.institution = inst;
-                    this.isLoading = false;
-
                     this.issueService.search({reporterId: currentUser.id}).subscribe({
                       next: (page: Page<Issue[]>) => {
                         this.candidateIssues = page.data;
@@ -225,7 +223,7 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
             }
           }
         }
-      });
+      }).add(() => this.isLoading = false);
   }
 
   candidateHasAlreadyReportedOpportunity(opportunityId: number): boolean {
