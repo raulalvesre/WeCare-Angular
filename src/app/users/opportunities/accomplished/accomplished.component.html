@@ -17,76 +17,24 @@
           </li>
         </ul>
 
-        <div *ngIf="volunteerRegistrations.length == 0" class="text-center text-bg-warning border rounded m-5">
-          <p class="bold align-middle m-3 fw-bold">Você ainda não realizou nenhum evento!</p>
+        <div *ngIf="participationCertificates.length == 0" class="text-center text-bg-warning border rounded m-5">
+          <p class="bold align-middle m-3 fw-bold">Você ainda não possui nenhum certificado de participação</p>
         </div>
 
-        <div *ngIf="volunteerRegistrations.length > 0">
+        <div *ngIf="participationCertificates.length > 0">
           <div class="row">
             <div class="">
-              <!-- <table class="table">
-                <thead>
-                  <tr>
-                    <th class="col">Instituição</th>
-                    <th class="col">Oportunidade</th>
-                    <th class="col">Data</th>
-                    <th class="col">Certificado</th>
-                    <th class="col">Relatar Problema</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    *ngFor="let volunteerRegistration of volunteerRegistrations"
-                  >
-                    <td>
-                      {{ volunteerRegistration.opportunity.institution.name }}
-                    </td>
-                    <td>
-                      {{ volunteerRegistration.opportunity.name }}
-                    </td>
-                    <td>
-                      {{
-                        volunteerRegistration.opportunity.opportunityDate
-                          | date : "shortDate"
-                      }}
-                    </td>
-                    <td>
-                      <button
-                        class="btn btn-sm btn-outline-primary"
-                        title="Mostrar Certificado"
-                        (click)="
-                          openCertificate(
-                            volunteerRegistration,
-                            certificateModal
-                          )
-                        "
-                      >
-                        <span class="bi bi-card-text"></span>
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        class="btn btn-sm btn-outline-danger"
-                        title="Relatar Problema"
-                        (click)="openIssue(volunteerRegistration, problemModal)"
-                      >
-                        <span class="bi bi-exclamation-circle"></span>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table> -->
 
               <ul
                 class="applications"
-                *ngFor="let volunteerRegistration of volunteerRegistrations"
+                *ngFor="let participationCertificate of participationCertificates"
               >
                 <li class="volunteer">
                   <div class="thumb">
                     <img
                       [src]="
                         convertBase64ToPhotoUrl(
-                          volunteerRegistration.opportunity.photo
+                          participationCertificate.registration.opportunity.photo
                         )
                       "
                       alt=""
@@ -95,13 +43,13 @@
                   <div class="description">
                     <div class="row">
                       <div class="col-lg-6 col-sm-12 text-truncate">
-                        <h4>{{ volunteerRegistration.opportunity.name }}</h4>
+                        <h4>{{ participationCertificate.registration.opportunity.name }}</h4>
                       </div>
                       <div class="col-lg-6 col-sm-12 text-truncate">
                         <p class="" style="font-size: 0.8em">
                           Organizadores:
                           {{
-                            volunteerRegistration.opportunity.institution.name
+                          participationCertificate.registration.opportunity.institution.name
                           }}
                         </p>
                       </div>
@@ -114,7 +62,7 @@
                           <span class="text-dark text-truncate">
                             Local:
                             {{
-                              volunteerOpportunityAddress(volunteerRegistration)
+                            volunteerOpportunityAddress(participationCertificate.registration.opportunity)
                             }}</span
                           >
                         </div>
@@ -123,8 +71,8 @@
                           <span class="text-dark text-truncate">
                             Concluído em:
                             {{
-                              volunteerRegistration.opportunity.opportunityDate
-                                | date : "shortDate"
+                            participationCertificate.registration.opportunity.opportunityDate
+                              | date : "short"
                             }}</span
                           >
                         </div>
@@ -137,7 +85,7 @@
                               class="btn btn-outline-danger"
                               title="Relatar Problema"
                               (click)="
-                                openIssue(volunteerRegistration, problemModal)
+                                openIssue(participationCertificate, problemModal)
                               "
                             >
                               <span class="bi bi-exclamation-circle"></span>
@@ -149,7 +97,7 @@
                               title="Mostrar Certificado"
                               (click)="
                                 openCertificate(
-                                  volunteerRegistration,
+                                  participationCertificate,
                                   certificateModal
                                 )
                               "
@@ -187,30 +135,30 @@
             <div class="row d-flex justify-content-center">
               <div class="col-8 mt-4">
                 <p class="m-0">
-                  Certificamos que {{ currentCandidate.name }} participou da
+                  Certificamos que {{ participationCertificate.registration.candidate.nam }} participou da
                   oportunidade
 
                   <strong>{{
-                    certificateVolunteerRegistration.opportunity.name
-                  }}</strong>
+                    participationCertificate.registration.opportunity.name
+                    }}</strong>
                   realizado pela
                   <strong>{{
-                    certificateVolunteerRegistration.opportunity.institution
+                    participationCertificate.registration.opportunity.institution
                       .name
-                  }}</strong>
+                    }}</strong>
 
                   no dia
                   <strong>{{
-                    certificateVolunteerRegistration.opportunity.opportunityDate
+                    participationCertificate.registration.opportunity.opportunityDate
                       | date : "longDate"
-                  }}</strong
+                    }}</strong
                   >, contribuindo para uma sociedade melhor.
                 </p>
 
                 <div
                   class="d-flex flex-column align-items-center mt-4"
                   *ngIf="
-                    certificateVolunteerRegistration.opportunity.causes
+                    participationCertificate.registration.opportunity.causes
                       ?.length > 0
                   "
                 >
@@ -219,7 +167,7 @@
                   <ul>
                     <li
                       *ngFor="
-                        let cause of certificateVolunteerRegistration
+                        let cause of participationCertificate.registration
                           .opportunity.causes
                       "
                     >
@@ -278,7 +226,7 @@
               <form [formGroup]="instituionProblemForm">
                 <div class="mb-3">
                   <label for="message" class="form-label"
-                    >O que aconteceu?</label
+                  >O que aconteceu?</label
                   >
                   <textarea
                     class="form-control"

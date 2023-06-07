@@ -1,16 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalDismissReasons, NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Candidate } from 'src/shared/models/candidate.model';
-import { Issue } from 'src/shared/models/issue.model';
-import { Page } from 'src/shared/models/page.model';
-import { ReportIssue } from 'src/shared/models/report-issue';
-import { VolunteerRegistration } from 'src/shared/models/volunteer-registration.model';
-import { AccessService } from 'src/shared/services/access.service';
-import { CandidateService } from 'src/shared/services/candidate.service';
-import { FileService } from 'src/shared/services/file.service';
-import { IssueService } from 'src/shared/services/issue.service';
-import { ToastService } from 'src/shared/services/toast.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ModalDismissReasons, NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Candidate} from 'src/shared/models/candidate.model';
+import {Issue} from 'src/shared/models/issue.model';
+import {Page} from 'src/shared/models/page.model';
+import {ReportIssue} from 'src/shared/models/report-issue';
+import {VolunteerRegistration} from 'src/shared/models/volunteer-registration.model';
+import {AccessService} from 'src/shared/services/access.service';
+import {CandidateService} from 'src/shared/services/candidate.service';
+import {FileService} from 'src/shared/services/file.service';
+import {IssueService} from 'src/shared/services/issue.service';
+import {ToastService} from 'src/shared/services/toast.service';
+import {ParticipationCertificateService} from "../../../../shared/services/participation.certificate.service";
+import {ParticipationCertificate} from "../../../../shared/models/participation-certificate.model";
 
 @Component({
   selector: 'app-accomplished',
@@ -22,9 +24,9 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
 
   instituionProblemForm: FormGroup;
 
-  volunteerRegistrations: VolunteerRegistration[] = [];
+  participationCertificates: ParticipationCertificate[] = [];
 
-  certificateVolunteerRegistration: VolunteerRegistration;
+  participationCertificate: ParticipationCertificate;
 
   currentCandidate: Candidate;
 
@@ -42,8 +44,10 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
     private accessService: AccessService,
     private issueService: IssueService,
     private toastService: ToastService,
-    private fileService: FileService
-  ) { }
+    private fileService: FileService,
+    private participationCertificateService: ParticipationCertificateService
+  ) {
+  }
 
   ngOnInit(): void {
     this.instituionProblemForm = new FormGroup({
@@ -51,15 +55,15 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
       message: new FormControl('', [Validators.required, Validators.minLength(12), Validators.maxLength(1000)])
     });
 
-    this.loadOpportunities();
+    this.loadCertificates();
   }
 
   ngOnDestroy(): void {
     this.toastService.clear();
   }
 
-  openCertificate(volunteerRegistration: VolunteerRegistration, certificateModal: NgbActiveModal) {
-    this.certificateVolunteerRegistration = volunteerRegistration;
+  openCertificate(certificate: ParticipationCertificate, certificateModal: NgbActiveModal) {
+    this.participationCertificate = certificate;
 
     const currentUser = this.accessService.getCurrentUser();
 
@@ -68,7 +72,11 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
         next: candidate => {
           this.currentCandidate = candidate;
 
-          this.modalService.open(certificateModal, { ariaLabelledBy: 'modal-basic-title', centered: true, size: 'xl' }).result.then(
+          this.modalService.open(certificateModal, {
+            ariaLabelledBy: 'modal-basic-title',
+            centered: true,
+            size: 'xl'
+          }).result.then(
             (result) => {
               this.closeResult = `Closed with: ${result}`;
             },
@@ -83,10 +91,14 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
       });
   }
 
-  openIssue(volunteerRegistration: VolunteerRegistration, problemModal: NgbActiveModal) {
-    this.certificateVolunteerRegistration = volunteerRegistration;
+  openIssue(certificate: ParticipationCertificate, problemModal: NgbActiveModal) {
+    this.participationCertificate = certificate;
 
-    this.modalService.open(problemModal, { ariaLabelledBy: 'modal-basic-title2', centered: true, size: 'lg' }).result.then(
+    this.modalService.open(problemModal, {
+      ariaLabelledBy: 'modal-basic-title2',
+      centered: true,
+      size: 'lg'
+    }).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;
       },
@@ -97,22 +109,22 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
   }
 
   saveIssue(problemModal: NgbActiveModal) {
-    this.instituionProblemForm.get('title').setValue(`Problema com a instituição ${this.certificateVolunteerRegistration.opportunity.institution.name}`);
+    this.instituionProblemForm.get('title').setValue(`Problema com a instituição ${this.participationCertificate.registration.opportunity.institution.name}`);
 
-    const { title, message } = this.instituionProblemForm.value;
+    const {title, message} = this.instituionProblemForm.value;
 
     const reportIssue = {
       title,
       description: message,
-      opportunityId: this.certificateVolunteerRegistration.opportunity.id,
-      reportedUserId: this.certificateVolunteerRegistration.opportunity.institution.id,
+      opportunityId: this.participationCertificate.registration.opportunity.id,
+      reportedUserId: this.participationCertificate.registration.opportunity.institution.id,
     } as ReportIssue;
 
     this.issueService.reportIssue(reportIssue)
       .subscribe({
         next: (issue: Issue) => {
           if (issue.status === 'OPEN') {
-            this.toastService.show('Problema relatado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+            this.toastService.show('Problema relatado com sucesso', {classname: 'bg-success text-light', delay: 5000});
 
             problemModal.close();
           }
@@ -134,10 +146,10 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
   }
 
 
-  loadMoreOpportunities() {
+  loadMoreCertificates() {
     this.pageNumber += 1;
 
-    this.loadOpportunities();
+    this.loadCertificates();
   }
 
   volunteerOpportunityAddress(volunteerRegistration: VolunteerRegistration) {
@@ -146,24 +158,20 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
     return `${address.neighborhood} (${address.city} - ${address.state})`;
   }
 
-  private loadOpportunities() {
+  private loadCertificates() {
     const currentUser = this.accessService.getCurrentUser();
 
-    this.candidateService
-      .searchAcceptedRegistrations({
-        candidateId: currentUser.id,
-        pageNumber: this.pageNumber,
-        pageSize: this.pageSize
-      })
+    this.participationCertificateService
+      .searchParticipationCertificates(currentUser.id)
       .subscribe({
-        next: (page: Page<VolunteerRegistration[]>) => {
+        next: (page: Page<ParticipationCertificate[]>) => {
           if (page.data != null) {
             this.hasNextPage = page.hasNextPage;
 
-            if (this.volunteerRegistrations.length == 0) {
-              this.volunteerRegistrations = page.data;
+            if (this.participationCertificates.length == 0) {
+              this.participationCertificates = page.data;
             } else {
-              this.volunteerRegistrations.push(...page.data);
+              this.participationCertificates.push(...page.data);
             }
           }
         }
