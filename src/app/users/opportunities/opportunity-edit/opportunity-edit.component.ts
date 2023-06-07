@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, delay, distinctUntilChanged } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -190,7 +190,7 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
       .subscribe({
         next: httpResponse => {
           if (httpResponse.status == HttpStatusCode.Ok) {
-            this.toastService.show('Cadastro realizado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+            this.toastService.show('Cadastro salvo com sucesso', { classname: 'bg-success text-light', delay: 5000 });
 
             setTimeout(() => {
               this.router.navigateByUrl('/opportunities-institution');
@@ -224,5 +224,25 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
           console.error(error);
         }
       });
+  }
+}
+
+export function opportunityDateValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const dateText = control.value;
+
+    if (dateText == null) {
+      return null;
+    }
+
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+    tomorrow.setHours(0);
+    tomorrow.setMinutes(0);
+    tomorrow.setMilliseconds(0);
+
+    const selectedDate = new Date(dateText);
+    return selectedDate > tomorrow ? null : { dateNotGreaterThanTomorrow: true };
   }
 }

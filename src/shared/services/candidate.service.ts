@@ -50,10 +50,15 @@ export class CandidateService {
   update(candidate: Candidate): Observable<HttpResponse<Candidate>> {
     const token = this.accessService.getToken();
 
+    const candidateUpdate = {
+      interestedInCausesIds: candidate.causesCandidateIsInterestedIn,
+      ...candidate
+    }
+
     return this.httpClient
       .put<Candidate>(
         `${this.apiUrl}/api/candidate/${candidate.id}`,
-        candidate,
+        candidateUpdate,
         {
           headers: new HttpHeaders().append('Authorization', `Bearer ${token}`),
           observe: 'response'

@@ -20,7 +20,9 @@
               <img
                 [attr.src]="
                   form.get('photo').value?.length > 0
-                    ? imageService.convertBase64ToPhotoUrl(form.get('photo').value)
+                    ? imageService.convertBase64ToPhotoUrl(
+                        form.get('photo').value
+                      )
                     : ''
                 "
                 id="phofileImagePreview"
@@ -464,15 +466,27 @@
             </div>
           </div>
 
-          <div class="d-grid mt-1">
-            <button
-              type="button"
-              [disabled]="form.invalid"
-              class="btn btn-primary btn-lg rounded-5"
-              (click)="save()"
-            >
-              Salvar
-            </button>
+          <div class="row d-flex justify-content-end mt-2">
+            <div class="col-md-3 col-6">
+              <button
+                type="button"
+                [disabled]="form.invalid"
+                class="btn btn-outline-danger rounded-5 w-100"
+                (click)="navigateBack()"
+              >
+                Voltar
+              </button>
+            </div>
+            <div class="col-md-3 col-6 ms-0 ps-0">
+              <button
+                type="button"
+                [disabled]="form.invalid"
+                class="btn btn-primary rounded-5 w-100"
+                (click)="save()"
+              >
+                Salvar
+              </button>
+            </div>
           </div>
         </form>
       </div>

@@ -119,9 +119,9 @@ export class ProfileComponent implements OnInit {
 
           this.selectedQualifications = this.qualifications
             .filter(qualification =>
-                candidate.qualifications
-                  .map(candidateQualification => candidateQualification.id)
-                  .includes(qualification.id)
+              candidate.qualifications
+                .map(candidateQualification => candidateQualification.id)
+                .includes(qualification.id)
             );
         },
         error: error => {
@@ -177,6 +177,10 @@ export class ProfileComponent implements OnInit {
         next: httpResponse => {
           if (httpResponse.ok) {
             this.toastService.show('Foto atualizada com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+
+            setTimeout(() => {
+              location.reload();
+            }, 2000);
           }
         }, error: error => {
           console.error(error);
@@ -214,6 +218,10 @@ export class ProfileComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.toastService.clear();
+  }
+
+  navigateBack() {
+    this.router.navigate(['..']);
   }
 
   save() {
