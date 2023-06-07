@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { OpportunityInvitation } from '../models/opportunity-invitation.model';
 import { environment } from 'src/environments/environment';
 import { Page } from '../models/page.model';
-import { Observable, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 import { VolunteerOpportunityService } from './volunteer-opportunity.service';
 import { AccessService } from './access.service';
+import { InstitutionService } from './institution.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class OpportunityInvitationService {
   constructor(
     private httpClient: HttpClient,
     private accessService: AccessService,
-    private volunteerOpportunityService: VolunteerOpportunityService
+    private volunteerOpportunityService: VolunteerOpportunityService,
+    private institutionService: InstitutionService
   ) { }
 
   searchInvites({
@@ -56,10 +58,15 @@ export class OpportunityInvitationService {
 
             for (const opportunityInvitation of opportunityInvitations) {
               this.volunteerOpportunityService.searchById({ volunteerOpportunityId: opportunityInvitation.opportunityId })
-                .subscribe({
-                  next: volunteerOpportunity => {
+                .pipe(
+                  switchMap(volunteerOpportunity => {
                     opportunityInvitation.opportunity = volunteerOpportunity;
-                  }
+
+                    return this.institutionService.get(volunteerOpportunity.institutionId)
+                  }),
+                )
+                .subscribe(institution => {
+                  opportunityInvitation.opportunity.institution = institution;
                 });
             }
           }

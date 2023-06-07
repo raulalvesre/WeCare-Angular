@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { delay } from 'rxjs/operators';
 import { FederativeUnit } from 'src/shared/models/address.model';
-import { Institution } from 'src/shared/models/institution.model';
 import { OpportunityCause } from 'src/shared/models/opportunity-cause.model';
 import { Page } from 'src/shared/models/page.model';
 import { VolunteerOpportunity } from 'src/shared/models/volunteer-opportunity.model';
@@ -32,8 +31,8 @@ export class OpportunitiesSearchAdminComponent {
   federativeUnits: FederativeUnit[] = [];
   selectedFederativeUnits: FederativeUnit[] = [];
 
-  initialDate?: Date
-  finalDate?: Date
+  initialDate?: Date;
+  finalDate?: Date;
 
   pageNumber = 1;
   pageSize = 10;

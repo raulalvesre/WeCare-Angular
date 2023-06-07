@@ -4,111 +4,175 @@
       <div class="container">
         <h3>Projetos Disponíveis</h3>
 
-        <div class="row">
-          <section class="col d-flex flex-wrap">
-            <div ngbDropdown>
-              <button
-                type="button"
-                class="btn btn-light"
-                id="categories-dropdown"
-                ngbDropdownToggle
+        <form [formGroup]="searchForm">
+          <div class="row d-flex flex-wrap">
+            <div class="w-auto mb-1">
+              <div ngbDropdown>
+                <button
+                  type="button"
+                  class="btn btn-light px-5"
+                  id="causes-dropdown"
+                  ngbDropdownToggle
+                >
+                  Causas
+                </button>
+                <div
+                  ngbDropdownMenu
+                  aria-labelledby="causes-dropdown"
+                  class="dropdown-menu"
+                >
+                  <button
+                    (click)="addCauseToSearch(opportunityCause)"
+                    ngbDropdownItem
+                    *ngFor="let opportunityCause of opportunityCauses"
+                  >
+                    {{ opportunityCause.name }}
+                  </button>
+                </div>
+              </div>
+              <div
+                *ngIf="selectedOpportunityCauses?.length > 0"
+                class="d-flex flex-column mt-1"
               >
-                Categorias
-              </button>
-              <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-                <button ngbDropdownItem>Opção 1</button>
-                <button ngbDropdownItem>Opção 2</button>
+                <div
+                  *ngFor="let opportunityCause of selectedOpportunityCauses"
+                  class="d-flex flex-row mt-1"
+                >
+                  <span class="me-2 w-50">{{ opportunityCause.name }}</span>
+                  <span
+                    (click)="removeOpportunityCause(opportunityCause)"
+                    role="button"
+                    class="bi bi-x-circle text-danger ms-2"
+                    title="Excluir {{ opportunityCause.name }}"
+                    style="cursor: pointer"
+                  ></span>
+                </div>
               </div>
             </div>
 
-            <div ngbDropdown>
-              <button
-                type="button"
-                class="btn btn-light"
-                id="categories-dropdown"
-                ngbDropdownToggle
+            <div class="w-auto mb-1">
+              <div ngbDropdown>
+                <button
+                  type="button"
+                  class="btn btn-light px-5"
+                  id="federative-units-dropdown"
+                  ngbDropdownToggle
+                >
+                  Estados
+                </button>
+                <div
+                  ngbDropdownMenu
+                  aria-labelledby="federative-units-dropdown"
+                  class="dropdown-menu"
+                >
+                  <button
+                    (click)="addFederativeUnitToSearch(federativeUnit)"
+                    ngbDropdownItem
+                    *ngFor="let federativeUnit of federativeUnits"
+                  >
+                    {{ federativeUnit.name }} ({{
+                      federativeUnit.abbreviation
+                    }})
+                  </button>
+                </div>
+              </div>
+              <div
+                *ngIf="selectedFederativeUnits?.length > 0"
+                class="d-flex flex-column mt-1"
               >
-                Data
-              </button>
-              <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-                <button ngbDropdownItem>Opção 1</button>
-                <button ngbDropdownItem>Opção 2</button>
+                <div
+                  *ngFor="let federativeUnit of selectedFederativeUnits"
+                  class="d-flex flex-row mt-1"
+                >
+                  <span class="me-2 w-50"
+                    >{{ federativeUnit.name }} ({{
+                      federativeUnit.abbreviation
+                    }})</span
+                  >
+                  <span
+                    (click)="removeFederativeUnit(federativeUnit)"
+                    role="button"
+                    class="bi bi-x-circle text-danger ms-2"
+                    title="Excluir {{ federativeUnit.name }}"
+                    style="cursor: pointer"
+                  ></span>
+                </div>
               </div>
             </div>
 
-            <div ngbDropdown>
-              <button
-                type="button"
-                class="btn btn-light"
-                id="categories-dropdown"
-                ngbDropdownToggle
+            <div class="d-flex align-items-center w-auto">
+              <label for="inicial-date" class="form-label mb-0 me-1"
+                >Período</label
               >
-                Local
-              </button>
-              <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-                <button ngbDropdownItem>Opção 1</button>
-                <button ngbDropdownItem>Opção 2</button>
-              </div>
+              <input
+                formControlName="initialDate"
+                type="date"
+                name="initialDate"
+                id="inicial-date"
+                title="Data inicial"
+                class="form-control me-1"
+              />
+              <input
+                formControlName="finalDate"
+                type="date"
+                name="finalDate"
+                id="final-date"
+                title="Data final"
+                class="form-control w me-1"
+              />
+              <span
+                (click)="clearDatesSelection()"
+                role="button"
+                class="bi bi-x-circle text-danger"
+                title="Limpar seleção do período de datas"
+              ></span>
             </div>
+          </div>
+        </form>
 
-            <div ngbDropdown>
-              <button
-                type="button"
-                class="btn btn-light"
-                id="categories-dropdown"
-                ngbDropdownToggle
-              >
-                Habilidades
-              </button>
-              <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-                <button ngbDropdownItem>Opção 1</button>
-                <button ngbDropdownItem>Opção 2</button>
-              </div>
-            </div>
-
-            <div ngbDropdown>
-              <button
-                type="button"
-                class="btn btn-light"
-                id="categories-dropdown"
-                ngbDropdownToggle
-              >
-                Instituição
-              </button>
-              <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-                <button ngbDropdownItem>Opção 1</button>
-                <button ngbDropdownItem>Opção 2</button>
-              </div>
-            </div>
-
-            <div ngbDropdown>
-              <button
-                type="button"
-                class="btn btn-light"
-                id="categories-dropdown"
-                ngbDropdownToggle
-              >
-                Restrições
-              </button>
-              <div ngbDropdownMenu aria-labelledby="categories-dropdown">
-                <button ngbDropdownItem>Opção 1</button>
-                <button ngbDropdownItem>Opção 2</button>
+        <div class="row mt-3">
+          <section
+            *ngIf="searching"
+            class="col d-flex justify-content-center mt-5"
+          >
+            <div class="col-md-8 col-lg-4">
+              <div class="fs-3 text-center">
+                Pesquisando
+                <span
+                  class="bi bi-arrow-clockwise text-info d-inline-block rotate"
+                ></span>
               </div>
             </div>
           </section>
-        </div>
 
-        <div class="row mt-3" >
+          <section
+            *ngIf="volunteerOpportunities?.length == 0 && !searching"
+            class="col d-flex justify-content-center mt-5"
+          >
+            <div class="col-md-8 col-lg-4">
+              <div class="card">
+                <div class="card-body fs-3 text-center">
+                  <span class="bi bi-exclamation-triangle"></span>
+                  Nenhuma oportunidade cadastrada
+                </div>
+              </div>
+            </div>
+          </section>
+
           <section
             *ngFor="let volunteerOpportunity of volunteerOpportunities"
-            class="card card-content1 col-xs-12 col-sm-6 col-lg-6 col-xl-3">
-
+            class="card card-content1 col-xs-12 col-sm-6 col-lg-6 col-xl-3"
+          >
             <div class="col-sm-12">
               <div class="image-content">
                 <span class="overlay"></span>
                 <div class="card-image">
                   <img
-                    [src]="convertBase64ToPhotoUrl(volunteerOpportunity.photo)"
+                    [src]="
+                      imageService.convertBase64ToPhotoUrl(
+                        volunteerOpportunity.photo
+                      )
+                    "
                     alt="Foto da oportunidade {{ volunteerOpportunity.name }}"
                     class="card-img"
                   />
@@ -161,11 +225,9 @@
                 </div>
                 <div class="description2 text-center row">
                   <div class="col text-truncate text-start">
-                    <i
-                      class="bi bi-bookmark-heart text-success"
-                      title="Causa(s): {{ volunteerOpportunity.causes }}"
+                    <i class="bi bi-bookmark-heart text-success"
                       ><span class="text-dark text-start">{{
-                        volunteerOpportunity.causes
+                        volunteerOpportunity.causes.join(", ")
                       }}</span>
                     </i>
                   </div>
@@ -174,7 +236,12 @@
                   <div class="col-6">
                     <button
                       class="btn btn-sm btn-outline-warning"
-                      (click)="openXl(contentModal, volunteerOpportunity)"
+                      (click)="
+                        openVolunteerOpportunityModal(
+                          volunteerOpportunityModal,
+                          volunteerOpportunity
+                        )
+                      "
                     >
                       Detalhes
                     </button>
@@ -192,8 +259,8 @@
             </div>
 
             <!-- Modal -->
-            <ng-template #contentModal let-modal>
-              <div class="modal-header container-special" style="padding: 15px 20px 0 15px;">
+            <ng-template #volunteerOpportunityModal let-modal>
+              <div class="modal-header container-special">
                 <h4 class="modal-title container-special">
                   <p>{{ volunteerOpportunity.name }}</p>
                 </h4>
@@ -211,9 +278,19 @@
                       <h5 class="fw-bold">Descrição da Oportunidade:</h5>
                       <p>{{ volunteerOpportunity.description }}</p>
                     </div>
-                    <div>
+                    <div
+                      *ngIf="
+                        volunteerOpportunity.desirableQualifications?.length > 0
+                      "
+                    >
                       <h5 class="fw-bold">Habilidades Desejadas:</h5>
-                      <p>{{ volunteerOpportunity.description }}</p>
+                      <p>
+                        {{
+                          volunteerOpportunity.desirableQualifications.join(
+                            ", "
+                          )
+                        }}
+                      </p>
                     </div>
                   </div>
 
@@ -226,7 +303,9 @@
                     >
                       <img
                         [src]="
-                          convertBase64ToPhotoUrl(volunteerOpportunity.photo)
+                          imageService.convertBase64ToPhotoUrl(
+                            volunteerOpportunity.photo
+                          )
                         "
                         class="img-modal border border-4"
                         alt=""
@@ -242,11 +321,19 @@
                 </div>
 
                 <div class="row p-3">
-                  <div class="col">
-                    <div class="fw-bold">Publicado por: </div>{{ volunteerOpportunity.institution.name }}
+                  <div *ngIf="volunteerOpportunity.institution" class="col">
+                    <div>
+                      <span class="fw-bold">Publicado por:</span>
+                      {{ volunteerOpportunity.institution.name }}
+                    </div>
                   </div>
                   <div class="col">
-                    <div class="fw-bold">Publicado em: </div>{{ volunteerOpportunity.creationDate | date : "dd/MM/yyyy"}}
+                    <div>
+                      <span class="fw-bold">Publicado em:</span>
+                      {{
+                        volunteerOpportunity.creationDate | date : "shortDate"
+                      }}
+                    </div>
                   </div>
                 </div>
 
@@ -284,17 +371,16 @@
                     </div>
                   </div>
 
-                  <div class="row">
+                  <div
+                    *ngIf="volunteerOpportunity.causes?.length > 0"
+                    class="row"
+                  >
                     <div class="col text-truncate">
-                      <i
-                        class="bi bi-bookmark-heart text-success"
-                        title="Causa(s): {{ volunteerOpportunity.causes }}"
-                      >
-                      </i>
+                      <i class="bi bi-bookmark-heart text-success"> </i>
                       <span class="text-dark fw-bold">
                         Causa(s) Relacionada(s):
                       </span>
-                      {{ volunteerOpportunity.causes }}
+                      {{ volunteerOpportunity.causes?.join(", ") }}
                     </div>
                   </div>
                 </div>

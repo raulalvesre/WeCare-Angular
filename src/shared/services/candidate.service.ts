@@ -1,4 +1,4 @@
-import { HttpParams, HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpParams, HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { Page } from '../models/page.model';
@@ -9,7 +9,6 @@ import { Candidate } from '../models/candidate.model';
 import { Institution } from '../models/institution.model';
 import { VolunteerOpportunity } from '../models/volunteer-opportunity.model';
 import { InstitutionService } from './institution.service';
-import { VolunteerOpportunityService } from './volunteer-opportunity.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +19,6 @@ export class CandidateService {
   constructor(
     private httpClient: HttpClient,
     private accessService: AccessService,
-    private volunteerOpportunityService: VolunteerOpportunityService,
     private institutionService: InstitutionService
   ) { }
 
@@ -47,6 +45,32 @@ export class CandidateService {
           }
         }
       }));
+  }
+
+  update(candidate: Candidate): Observable<HttpResponse<Candidate>> {
+    const token = this.accessService.getToken();
+
+    return this.httpClient
+      .put<Candidate>(
+        `${this.apiUrl}/api/candidate/${candidate.id}`,
+        candidate,
+        {
+          headers: new HttpHeaders().append('Authorization', `Bearer ${token}`),
+          observe: 'response'
+        });
+  }
+
+  updatePhoto(candidate: Candidate, photoFormData: FormData): Observable<HttpResponse<any>> {
+    const token = this.accessService.getToken();
+
+    return this.httpClient
+      .patch<any>(
+        `${this.apiUrl}/api/candidate/${candidate.id}/upload-photo`,
+        photoFormData,
+        {
+          headers: new HttpHeaders().append('Authorization', `Bearer ${token}`),
+          observe: 'response'
+        });
   }
 
   searchCandidate(candidateId: number): Observable<Candidate> {
