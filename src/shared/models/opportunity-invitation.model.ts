@@ -8,4 +8,5 @@ export interface OpportunityInvitation {
   opportunityId: number;
   opportunity?: VolunteerOpportunity,
   candidateId: number;
+  candidateHasResponded: boolean;
 }

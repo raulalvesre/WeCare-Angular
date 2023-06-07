@@ -158,8 +158,9 @@ export class ScheduledComponent implements OnInit {
             } else {
               this.volunteerRegistrations.push(...page.data);
             }
-            this.isLoading = false;
           }
+          this.isLoading = false;
+
         }
       });
 

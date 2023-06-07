@@ -13,10 +13,6 @@
           <div class="loader"></div>
         </div>
 
-        <div *ngIf="volunteerRegistrations.length == 0 && !isLoading"
-             class="text-center text-bg-warning border rounded m-5">
-          <p class="bold align-middle m-3 fw-bold">Você ainda não agendou nenhum evento!</p>
-        </div>
 
         <div *ngIf="volunteerRegistrations.length > 0 && !isLoading">
           <!-- Add tabs -->
@@ -377,6 +373,11 @@
                   </div>
                 </li>
               </ul>
+            </div>
+
+            <div *ngIf="volunteerRegistrations.length == 0 && !isLoading"
+                 class="text-center text-bg-warning border rounded m-5">
+              <p class="bold align-middle m-3 fw-bold">Você ainda não agendou nenhum evento!</p>
             </div>
 
           </div>

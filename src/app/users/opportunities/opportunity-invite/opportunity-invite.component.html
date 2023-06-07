@@ -6,273 +6,900 @@
 
         <p>
           Aqui você encontra uma relação das oportunidades para qual foi
-          convidado a particiar!
+          convidado a participar!
         </p>
-        <ul>
-          <li>
-            Você pode consultar os detalhes da oportunidade por meio do
-            botão <span class="bi bi-card-text text-primary"></span>.
-          </li>
-          <li>
-            Caso tenha que relatar algum problema, utilize o botão
-            <span class="bi bi-exclamation-circle text-danger"></span>.
-          </li>
-        </ul>
 
         <div *ngIf="opportunityInvitations.length == 0" class="text-center text-bg-warning border rounded m-5">
           <p class="align-middle m-3 fw-bold">Você ainda não recebeu nenhum convite!</p>
         </div>
 
         <div *ngIf="opportunityInvitations.length > 0">
-
-          <ul
-            class="applications"
-            *ngFor="let opportunityInvitation of opportunityInvitations"
-          >
-            <ng-template #contentModal let-modal>
-              <div class="modal-header container-special">
-                <h4 class="modal-title container-special">
-                  <p>{{ opportunityInvitation.opportunity.name }}</p>
-                </h4>
-                <button
-                  type="button"
-                  class="btn-close container-special btn-close-white"
-                  aria-label="Close"
-                  (click)="modal.dismiss('Cross click')"
-                ></button>
-              </div>
-              <div class="modal-body container-special">
-                <div class="row" style="flex-wrap: wrap-reverse">
-                  <div class="col-sm-12 col-xl-7 p-3">
-                    <div class="descriptionText">
-                      <h5 class="fw-bold">Descrição da Oportunidade:</h5>
-                      <p>{{ opportunityInvitation.opportunity.description }}</p>
-                    </div>
-                    <div>
-                      <h5 class="fw-bold">Mensagem de convite:</h5>
-                      <p>{{ opportunityInvitation.invitationMessage }}</p>
-                    </div>
-                    <div *ngIf="opportunityInvitation.opportunity.desirableQualifications.length > 0">
-                      <h5 class="fw-bold">Habilidades Desejadas:</h5>
-                      <p>{{  opportunityInvitation.opportunity.desirableQualifications }}</p>
-                    </div>
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 0" (click)="activeTab = 0">PENDENTES</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 1" (click)="activeTab = 1">ACEITAS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 2" (click)="activeTab = 2">RECUSADAS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 3" (click)="activeTab = 3">CANCELADAS</a>
+            </li>
+          </ul>
+          <div class="tab-content mt-3">
+            <div class="tab-pane fade show" [class.active]="activeTab === 0">
+              <ul
+                class="applications"
+                *ngFor="let opportunityInvitation of filterInvitationByStatus('PENDING')"
+              >
+                <ng-template #contentModal let-modal>
+                  <div class="modal-header container-special">
+                    <h4 class="modal-title container-special">
+                      <p>{{ opportunityInvitation.opportunity.name }}</p>
+                    </h4>
+                    <button
+                      type="button"
+                      class="btn-close container-special btn-close-white"
+                      aria-label="Close"
+                      (click)="modal.dismiss('Cross click')"
+                    ></button>
                   </div>
+                  <div class="modal-body container-special">
+                    <div class="row" style="flex-wrap: wrap-reverse">
+                      <div class="col-sm-12 col-xl-7 p-3">
+                        <div>
+                          <h5 class="fw-bold">Mensagem de convite:</h5>
+                          <p>{{ opportunityInvitation.invitationMessage }}</p>
+                        </div>
+                        <div class="descriptionText">
+                          <h5 class="fw-bold">Descrição da Oportunidade:</h5>
+                          <p>{{ opportunityInvitation.opportunity.description }}</p>
+                        </div>
+                        <div *ngIf="opportunityInvitation.opportunity.desirableQualifications.length > 0">
+                          <h5 class="fw-bold">Habilidades Desejadas:</h5>
+                          <p>{{  opportunityInvitation.opportunity.desirableQualifications }}</p>
+                        </div>
+                      </div>
 
-                  <div
-                    class="col-sm-12 col-xl-5 d-flex align-items-center hidden-xs hidden-sm"
-                  >
-                    <div
-                      class="mx-auto py-3 text-center"
-                      style="height: 400px; width: 400px"
-                    >
-                      <img
-                        [src]="
+                      <div
+                        class="col-sm-12 col-xl-5 d-flex align-items-center hidden-xs hidden-sm"
+                      >
+                        <div
+                          class="mx-auto py-3 text-center"
+                          style="height: 400px; width: 400px"
+                        >
+                          <img
+                            [src]="
                         convertBase64ToPhotoUrl(opportunityInvitation.opportunity.photo)
                       "
-                        class="img-modal border border-4"
-                        alt=""
-                        style="
+                            class="img-modal border border-4"
+                            alt=""
+                            style="
                         object-fit: cover;
                         max-width: 100%;
                         max-height: 100%;
                         aspect-ratio: 5/3;
                       "
-                      />
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div class="row p-3">
-                  <div class="col-sm-6">
-                    <div class="fw-bold">Publicado por:</div>
-                    {{ opportunityInvitation.opportunity.institution.name }}
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="fw-bold">Publicado em:</div>
-                    {{ opportunityInvitation.opportunity.creationDate | date : "dd/MM/yyyy"}}
-                  </div>
-                </div>
+                    <div class="row p-3">
+                      <div class="col-sm-6">
+                        <div class="fw-bold">Publicado por:</div>
+                        {{ opportunityInvitation.opportunity.institution.name }}
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="fw-bold">Publicado em:</div>
+                        {{ opportunityInvitation.opportunity.creationDate | date : "dd/MM/yyyy"}}
+                      </div>
+                    </div>
 
-                <div class="row p-3">
-                  <div class="row">
-                    <div class="col">
-                      <i
-                        class="bi bi-calendar-week text-warning col"
-                        title="{{
+                    <div class="row p-3">
+                      <div class="row">
+                        <div class="col">
+                          <i
+                            class="bi bi-calendar-week text-warning col"
+                            title="{{
                         opportunityInvitation.opportunity.opportunityDate
                           | date : 'dd/MM/yyyy'
                       }}"
-                      >
-                      </i>
-                      <span class="text-dark fw-bold"> Data: </span>
-                      {{
-                      opportunityInvitation.opportunity.opportunityDate | date : "dd/MM/yyyy hh:MM"
-                      }}
-                    </div>
-                  </div>
+                          >
+                          </i>
+                          <span class="text-dark fw-bold"> Data: </span>
+                          {{
+                          opportunityInvitation.opportunity.opportunityDate | date : "dd/MM/yyyy hh:MM"
+                          }}
+                        </div>
+                      </div>
 
-                  <div class="row">
-                    <div class="col">
-                      <i
-                        class="bi bi-geo-alt-fill text-danger col"
-                        title="{{ opportunityInvitation.opportunity.address.city }} - {{
+                      <div class="row">
+                        <div class="col">
+                          <i
+                            class="bi bi-geo-alt-fill text-danger col"
+                            title="{{ opportunityInvitation.opportunity.address.city }} - {{
                         opportunityInvitation.opportunity.address.state
                       }}"
-                      >
-                      </i>
-                      <span class="text-dark fw-bold"> Local: </span>
-                      {{ opportunityInvitation.opportunity.address.city }} -
-                      {{ opportunityInvitation.opportunity.address.state }}
-                    </div>
-                  </div>
+                          >
+                          </i>
+                          <span class="text-dark fw-bold"> Local: </span>
+                          {{ volunteerOpportunityCompleteAddress(opportunityInvitation.opportunity) }}
+                        </div>
+                      </div>
 
-                  <div class="row">
-                    <div class="col text-truncate">
-                      <i
-                        class="bi bi-bookmark-heart text-success"
-                        title="Causa(s): {{ opportunityInvitation.opportunity.causes }}"
-                      >
-                      </i>
-                      <span class="text-dark fw-bold">
+                      <div class="row">
+                        <div class="col text-truncate">
+                          <i
+                            class="bi bi-bookmark-heart text-success"
+                            title="Causa(s): {{ opportunityInvitation.opportunity.causes }}"
+                          >
+                          </i>
+                          <span class="text-dark fw-bold">
                       Causa(s) Relacionada(s):
                     </span>
-                      {{ opportunityInvitation.opportunity.causes }}
+                          {{ opportunityInvitation.opportunity.causes }}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div class=""></div>
-              <div class="modal-footer container-special">
-                <div >
-                  <button
-                    class="btn btn-outline-danger right"
-                    title="Recusar convite"
-                    [disabled]="
-                            !opportunityInvitationPending(opportunityInvitation)
+                  <div class=""></div>
+                  <div class="modal-footer container-special" *ngIf="!opportunityInvitation.candidateHasResponded">
+                    <div>
+                      <button
+                        class="btn btn-outline-danger right"
+                        title="Recusar convite"
+                        (click)="denyInvite(opportunityInvitation)"
+                        [disabled]="
+                            opportunityInvitation.candidateHasResponded || !opportunityInvitationPending(opportunityInvitation)
                           "
-                  >
-                    Recusar
-                  </button>
-                </div>
-                <div class="col-2 col-lg-2">
-                  <button
-                    class="btn btn-primary"
-                    title="Aceitar convite"
-                    [disabled]="
-                            !opportunityInvitationPending(opportunityInvitation)
+                      >
+                        Recusar
+                      </button>
+                    </div>
+                    <div class="col-2 col-lg-2">
+                      <button
+                        class="btn btn-primary"
+                        title="Aceitar convite"
+                        (click)="acceptInvite(opportunityInvitation)"
+                        [disabled]="
+                            opportunityInvitation.candidateHasResponded || !opportunityInvitationPending(opportunityInvitation)
                           "
-                  >
-                    Aceitar
-                  </button>
-                </div>
-              </div>
-            </ng-template>
+                      >
+                        Aceitar
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
 
 
-            <li class="volunteer">
-              <div class="thumb">
-                <img
-                  [src]="
+                <li class="volunteer">
+                  <div class="thumb">
+                    <img
+                      [src]="
                   convertBase64ToPhotoUrl(
                     opportunityInvitation?.opportunity?.photo
                   )
                 "
-                  alt=""
-                />
-              </div>
-              <div class="description">
-                <div class="row">
-                  <div class="col-lg-6 col-sm-12 text-truncate">
-                    <h4>{{ opportunityInvitation?.opportunity?.name }}</h4>
+                      alt=""
+                    />
                   </div>
-                  <div class="col-lg-6 col-sm-12 text-truncate">
-                    <p class="" style="font-size: 0.8em">
-                      Organizadores:
-                      {{ opportunityInvitation?.opportunity?.institution.name }}
-                    </p>
-                  </div>
-                </div>
-
-                <div>
-                  <div class="row ps-3">
-                    <div class="col-lg-5 col-sm-6 text-truncate">
-                      <i class="bi bi-geo-alt-fill text-danger"></i>
-                      <span class="text-dark text-truncate">
-                        Local:
-                        {{ volunteerOpportunityCompleteAddress(opportunityInvitation.opportunity) }}</span
-                      >
-                    </div>
-                    <div class="row ps-3">
-
-                      <div class="col-lg-6 col-sm-6 text-truncate">
-                        <i class="bi bi-puzzle-fill text-warning"> </i>
-                        <span class="text-dark text-truncate">
-                        Data:
-                          {{
-                          opportunityInvitation?.opportunity?.opportunityDate
-                            | date : "short"
-                          }}</span
-                        >
+                  <div class="description">
+                    <div class="row">
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <h4>{{ opportunityInvitation?.opportunity?.name }}</h4>
+                      </div>
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <p class="" style="font-size: 0.8em">
+                          Organizadores:
+                          {{ opportunityInvitation?.opportunity?.institution.name }}
+                        </p>
                       </div>
                     </div>
-                  </div>
-                  <div class="row ps-3">
-                    <div class="col-lg-4 col-sm-6 text-truncate">
-                      <i class="bi bi-telephone-fill text-success" title=""
-                      ><span
-                        class="text-dark"> Fone: {{ opportunityInvitation.opportunity.institution.telephone }} </span>
-                      </i>
-                    </div>
-                    <div class="col-lg-4 col-sm-6 text-truncate">
-                      <i class="bi bi-check-square-fill text-info"> </i>
-                      <span class="text-dark"> Status: </span>
-                      {{ invitationStatus(opportunityInvitation) }}
-                    </div>
-                    <div class="col-lg-4 col-sm-6 text-truncate">
-                      <span class="text-dark"> Detalhes: </span>
-                      <button
-                        class="btn btn-sm btn-outline-warning"
-                        (click)="
+
+                    <div>
+                      <div class="row ps-3">
+                        <div class="col-lg-5 col-sm-6 text-truncate">
+                          <i class="bi bi-geo-alt-fill text-danger"></i>
+                          <span class="text-dark text-truncate">
+                        Local:
+                            {{ volunteerOpportunityCompleteAddress(opportunityInvitation.opportunity) }}</span
+                          >
+                        </div>
+                        <div class="row ps-3">
+
+                          <div class="col-lg-6 col-sm-6 text-truncate">
+                            <i class="bi bi-puzzle-fill text-warning"> </i>
+                            <span class="text-dark text-truncate">
+                        Data:
+                              {{
+                              opportunityInvitation?.opportunity?.opportunityDate
+                                | date : "short"
+                              }}</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row ps-3">
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-telephone-fill text-success" title=""
+                          ><span
+                            class="text-dark"> Fone: {{ opportunityInvitation.opportunity.institution.telephone }} </span>
+                          </i>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-check-square-fill text-info"> </i>
+                          <span class="text-dark"> Status: </span>
+                          {{ invitationStatus(opportunityInvitation) }}
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <span class="text-dark"> Detalhes: </span>
+                          <button
+                            class="btn btn-sm btn-outline-warning"
+                            (click)="
                           openModal(
                             contentModal
                           )
                         "
-                      >
-                        <i class="bi bi-file-earmark-text"></i>
-                      </button>
+                          >
+                            <i class="bi bi-file-earmark-text"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="action-buttons my-4">
+                        <div class="row" *ngIf="!opportunityInvitation.candidateHasResponded">
+                          <div class="col-6 col-lg-9">
+                            <button
+                              class="btn btn-outline-danger"
+                              title="Recusar convite"
+                              (click)="denyInvite(opportunityInvitation)"
+                              [disabled]="
+                            opportunityInvitation.candidateHasResponded || !opportunityInvitationPending(opportunityInvitation)
+                          "
+                            >
+                              Recusar
+                            </button>
+                          </div>
+                          <div class="col-2 col-lg-2">
+                            <button
+                              class="btn btn-primary"
+                              title="Aceitar convite"
+                              (click)="acceptInvite(opportunityInvitation)"
+                              [disabled]="
+                            opportunityInvitation.candidateHasResponded || !opportunityInvitationPending(opportunityInvitation)
+                          "
+                            >
+                              Aceitar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="action-buttons my-4">
-                    <div class="row">
-                      <div class="col-6 col-lg-9">
-                        <button
-                          class="btn btn-outline-danger"
-                          title="Recusar convite"
-                          [disabled]="
-                            !opportunityInvitationPending(opportunityInvitation)
-                          "
-                        >
-                          Recusar
-                        </button>
-                      </div>
-                      <div class="col-2 col-lg-2">
-                        <button
-                          class="btn btn-primary"
-                          title="Aceitar convite"
-                          [disabled]="
-                            !opportunityInvitationPending(opportunityInvitation)
-                          "
-                        >
-                          Aceitar
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                </li>
+              </ul>
+              <div *ngIf="filterInvitationByStatus('PENDING').length <= 0"
+                   class="text-center text-bg-warning border rounded m-5">
+                <p class="align-middle m-3 fw-bold">Nenhum convite aceito</p>
               </div>
-            </li>
-          </ul>
+            </div>
+            <div class="tab-pane fade show" [class.active]="activeTab === 1">
+
+              <ul
+                class="applications"
+                *ngFor="let opportunityInvitation of filterInvitationByStatus('ACCEPTED')"
+              >
+                <ng-template #contentModal let-modal>
+                  <div class="modal-header container-special">
+                    <h4 class="modal-title container-special">
+                      <p>{{ opportunityInvitation.opportunity.name }}</p>
+                    </h4>
+                    <button
+                      type="button"
+                      class="btn-close container-special btn-close-white"
+                      aria-label="Close"
+                      (click)="modal.dismiss('Cross click')"
+                    ></button>
+                  </div>
+                  <div class="modal-body container-special">
+                    <div class="row" style="flex-wrap: wrap-reverse">
+                      <div class="col-sm-12 col-xl-7 p-3">
+                        <div>
+                          <h5 class="fw-bold">Mensagem de convite:</h5>
+                          <p>{{ opportunityInvitation.invitationMessage }}</p>
+                        </div>
+                        <div class="descriptionText">
+                          <h5 class="fw-bold">Descrição da Oportunidade:</h5>
+                          <p>{{ opportunityInvitation.opportunity.description }}</p>
+                        </div>
+                        <div *ngIf="opportunityInvitation.opportunity.desirableQualifications.length > 0">
+                          <h5 class="fw-bold">Habilidades Desejadas:</h5>
+                          <p>{{  opportunityInvitation.opportunity.desirableQualifications }}</p>
+                        </div>
+                      </div>
+
+                      <div
+                        class="col-sm-12 col-xl-5 d-flex align-items-center hidden-xs hidden-sm"
+                      >
+                        <div
+                          class="mx-auto py-3 text-center"
+                          style="height: 400px; width: 400px"
+                        >
+                          <img
+                            [src]="
+                        convertBase64ToPhotoUrl(opportunityInvitation.opportunity.photo)
+                      "
+                            class="img-modal border border-4"
+                            alt=""
+                            style="
+                        object-fit: cover;
+                        max-width: 100%;
+                        max-height: 100%;
+                        aspect-ratio: 5/3;
+                      "
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row p-3">
+                      <div class="col-sm-6">
+                        <div class="fw-bold">Publicado por:</div>
+                        {{ opportunityInvitation.opportunity.institution.name }}
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="fw-bold">Publicado em:</div>
+                        {{ opportunityInvitation.opportunity.creationDate | date : "dd/MM/yyyy"}}
+                      </div>
+                    </div>
+
+                    <div class="row p-3">
+                      <div class="row">
+                        <div class="col">
+                          <i
+                            class="bi bi-calendar-week text-warning col"
+                            title="{{
+                        opportunityInvitation.opportunity.opportunityDate
+                          | date : 'dd/MM/yyyy'
+                      }}"
+                          >
+                          </i>
+                          <span class="text-dark fw-bold"> Data: </span>
+                          {{
+                          opportunityInvitation.opportunity.opportunityDate | date : "dd/MM/yyyy hh:MM"
+                          }}
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col">
+                          <i
+                            class="bi bi-geo-alt-fill text-danger col"
+                            title="{{ opportunityInvitation.opportunity.address.city }} - {{
+                        opportunityInvitation.opportunity.address.state
+                      }}"
+                          >
+                          </i>
+                          <span class="text-dark fw-bold"> Local: </span>
+                          {{ volunteerOpportunityCompleteAddress(opportunityInvitation.opportunity) }}
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-truncate">
+                          <i
+                            class="bi bi-bookmark-heart text-success"
+                            title="Causa(s): {{ opportunityInvitation.opportunity.causes }}"
+                          >
+                          </i>
+                          <span class="text-dark fw-bold">
+                      Causa(s) Relacionada(s):
+                    </span>
+                          {{ opportunityInvitation.opportunity.causes }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class=""></div>
+                </ng-template>
+
+
+                <li class="volunteer">
+                  <div class="thumb">
+                    <img
+                      [src]="
+                  convertBase64ToPhotoUrl(
+                    opportunityInvitation?.opportunity?.photo
+                  )
+                "
+                      alt=""
+                    />
+                  </div>
+                  <div class="description">
+                    <div class="row">
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <h4>{{ opportunityInvitation?.opportunity?.name }}</h4>
+                      </div>
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <p class="" style="font-size: 0.8em">
+                          Organizadores:
+                          {{ opportunityInvitation?.opportunity?.institution.name }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="row ps-3">
+                        <div class="col-lg-5 col-sm-6 text-truncate">
+                          <i class="bi bi-geo-alt-fill text-danger"></i>
+                          <span class="text-dark text-truncate">
+                        Local:
+                            {{ volunteerOpportunityCompleteAddress(opportunityInvitation.opportunity) }}</span
+                          >
+                        </div>
+                        <div class="row ps-3">
+
+                          <div class="col-lg-6 col-sm-6 text-truncate">
+                            <i class="bi bi-puzzle-fill text-warning"> </i>
+                            <span class="text-dark text-truncate">
+                        Data:
+                              {{
+                              opportunityInvitation?.opportunity?.opportunityDate
+                                | date : "short"
+                              }}</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row ps-3">
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-telephone-fill text-success" title=""
+                          ><span
+                            class="text-dark"> Fone: {{ opportunityInvitation.opportunity.institution.telephone }} </span>
+                          </i>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-check-square-fill text-info"> </i>
+                          <span class="text-dark"> Status: </span>
+                          {{ invitationStatus(opportunityInvitation) }}
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <span class="text-dark"> Detalhes: </span>
+                          <button
+                            class="btn btn-sm btn-outline-warning"
+                            (click)="
+                          openModal(
+                            contentModal
+                          )
+                        "
+                          >
+                            <i class="bi bi-file-earmark-text"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <div *ngIf="filterInvitationByStatus('ACCEPTED').length <= 0"
+                   class="text-center text-bg-warning border rounded m-5">
+                <p class="align-middle m-3 fw-bold">Nenhum convite aceito</p>
+              </div>
+            </div>
+            <div class="tab-pane fade show" [class.active]="activeTab === 2">
+
+              <ul
+                class="applications"
+                *ngFor="let opportunityInvitation of filterInvitationByStatus('DENIED')"
+              >
+                <ng-template #contentModal let-modal>
+                  <div class="modal-header container-special">
+                    <h4 class="modal-title container-special">
+                      <p>{{ opportunityInvitation.opportunity.name }}</p>
+                    </h4>
+                    <button
+                      type="button"
+                      class="btn-close container-special btn-close-white"
+                      aria-label="Close"
+                      (click)="modal.dismiss('Cross click')"
+                    ></button>
+                  </div>
+                  <div class="modal-body container-special">
+                    <div class="row" style="flex-wrap: wrap-reverse">
+                      <div class="col-sm-12 col-xl-7 p-3">
+                        <div>
+                          <h5 class="fw-bold">Mensagem de convite:</h5>
+                          <p>{{ opportunityInvitation.invitationMessage }}</p>
+                        </div>
+                        <div class="descriptionText">
+                          <h5 class="fw-bold">Descrição da Oportunidade:</h5>
+                          <p>{{ opportunityInvitation.opportunity.description }}</p>
+                        </div>
+                        <div *ngIf="opportunityInvitation.opportunity.desirableQualifications.length > 0">
+                          <h5 class="fw-bold">Habilidades Desejadas:</h5>
+                          <p>{{  opportunityInvitation.opportunity.desirableQualifications }}</p>
+                        </div>
+                      </div>
+
+                      <div
+                        class="col-sm-12 col-xl-5 d-flex align-items-center hidden-xs hidden-sm"
+                      >
+                        <div
+                          class="mx-auto py-3 text-center"
+                          style="height: 400px; width: 400px"
+                        >
+                          <img
+                            [src]="
+                        convertBase64ToPhotoUrl(opportunityInvitation.opportunity.photo)
+                      "
+                            class="img-modal border border-4"
+                            alt=""
+                            style="
+                        object-fit: cover;
+                        max-width: 100%;
+                        max-height: 100%;
+                        aspect-ratio: 5/3;
+                      "
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row p-3">
+                      <div class="col-sm-6">
+                        <div class="fw-bold">Publicado por:</div>
+                        {{ opportunityInvitation.opportunity.institution.name }}
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="fw-bold">Publicado em:</div>
+                        {{ opportunityInvitation.opportunity.creationDate | date : "dd/MM/yyyy"}}
+                      </div>
+                    </div>
+
+                    <div class="row p-3">
+                      <div class="row">
+                        <div class="col">
+                          <i
+                            class="bi bi-calendar-week text-warning col"
+                            title="{{
+                        opportunityInvitation.opportunity.opportunityDate
+                          | date : 'dd/MM/yyyy'
+                      }}"
+                          >
+                          </i>
+                          <span class="text-dark fw-bold"> Data: </span>
+                          {{
+                          opportunityInvitation.opportunity.opportunityDate | date : "dd/MM/yyyy hh:MM"
+                          }}
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col">
+                          <i
+                            class="bi bi-geo-alt-fill text-danger col"
+                            title="{{ opportunityInvitation.opportunity.address.city }} - {{
+                        opportunityInvitation.opportunity.address.state
+                      }}"
+                          >
+                          </i>
+                          <span class="text-dark fw-bold"> Local: </span>
+                          {{ volunteerOpportunityCompleteAddress(opportunityInvitation.opportunity) }}
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-truncate">
+                          <i
+                            class="bi bi-bookmark-heart text-success"
+                            title="Causa(s): {{ opportunityInvitation.opportunity.causes }}"
+                          >
+                          </i>
+                          <span class="text-dark fw-bold">
+                      Causa(s) Relacionada(s):
+                    </span>
+                          {{ opportunityInvitation.opportunity.causes }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class=""></div>
+                </ng-template>
+
+
+                <li class="volunteer">
+                  <div class="thumb">
+                    <img
+                      [src]="
+                  convertBase64ToPhotoUrl(
+                    opportunityInvitation?.opportunity?.photo
+                  )
+                "
+                      alt=""
+                    />
+                  </div>
+                  <div class="description">
+                    <div class="row">
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <h4>{{ opportunityInvitation?.opportunity?.name }}</h4>
+                      </div>
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <p class="" style="font-size: 0.8em">
+                          Organizadores:
+                          {{ opportunityInvitation?.opportunity?.institution.name }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="row ps-3">
+                        <div class="col-lg-5 col-sm-6 text-truncate">
+                          <i class="bi bi-geo-alt-fill text-danger"></i>
+                          <span class="text-dark text-truncate">
+                        Local:
+                            {{ volunteerOpportunityCompleteAddress(opportunityInvitation.opportunity) }}</span
+                          >
+                        </div>
+                        <div class="row ps-3">
+
+                          <div class="col-lg-6 col-sm-6 text-truncate">
+                            <i class="bi bi-puzzle-fill text-warning"> </i>
+                            <span class="text-dark text-truncate">
+                        Data:
+                              {{
+                              opportunityInvitation?.opportunity?.opportunityDate
+                                | date : "short"
+                              }}</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row ps-3">
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-telephone-fill text-success" title=""
+                          ><span
+                            class="text-dark"> Fone: {{ opportunityInvitation.opportunity.institution.telephone }} </span>
+                          </i>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-check-square-fill text-info"> </i>
+                          <span class="text-dark"> Status: </span>
+                          {{ invitationStatus(opportunityInvitation) }}
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <span class="text-dark"> Detalhes: </span>
+                          <button
+                            class="btn btn-sm btn-outline-warning"
+                            (click)="
+                          openModal(
+                            contentModal
+                          )
+                        "
+                          >
+                            <i class="bi bi-file-earmark-text"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <div *ngIf="filterInvitationByStatus('DENIED').length <= 0"
+                   class="text-center text-bg-warning border rounded m-5">
+                <p class="align-middle m-3 fw-bold">Nenhum convite recusado</p>
+              </div>
+            </div>
+            <div class="tab-pane fade show" [class.active]="activeTab === 3">
+
+              <ul
+                class="applications"
+                *ngFor="let opportunityInvitation of filterInvitationByStatus('CANCELED')"
+              >
+                <ng-template #contentModal let-modal>
+                  <div class="modal-header container-special">
+                    <h4 class="modal-title container-special">
+                      <p>{{ opportunityInvitation.opportunity.name }}</p>
+                    </h4>
+                    <button
+                      type="button"
+                      class="btn-close container-special btn-close-white"
+                      aria-label="Close"
+                      (click)="modal.dismiss('Cross click')"
+                    ></button>
+                  </div>
+                  <div class="modal-body container-special">
+                    <div class="row" style="flex-wrap: wrap-reverse">
+                      <div class="col-sm-12 col-xl-7 p-3">
+                        <div>
+                          <h5 class="fw-bold">Mensagem de convite:</h5>
+                          <p>{{ opportunityInvitation.invitationMessage }}</p>
+                        </div>
+                        <div class="descriptionText">
+                          <h5 class="fw-bold">Descrição da Oportunidade:</h5>
+                          <p>{{ opportunityInvitation.opportunity.description }}</p>
+                        </div>
+                        <div *ngIf="opportunityInvitation.opportunity.desirableQualifications.length > 0">
+                          <h5 class="fw-bold">Habilidades Desejadas:</h5>
+                          <p>{{  opportunityInvitation.opportunity.desirableQualifications }}</p>
+                        </div>
+                      </div>
+
+                      <div
+                        class="col-sm-12 col-xl-5 d-flex align-items-center hidden-xs hidden-sm"
+                      >
+                        <div
+                          class="mx-auto py-3 text-center"
+                          style="height: 400px; width: 400px"
+                        >
+                          <img
+                            [src]="
+                        convertBase64ToPhotoUrl(opportunityInvitation.opportunity.photo)
+                      "
+                            class="img-modal border border-4"
+                            alt=""
+                            style="
+                        object-fit: cover;
+                        max-width: 100%;
+                        max-height: 100%;
+                        aspect-ratio: 5/3;
+                      "
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row p-3">
+                      <div class="col-sm-6">
+                        <div class="fw-bold">Publicado por:</div>
+                        {{ opportunityInvitation.opportunity.institution.name }}
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="fw-bold">Publicado em:</div>
+                        {{ opportunityInvitation.opportunity.creationDate | date : "dd/MM/yyyy"}}
+                      </div>
+                    </div>
+
+                    <div class="row p-3">
+                      <div class="row">
+                        <div class="col">
+                          <i
+                            class="bi bi-calendar-week text-warning col"
+                            title="{{
+                        opportunityInvitation.opportunity.opportunityDate
+                          | date : 'dd/MM/yyyy'
+                      }}"
+                          >
+                          </i>
+                          <span class="text-dark fw-bold"> Data: </span>
+                          {{
+                          opportunityInvitation.opportunity.opportunityDate | date : "dd/MM/yyyy hh:MM"
+                          }}
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col">
+                          <i
+                            class="bi bi-geo-alt-fill text-danger col"
+                            title="{{ opportunityInvitation.opportunity.address.city }} - {{
+                        opportunityInvitation.opportunity.address.state
+                      }}"
+                          >
+                          </i>
+                          <span class="text-dark fw-bold"> Local: </span>
+                          {{ volunteerOpportunityCompleteAddress(opportunityInvitation.opportunity) }}
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col text-truncate">
+                          <i
+                            class="bi bi-bookmark-heart text-success"
+                            title="Causa(s): {{ opportunityInvitation.opportunity.causes }}"
+                          >
+                          </i>
+                          <span class="text-dark fw-bold">
+                      Causa(s) Relacionada(s):
+                    </span>
+                          {{ opportunityInvitation.opportunity.causes }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class=""></div>
+                </ng-template>
+
+
+                <li class="volunteer">
+                  <div class="thumb">
+                    <img
+                      [src]="
+                  convertBase64ToPhotoUrl(
+                    opportunityInvitation?.opportunity?.photo
+                  )
+                "
+                      alt=""
+                    />
+                  </div>
+                  <div class="description">
+                    <div class="row">
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <h4>{{ opportunityInvitation?.opportunity?.name }}</h4>
+                      </div>
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <p class="" style="font-size: 0.8em">
+                          Organizadores:
+                          {{ opportunityInvitation?.opportunity?.institution.name }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="row ps-3">
+                        <div class="col-lg-5 col-sm-6 text-truncate">
+                          <i class="bi bi-geo-alt-fill text-danger"></i>
+                          <span class="text-dark text-truncate">
+                        Local:
+                            {{ volunteerOpportunityCompleteAddress(opportunityInvitation.opportunity) }}</span
+                          >
+                        </div>
+                        <div class="row ps-3">
+
+                          <div class="col-lg-6 col-sm-6 text-truncate">
+                            <i class="bi bi-puzzle-fill text-warning"> </i>
+                            <span class="text-dark text-truncate">
+                        Data:
+                              {{
+                              opportunityInvitation?.opportunity?.opportunityDate
+                                | date : "short"
+                              }}</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row ps-3">
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-telephone-fill text-success" title=""
+                          ><span
+                            class="text-dark"> Fone: {{ opportunityInvitation.opportunity.institution.telephone }} </span>
+                          </i>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-check-square-fill text-info"> </i>
+                          <span class="text-dark"> Status: </span>
+                          {{ invitationStatus(opportunityInvitation) }}
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <span class="text-dark"> Detalhes: </span>
+                          <button
+                            class="btn btn-sm btn-outline-warning"
+                            (click)="
+                          openModal(
+                            contentModal
+                          )
+                        "
+                          >
+                            <i class="bi bi-file-earmark-text"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <div *ngIf="filterInvitationByStatus('CANCELED').length <= 0"
+                   class="text-center text-bg-warning border rounded m-5">
+                <p class="align-middle m-3 fw-bold">Nenhum convite cancelado</p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
