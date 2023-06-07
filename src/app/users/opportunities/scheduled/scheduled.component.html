@@ -8,52 +8,37 @@
           Aqui você encontra uma relação das oportunidades que estão programadas! Fique atento!
         </p>
 
-        <div *ngIf="volunteerRegistrations.length == 0" class="text-center text-bg-warning border rounded m-5">
+
+        <div style="display: flex; justify-content: center" *ngIf="isLoading">
+          <div class="loader"></div>
+        </div>
+
+        <div *ngIf="volunteerRegistrations.length == 0 && !isLoading"
+             class="text-center text-bg-warning border rounded m-5">
           <p class="bold align-middle m-3 fw-bold">Você ainda não agendou nenhum evento!</p>
         </div>
 
-        <div *ngIf="volunteerRegistrations.length > 0">
-          <div class="row">
-            <div class="">
-              <!-- <table class="table"> -->
-              <!-- <thead>
-                  <tr>
-                    <th class="col">Instituição</th>
-                    <th class="col">Oportunidade</th>
-                    <th class="col">Data</th>
-                    <th class="col">Endereço</th>
-                    <th class="col">Status</th>
-                  </tr>
-                </thead> -->
-              <!-- <tbody>
-                  <tr
-                    *ngFor="let volunteerRegistration of volunteerRegistrations"
-                    class="border-top border-bottom"
-                  >
-                    <td>
-                      {{ volunteerRegistration.opportunity.institution.name }}
-                    </td>
-                    <td>
-                      {{ volunteerRegistration.opportunity.name }}
-                    </td>
-                    <td>
-                      {{
-                        volunteerRegistration.opportunity.opportunityDate
-                          | date : 'shortDate'
-                      }}
-                    </td>
-                    <td>{{volunteerOpportunityAddress(volunteerRegistration)}}</td>
-                    <td>
-                      {{ registrationStatus(volunteerRegistration) }}
-                    </td>
-                  </tr>
-                </tbody> -->
+        <div *ngIf="volunteerRegistrations.length > 0 && !isLoading">
+          <!-- Add tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 0" (click)="activeTab = 0">ACEITAS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 1" (click)="activeTab = 1">PENDENTES</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 2" (click)="activeTab = 2">RECUSADAS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 3" (click)="activeTab = 3">CANCELADAS</a>
+            </li>
+          </ul>
 
-              <ul
-                class="applications"
-                *ngFor="let volunteerRegistration of volunteerRegistrations"
-              >
-                <li class="volunteer">
+          <div class="tab-content mt-3">
+            <div class="tab-pane fade show" [class.active]="activeTab === 0">
+              <ul class="applications">
+                <li *ngFor="let volunteerRegistration of filterRegistrationsByStatus('ACCEPTED')" class="volunteer">
                   <div class="thumb">
                     <img
                       [src]="
@@ -67,13 +52,13 @@
                   <div class="description">
                     <div class="row">
                       <div class="col-lg-6 col-sm-12 text-truncate">
-                        <h4>{{ volunteerRegistration.opportunity.name }}</h4>
+                        <h4>{{ volunteerRegistration.opportunity.description }}</h4>
                       </div>
                       <div class="col-lg-6 col-sm-12 text-truncate">
                         <p class="" style="font-size: 0.8em">
                           Organizadores:
                           {{
-                            volunteerRegistration.opportunity.institution.name
+                          volunteerRegistration.opportunity.institution.name
                           }}
                         </p>
                       </div>
@@ -86,17 +71,19 @@
                           <span class="text-dark text-truncate">
                             Local:
                             {{
-                              volunteerOpportunityAddress(volunteerRegistration)
+                            volunteerOpportunityCompleteAddress(volunteerRegistration)
                             }}</span
                           >
                         </div>
+                      </div>
+                      <div class="row ps-3">
                         <div class="col-lg-6 col-sm-6 text-truncate">
                           <i class="bi bi-puzzle-fill text-warning"> </i>
                           <span class="text-dark text-truncate">
                             Data:
                             {{
-                              volunteerRegistration.opportunity.opportunityDate
-                                | date : "shortDate"
+                            volunteerRegistration.opportunity.opportunityDate
+                              | date : "short"
                             }}</span
                           >
                         </div>
@@ -104,12 +91,14 @@
                       <div class="row ps-3">
                         <div class="col-lg-4 col-sm-6 text-truncate">
                           <i class="bi bi-telephone-fill text-success" title=""
-                            ><span class="text-dark"> Fone: </span>
+                          ><span
+                            class="text-dark"> Fone: {{ volunteerRegistration.opportunity.institution.telephone }}</span>
                           </i>
                         </div>
                         <div class="col-lg-4 col-sm-6 text-truncate">
                           <i class="bi bi-envelope-at-fill text-info"> </i>
-                          <span class="text-dark"> Email: </span>
+                          <span
+                            class="text-dark"> Email: {{ volunteerRegistration.opportunity.institution.email }}</span>
                         </div>
                         <div class="col-lg-4 col-sm-6 text-truncate">
                           <i class="bi bi-check-square-fill text-info"> </i>
@@ -134,9 +123,264 @@
                 </li>
               </ul>
             </div>
+            <div class="tab-pane fade show" [class.active]="activeTab === 1">
+              <ul class="applications">
+                <li *ngFor="let volunteerRegistration of filterRegistrationsByStatus('PENDING')" class="volunteer">
+                  <div class="thumb">
+                    <img
+                      [src]="
+                        convertBase64ToPhotoUrl(
+                          volunteerRegistration.opportunity.photo
+                        )
+                      "
+                      alt=""
+                    />
+                  </div>
+                  <div class="description">
+                    <div class="row">
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <h4>{{ volunteerRegistration.opportunity.description }}</h4>
+                      </div>
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <p class="" style="font-size: 0.8em">
+                          Organizadores:
+                          {{
+                          volunteerRegistration.opportunity.institution.name
+                          }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="row ps-3">
+                        <div class="col-lg-5 col-sm-6 text-truncate">
+                          <i class="bi bi-geo-alt-fill text-danger"></i>
+                          <span class="text-dark text-truncate">
+                            Local:
+                            {{
+                            volunteerOpportunityAddress(volunteerRegistration)
+                            }}</span
+                          >
+                        </div>
+                        <div class="col-lg-6 col-sm-6 text-truncate">
+                          <i class="bi bi-puzzle-fill text-warning"> </i>
+                          <span class="text-dark text-truncate">
+                            Data:
+                            {{
+                            volunteerRegistration.opportunity.opportunityDate
+                              | date : "short"
+                            }}</span
+                          >
+                        </div>
+                      </div>
+                      <div class="row ps-3">
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-telephone-fill text-success" title=""
+                          ><span
+                            class="text-dark"> Fone: {{ volunteerRegistration.opportunity.institution.telephone }}</span>
+                          </i>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-envelope-at-fill text-info"> </i>
+                          <span
+                            class="text-dark"> Email: {{ volunteerRegistration.opportunity.institution.email }}</span>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-check-square-fill text-info"> </i>
+                          <span class="text-dark"> Status: </span>
+                          {{ registrationStatus(volunteerRegistration) }}
+                        </div>
+                      </div>
+                      <!-- <div class="action-buttons my-4">
+                        <div class="row">
+                          <div class="col-6 col-lg-9">
+                            <button class="btn btn-outline-danger">
+                              Recusar
+                            </button>
+                          </div>
+                          <div class="col-2 col-lg-2">
+                            <button class="btn btn-primary">Aceitar</button>
+                          </div>
+                        </div>
+                      </div> -->
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="tab-pane fade show" [class.active]="activeTab === 2">
+              <ul class="applications">
+                <li *ngFor="let volunteerRegistration of filterRegistrationsByStatus('DENIED')" class="volunteer">
+                  <div class="thumb">
+                    <img
+                      [src]="
+                        convertBase64ToPhotoUrl(
+                          volunteerRegistration.opportunity.photo
+                        )
+                      "
+                      alt=""
+                    />
+                  </div>
+                  <div class="description">
+                    <div class="row">
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <h4>{{ volunteerRegistration.opportunity.description }}</h4>
+                      </div>
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <p class="" style="font-size: 0.8em">
+                          Organizadores:
+                          {{
+                          volunteerRegistration.opportunity.institution.name
+                          }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="row ps-3">
+                        <div class="col-lg-5 col-sm-6 text-truncate">
+                          <i class="bi bi-geo-alt-fill text-danger"></i>
+                          <span class="text-dark text-truncate">
+                            Local:
+                            {{
+                            volunteerOpportunityAddress(volunteerRegistration)
+                            }}</span
+                          >
+                        </div>
+                        <div class="col-lg-6 col-sm-6 text-truncate">
+                          <i class="bi bi-puzzle-fill text-warning"> </i>
+                          <span class="text-dark text-truncate">
+                            Data:
+                            {{
+                            volunteerRegistration.opportunity.opportunityDate
+                              | date : "short"
+                            }}</span
+                          >
+                        </div>
+                      </div>
+                      <div class="row ps-3">
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-telephone-fill text-success" title=""
+                          ><span
+                            class="text-dark"> Fone: {{ volunteerRegistration.opportunity.institution.telephone }}</span>
+                          </i>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-envelope-at-fill text-info"> </i>
+                          <span
+                            class="text-dark"> Email: {{ volunteerRegistration.opportunity.institution.email }}</span>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-check-square-fill text-info"> </i>
+                          <span class="text-dark"> Status: </span>
+                          {{ registrationStatus(volunteerRegistration) }}
+                        </div>
+                      </div>
+                      <!-- <div class="action-buttons my-4">
+                        <div class="row">
+                          <div class="col-6 col-lg-9">
+                            <button class="btn btn-outline-danger">
+                              Recusar
+                            </button>
+                          </div>
+                          <div class="col-2 col-lg-2">
+                            <button class="btn btn-primary">Aceitar</button>
+                          </div>
+                        </div>
+                      </div> -->
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="tab-pane fade show" [class.active]="activeTab === 3">
+              <ul class="applications">
+                <li *ngFor="let volunteerRegistration of filterRegistrationsByStatus('CANCELED')" class="volunteer">
+                  <div class="thumb">
+                    <img
+                      [src]="
+                        convertBase64ToPhotoUrl(
+                          volunteerRegistration.opportunity.photo
+                        )
+                      "
+                      alt=""
+                    />
+                  </div>
+                  <div class="description">
+                    <div class="row">
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <h4>{{ volunteerRegistration.opportunity.description }}</h4>
+                      </div>
+                      <div class="col-lg-6 col-sm-12 text-truncate">
+                        <p class="" style="font-size: 0.8em">
+                          Organizadores:
+                          {{
+                          volunteerRegistration.opportunity.institution.name
+                          }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="row ps-3">
+                        <div class="col-lg-5 col-sm-6 text-truncate">
+                          <i class="bi bi-geo-alt-fill text-danger"></i>
+                          <span class="text-dark text-truncate">
+                            Local:
+                            {{
+                            volunteerOpportunityAddress(volunteerRegistration)
+                            }}</span
+                          >
+                        </div>
+                        <div class="col-lg-6 col-sm-6 text-truncate">
+                          <i class="bi bi-puzzle-fill text-warning"> </i>
+                          <span class="text-dark text-truncate">
+                            Data:
+                            {{
+                            volunteerRegistration.opportunity.opportunityDate
+                              | date : "short"
+                            }}</span
+                          >
+                        </div>
+                      </div>
+                      <div class="row ps-3">
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-telephone-fill text-success" title=""
+                          ><span
+                            class="text-dark"> Fone: {{ volunteerRegistration.opportunity.institution.telephone }}</span>
+                          </i>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-envelope-at-fill text-info"> </i>
+                          <span
+                            class="text-dark"> Email: {{ volunteerRegistration.opportunity.institution.email }}</span>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 text-truncate">
+                          <i class="bi bi-check-square-fill text-info"> </i>
+                          <span class="text-dark"> Status: </span>
+                          {{ registrationStatus(volunteerRegistration) }}
+                        </div>
+                      </div>
+                      <!-- <div class="action-buttons my-4">
+                        <div class="row">
+                          <div class="col-6 col-lg-9">
+                            <button class="btn btn-outline-danger">
+                              Recusar
+                            </button>
+                          </div>
+                          <div class="col-2 col-lg-2">
+                            <button class="btn btn-primary">Aceitar</button>
+                          </div>
+                        </div>
+                      </div> -->
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>

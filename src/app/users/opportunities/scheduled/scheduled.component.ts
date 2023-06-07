@@ -19,6 +19,10 @@ interface Agendado {
 })
 export class ScheduledComponent implements OnInit {
 
+  activeTab: number = 0; // To keep track of the active tab
+  isLoading: boolean = true; // Flag to track loading state
+
+
   volunteerRegistrations: VolunteerRegistration[] = [];
 
   pageNumber = 1;
@@ -39,6 +43,12 @@ export class ScheduledComponent implements OnInit {
     this.pageNumber += 1;
 
     this.loadOpportunities();
+  }
+
+  volunteerOpportunityCompleteAddress(volunteerRegistration: VolunteerRegistration) {
+    const address = volunteerRegistration.opportunity.address;
+
+    return`${address.street},  ${address.number} - ${address.neighborhood} - (${address.city} - ${address.state})`
   }
 
   volunteerOpportunityAddress(volunteerRegistration: VolunteerRegistration) {
@@ -62,9 +72,14 @@ export class ScheduledComponent implements OnInit {
     }
   }
 
-
+  filterRegistrationsByStatus(status: string) {
+    return this.volunteerRegistrations.filter(
+      registration => registration.status === status && new Date(registration.opportunity.opportunityDate) > new Date()
+    );
+  }
 
   private loadOpportunities() {
+    this.isLoading = true; // Flag to track loading state
     const currentUser = this.accessService.getCurrentUser();
 
     this.candidateService
@@ -143,9 +158,11 @@ export class ScheduledComponent implements OnInit {
             } else {
               this.volunteerRegistrations.push(...page.data);
             }
+            this.isLoading = false;
           }
         }
       });
+
   }
 
   convertBase64ToPhotoUrl(photoBase64: string) {
