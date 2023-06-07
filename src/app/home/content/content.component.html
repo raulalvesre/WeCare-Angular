@@ -4,7 +4,7 @@
 <div class="content">
   <div class="container">
     <div id="">
-      <div class="text-center text-lg-start" *ngIf="shouldShowRecommendedOpportunities">
+      <div class="text-center text-lg-start" *ngIf="userIsCandidate">
         <h3>Vagas Recomendadas pra Você</h3>
         <app-card-slider-alt [volunteerOpportunities]="recommendedOpportunities" [userRole]="userRole"></app-card-slider-alt>
       </div>

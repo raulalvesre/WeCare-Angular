@@ -26,9 +26,9 @@
                     <h5 class="fw-bold">Descrição da Oportunidade:</h5>
                     <p>{{ volunteerOpportunity.description }}</p>
                   </div>
-                  <div>
+                  <div *ngIf="volunteerOpportunity.desirableQualifications.length > 0">
                     <h5 class="fw-bold">Habilidades Desejadas:</h5>
-                    <p>{{ volunteerOpportunity.description }}</p>
+                    <p>{{  volunteerOpportunity.desirableQualifications }}</p>
                   </div>
                 </div>
 
@@ -118,7 +118,8 @@
               <button
                 type="button"
                 class="btn btn-primary container-special"
-                (click)="modal.close('Close click')"
+                [disabled]="volunteerOpportunity.isCandidateRegistered"
+                (click)="registerToOpportunity($event, volunteerOpportunity)"
                 *ngIf="userRole != 'UNKNOW'"
               >
                 Participar
@@ -191,7 +192,7 @@
                 </i>
               </div>
             </div>
-            
+
             <div class="row justify-content-center">
               <div class="col-6">
                 <button class="button" (click)="openXl(contentModal)">
@@ -199,7 +200,11 @@
                 </button>
               </div>
               <div class="col-6" *ngIf="userRole != 'UNKNOW'">
-                <button class="button">Participar</button>
+                <button class="button"
+                        [disabled]="volunteerOpportunity.isCandidateRegistered"
+                        (click)="registerToOpportunity($event, volunteerOpportunity)">
+                  Participar
+                </button>
               </div>
             </div>
           </div>

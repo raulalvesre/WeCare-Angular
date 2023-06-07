@@ -26,9 +26,9 @@
                     <h5 class="fw-bold">Descrição da Oportunidade:</h5>
                     <p>{{ volunteerOpportunity.description }}</p>
                   </div>
-                  <div>
+                  <div *ngIf="volunteerOpportunity.desirableQualifications.length > 0">
                     <h5 class="fw-bold">Habilidades Desejadas:</h5>
-                    <p>{{ volunteerOpportunity.description }}</p>
+                    <p>{{  volunteerOpportunity.desirableQualifications }}</p>
                   </div>
                 </div>
 
@@ -58,10 +58,12 @@
 
               <div class="row p-3">
                 <div class="col-sm-6">
-                  <div class="fw-bold">Publicado por: </div>{{ volunteerOpportunity.institution.name }}
+                  <div class="fw-bold">Publicado por:</div>
+                  {{ volunteerOpportunity.institution.name }}
                 </div>
                 <div class="col-sm-6">
-                  <div class="fw-bold">Publicado em: </div>{{ volunteerOpportunity.creationDate | date : "dd/MM/yyyy"}}
+                  <div class="fw-bold">Publicado em:</div>
+                  {{ volunteerOpportunity.creationDate | date : "dd/MM/yyyy"}}
                 </div>
               </div>
 
@@ -78,7 +80,7 @@
                     </i>
                     <span class="text-dark fw-bold"> Data: </span>
                     {{
-                      volunteerOpportunity.opportunityDate | date : "dd/MM/yyyy"
+                    volunteerOpportunity.opportunityDate | date : "dd/MM/yyyy"
                     }}
                   </div>
                 </div>
@@ -119,7 +121,8 @@
               <button
                 type="button"
                 class="btn btn-primary container-special"
-                (click)="modal.close('Close click')"
+                [disabled]="volunteerOpportunity.isCandidateRegistered"
+                (click)="registerToOpportunity($event, volunteerOpportunity)"
                 *ngIf="userRole != 'UNKNOW'"
               >
                 Participar
@@ -158,11 +161,11 @@
                   title="{{
                     volunteerOpportunity.opportunityDate | date : 'dd/MM/yyyy'
                   }}"
-                  ><span class="text-dark">
+                ><span class="text-dark">
                     {{
-                      volunteerOpportunity.opportunityDate | date : "dd/MM/yyyy"
-                    }}</span
-                  >
+                  volunteerOpportunity.opportunityDate | date : "dd/MM/yyyy"
+                  }}</span
+                >
                 </i>
               </div>
             </div>
@@ -173,10 +176,10 @@
                   title="{{ volunteerOpportunity.address.city }} - {{
                     volunteerOpportunity.address.state
                   }}"
-                  ><span class="text-dark"
-                    >{{ volunteerOpportunity.address.city }} -
-                    {{ volunteerOpportunity.address.state }}</span
-                  >
+                ><span class="text-dark"
+                >{{ volunteerOpportunity.address.city }} -
+                  {{ volunteerOpportunity.address.state }}</span
+                >
                 </i>
               </div>
             </div>
@@ -185,13 +188,13 @@
                 <i
                   class="bi bi-bookmark-heart text-success"
                   title="Causa(s): {{ volunteerOpportunity.causes }}"
-                  ><span class="text-dark text-start">{{
-                    volunteerOpportunity.causes
+                ><span class="text-dark text-start">{{
+                  volunteerOpportunity.causes
                   }}</span>
                 </i>
               </div>
             </div>
-            
+
             <div class="row justify-content-center">
               <div class="col-6">
                 <button
@@ -202,7 +205,11 @@
                 </button>
               </div>
               <div class="col-6">
-                <button class="button">Participar</button>
+                <button class="button participate-btn-not-modal"
+                        [disabled]="volunteerOpportunity.isCandidateRegistered"
+                        (click)="registerToOpportunity($event, volunteerOpportunity)">
+                  Participar
+                </button>
               </div>
             </div>
           </div>

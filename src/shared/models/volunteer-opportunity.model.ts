@@ -12,6 +12,8 @@ export interface VolunteerOpportunity {
   address: Address;
   creationDate: Date;
   causes: string[];
+  desirableQualifications: string[];
+  isCandidateRegistered: boolean;
 
   collapseDescription: boolean;
 }

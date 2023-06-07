@@ -32,6 +32,7 @@ export class VolunteerOpportunityService {
     finalDate = null,
     orderBy = null,
     orderDirection = null,
+    candidateNotRegistered = null
   }): Observable<Page<VolunteerOpportunity[]>> {
     const token = this.accessService.getToken();
 
@@ -67,6 +68,10 @@ export class VolunteerOpportunityService {
 
     if (orderDirection != null) {
       parameters = parameters.append('orderDirection', orderDirection);
+    }
+
+    if (candidateNotRegistered != null) {
+      parameters = parameters.append('candidateNotRegistered', candidateNotRegistered);
     }
 
     return this.httpClient

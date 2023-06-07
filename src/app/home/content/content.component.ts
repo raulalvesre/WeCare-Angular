@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { VolunteerOpportunity } from 'src/shared/models/volunteer-opportunity.model';
-import { AccessService } from 'src/shared/services/access.service';
-import { CandidateService } from 'src/shared/services/candidate.service';
-import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
+import {Component} from '@angular/core';
+import {VolunteerOpportunity} from 'src/shared/models/volunteer-opportunity.model';
+import {AccessService} from 'src/shared/services/access.service';
+import {CandidateService} from 'src/shared/services/candidate.service';
+import {VolunteerOpportunityService} from 'src/shared/services/volunteer-opportunity.service';
 
 @Component({
   selector: 'app-content',
@@ -11,7 +11,7 @@ import { VolunteerOpportunityService } from 'src/shared/services/volunteer-oppor
 })
 export class ContentComponent {
 
-  shouldShowRecommendedOpportunities: boolean;
+  userIsCandidate: boolean;
   recommendedOpportunities: VolunteerOpportunity[];
   latestOpportunities: VolunteerOpportunity[];
   userRole: string;
@@ -21,13 +21,21 @@ export class ContentComponent {
     private accessService: AccessService,
     private opportunityService: VolunteerOpportunityService
   ) {
-    this.shouldShowRecommendedOpportunities = accessService.getCurrentUser()?.role === 'CANDIDATE';
+    this.userIsCandidate = accessService.getCurrentUser()?.role === 'CANDIDATE';
 
-    if (this.shouldShowRecommendedOpportunities) {
+    if (!this.userIsCandidate) {
+      opportunityService.search({
+        'orderBy': 'CreationDate',
+        'orderDirection': 'Descending'
+      }).subscribe(ops => this.latestOpportunities = ops.data)
+    } else {
       candidateService.getCandidateRecomendedOpportunities().subscribe(ops => this.recommendedOpportunities = ops.data)
+      opportunityService.search({
+        'candidateNotRegistered': accessService.getCurrentUser().id,
+        'orderBy': 'CreationDate',
+        'orderDirection': 'Descending'
+      }).subscribe(ops => this.latestOpportunities = ops.data)
     }
-
-    opportunityService.search({ 'orderBy': 'CreationDate', 'orderDirection': 'Descending' }).subscribe(ops => this.latestOpportunities = ops.data)
   }
 
   ngOnInit(): void {
