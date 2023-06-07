@@ -189,41 +189,41 @@
               <!--                  </button>-->
               <!--                </div>-->
               <div class="col-6">
-                <button class="btn btn-sm btn-primary">Convidar</button>
+                <button class="btn btn-sm btn-primary" (click)="openInviteModal()">Convidar</button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- <div class="">
-          <div class="">
-            <div class="">
-              <p
-                class="card-text mb-0 badge rounded-pill fs-6 text-bg-warning text-light text-start"
-              >
-                <span class="bi bi-calendar"></span>&nbsp;{{
-                  volunteerOpportunity.opportunityDate | date : "mediumDate"
-                }}
-              </p>
-            </div>
-
-            <div class="d-flex flex-column mb-4">
-              <p
-                class="badge rounded-pill fs-6 text-bg-info text-light my-1 text-nowrap overflow-hidden text-start"
-                style="text-overflow: ellipsis"
-                title="{{ volunteerOpportunity.address?.neighborhood }} | {{
-                  volunteerOpportunity.address?.city
-                }}, {{ volunteerOpportunity.address?.state }}"
-              >
-                <span class="bi bi-geo-alt-fill"></span>
-                {{ volunteerOpportunity.address?.neighborhood }} |
-                {{ volunteerOpportunity.address?.city }},
-                {{ volunteerOpportunity.address?.state }}
-              </p>
-            </div>
-            <div class="d-flex justify-content-end"></div>
+        <ng-template #inviteModal let-modal>
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title2">
+              Convidar para vagas
+            </h4>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            ></button>
           </div>
-        </div> -->
+          <div class="modal-body">
+            <div class="mb-3">
+              <form [formGroup]="whichOpportunityToInviteForm">
+
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="inviteCandidate(modal)"
+            >
+              Convidar
+            </button>
+          </div>
+        </ng-template>
 
       </section>
 

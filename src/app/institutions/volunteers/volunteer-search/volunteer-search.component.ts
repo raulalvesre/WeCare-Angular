@@ -31,6 +31,8 @@ export class VolunteerSearchComponent implements OnInit {
   federativeUnits: FederativeUnit[] = [];
   selectedFederativeUnits: FederativeUnit[] = [];
 
+  whichOpportunityToInviteForm: FormGroup;
+
 
   pageNumber = 1;
   pageSize = 10;
@@ -153,6 +155,14 @@ export class VolunteerSearchComponent implements OnInit {
     console.log(photoBase64)
     const photoExtension = this.fileService.fileExtension(photoBase64);
     return `data:image/${photoExtension};base64,${photoBase64}`;
+  }
+
+  inviteCandidate(modal: any) {
+
+  }
+
+  openInviteModal() {
+
   }
 }
 
