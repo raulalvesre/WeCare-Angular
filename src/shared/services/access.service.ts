@@ -8,6 +8,8 @@ import { AccessCredential } from '../models/login.model';
 import { JwtToken } from '../models/token.model';
 import { UserRegistration } from '../models/user-registration.model';
 import { User } from '../models/user.model';
+import {Router} from "@angular/router";
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,7 @@ export class AccessService {
   private readonly emailKey = 'email';
   private readonly userRoleKey = 'role';
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private router: Router, private location: Location) {
     this.loginSubject = new BehaviorSubject(localStorage.getItem(this.tokenStorageKey) != null);
   }
 
@@ -55,6 +57,9 @@ export class AccessService {
 
   logout() {
     localStorage.clear();
+    this.router.navigateByUrl('/home', { skipLocationChange: true }).then(() => {
+      window.location.reload();
+    });
   }
 
   activateAccount(token: string): Observable<HttpResponse<any>> {
