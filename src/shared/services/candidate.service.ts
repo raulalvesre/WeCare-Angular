@@ -9,6 +9,7 @@ import { Candidate } from '../models/candidate.model';
 import { Institution } from '../models/institution.model';
 import { VolunteerOpportunity } from '../models/volunteer-opportunity.model';
 import { InstitutionService } from './institution.service';
+import {CandidateSearchParams} from "../models/candidate-search-params.model";
 
 @Injectable({
   providedIn: 'root'
@@ -89,6 +90,22 @@ export class CandidateService {
         });
   }
 
+  search(searchParams: CandidateSearchParams): Observable<Page<Candidate[]>> {
+    let params = new HttpParams();
+
+    for (const key in searchParams) {
+      if (searchParams.hasOwnProperty(key) && searchParams[key] !== undefined && searchParams[key] !== null) {
+        params = params.append(key, searchParams[key].toString());
+      }
+    }
+
+    return this.httpClient
+      .get<Page<Candidate[]>>(
+        `${this.apiUrl}/api/candidate/search?` + params.toString(),
+        {
+        });
+  }
+
   searchPendingRegistrations({
     candidateId,
     pageNumber = 1,
@@ -156,4 +173,5 @@ export class CandidateService {
           headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
         });
   }
+
 }
