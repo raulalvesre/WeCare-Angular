@@ -3,14 +3,17 @@
 >
   <div class="container">
     <!-- Icone -->
-    <a routerLink="{{ userMenuType != 'INSTITUTION'? '/home' : '/opportunities-institution' }}" class="nav-link">
+    <a
+      routerLink="{{
+        userMenuType != 'INSTITUTION' ? '/home' : '/opportunities-institution'
+      }}"
+      class="nav-link"
+    >
       <img
-        src="../../../assets/img/logo-footer-no-slogan.png"
+        src="/assets/img/logo-footer-no-slogan.png"
         width="112"
         alt="Logo da WeCare "
-      /><span
-        class="d-inline-block text-white "
-        style="padding-left: 25px"
+      /><span class="d-inline-block text-white" style="padding-left: 25px"
         >Mudando vidas, juntos!</span
       >
     </a>
@@ -35,10 +38,10 @@
       id="mainMenu"
     >
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item" *ngIf="userMenuType != 'INSTITUTION'" >
+        <li class="nav-item" *ngIf="userMenuType != 'INSTITUTION'">
           <a
             href="/home"
-            class="nav-link "
+            class="nav-link"
             routerLink="/home"
             routerLinkActive="active"
             (click)="isMenuCollapsed = true"
@@ -48,7 +51,7 @@
         <li class="nav-item">
           <a
             href="/about"
-            class="nav-link "
+            class="nav-link"
             routerLink="/about"
             routerLinkActive="active"
             (click)="isMenuCollapsed = true"
@@ -62,7 +65,7 @@
         <li class="nav-item" *ngIf="userMenuType == 'UNKNOW'">
           <a
             href="/login"
-            class="nav-link "
+            class="nav-link"
             routerLink="/login"
             routerLinkActive="active"
             (click)="isMenuCollapsed = true"
@@ -74,7 +77,7 @@
         <li class="nav-item" *ngIf="userMenuType == 'CANDIDATE'">
           <a
             href="/opportunities"
-            class="nav-link "
+            class="nav-link"
             routerLink="/opportunities"
             routerLinkActive="active"
             (click)="isMenuCollapsed = true"
@@ -132,14 +135,22 @@
                 Perfil
               </a>
               <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="row">
-                <div class="img_profile col align-items-center">
+                <div
+                  *ngIf="currentCandidate"
+                  class="img_profile col align-items-center"
+                >
                   <img
+                    *ngIf="currentCandidate.photo?.length > 0"
                     class="mx-auto"
-                    src="../../../assets/img/i-devs.png"
-                    alt=""
+                    [src]="
+                      imageService.convertBase64ToPhotoUrl(
+                        currentCandidate.photo
+                      )
+                    "
+                    alt="Foto do perfil"
                   />
-                  <div class="text-center">
-                    <p>User Name</p>
+                  <div class="text-center fw-bold">
+                    {{ currentCandidate.name }}
                   </div>
                 </div>
                 <hr />
@@ -147,72 +158,102 @@
                   href="/user-profile"
                   class=""
                   routerLinkActive="active"
-                  (click)="isMenuCollapsed = true"
                   ngbDropdownItem
-                  >Editar</a
+                  >Editar perfil</a
                 >
-                <a class="" (click)="sair()" ngbDropdownItem>Sair</a>
+                <a style="cursor: pointer" (click)="sair()" ngbDropdownItem
+                  >Sair</a
+                >
               </div>
             </div>
           </div>
         </li>
 
         <!-- Identificado como instituição -->
-        <li class="nav-item" *ngIf="userMenuType == 'INSTITUTION'">
-          <a
-            href="/volunteer-search"
-            class="nav-link"
-            routerLink="/volunteer-search"
-            routerLinkActive="active"
-            (click)="isMenuCollapsed = true"
-            >Pesquisar Voluntários</a
-          >
-        </li>
-        <li class="nav-item" *ngIf="userMenuType == 'INSTITUTION'">
-          <a
-            href="/opportunities-institution"
-            class="nav-link"
-            routerLink="/opportunities-institution"
-            routerLinkActive="active"
-            (click)="isMenuCollapsed = true"
-            >Oportunidades</a
-          >
-        </li>
-        <li class="nav-item dropdown" *ngIf="userMenuType == 'INSTITUTION'">
-          <div class="col">
-            <div ngbDropdown class="d-inline-block">
-              <a
-                class="nav-link dropdown-toggle"
-                id="dropdownBasic1"
-                ngbDropdownToggle
-              >
-                Perfil
-              </a>
-              <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="row">
-                <div class="img_profile col align-items-center">
-                  <img
-                    class="mx-auto"
-                    src="../../../assets/img/i-devs.png"
-                    alt=""
-                  />
-                  <div class="text-center">
-                    <p>User Name</p>
-                  </div>
-                </div>
-                <hr />
+        <div class="d-flex flex-row" *ngIf="userMenuType == 'INSTITUTION'">
+          <!-- <li class="nav-item">
+            <a
+              href="/volunteer-search"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Pesquisar Voluntários</a
+            >
+          </li> -->
+          <li class="nav-item">
+            <a
+              href="/opportunities-institution"
+              class="nav-link font-weight-bold"
+              routerLinkActive="active"
+              >Oportunidades</a
+            >
+          </li>
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Oportunidades
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a routerLink="/opportunities-institution"
+                class="nav-link"
+                routerLinkActive="active">
+                  Adicionar
+                </a>
+              </li>
+              <li><a class="dropdown-item" href="#">Editar</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Oportunidades Listadas</a></li>
+            </ul>
+          </li> -->
+          <li class="nav-item dropdown">
+            <div class="col">
+              <div ngbDropdown class="d-inline-block">
                 <a
-                  href="/institution-profile"
-                  class=""
-                  routerLinkActive="active"
-                  (click)="isMenuCollapsed = true"
-                  ngbDropdownItem
-                  >Editar</a
+                  class="nav-link dropdown-toggle"
+                  id="dropdownBasic1"
+                  ngbDropdownToggle
                 >
-                <a class="" (click)="sair()" ngbDropdownItem>Sair</a>
+                  Perfil
+                </a>
+                <div
+                  ngbDropdownMenu
+                  aria-labelledby="dropdownBasic1"
+                  class="row"
+                >
+                  <div
+                    *ngIf="currentInstitution"
+                    class="img_profile col align-items-center"
+                  >
+                    <img
+                      *ngIf="currentInstitution.photo?.length > 0"
+                      class="mx-auto"
+                      [src]="
+                        imageService.convertBase64ToPhotoUrl(
+                          currentInstitution.photo
+                        )
+                      "
+                      alt="Foto do perfil"
+                    />
+                    <div class="text-center fw-bold">
+                      {{ currentInstitution.name }}
+                    </div>
+                  </div>
+                  <hr />
+                  <a
+                    href="/institution-profile"
+                    class=""
+                    routerLinkActive="active"
+                    ngbDropdownItem
+                    >Editar</a
+                  >
+                  <a style="cursor: pointer" (click)="sair()" ngbDropdownItem
+                    >Sair</a
+                  >
+                </div>
+                
               </div>
             </div>
-          </div>
-        </li>
+          </li>
+        </div>
 
         <!-- Identificado como adm -->
         <div class="d-flex flex-row" *ngIf="userMenuType == 'ADM'">

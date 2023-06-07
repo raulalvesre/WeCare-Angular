@@ -1,6 +1,6 @@
-import {OpportunityCause} from "./opportunity-cause.model";
-import {Qualification} from "./qualification.model";
-import {Address} from "./address.model";
+import { Address } from "./address.model";
+import { OpportunityCause } from "./opportunity-cause.model";
+import { Qualification } from "./qualification.model";
 
 export interface Candidate {
   id: number;
@@ -8,11 +8,12 @@ export interface Candidate {
   name: string;
   telephone: string;
   bio: string;
-  photo: string;
+  photo?: string;
   linkedIn: string;
   address: Address;
   cpf: string;
   birthDate: string;
-  qualifications: Qualification[];
-  causesCandidateIsInterestedIn: OpportunityCause[];
+  qualificationsIds?: number[];
+  qualifications?: Qualification[];
+  causesCandidateIsInterestedIn?: OpportunityCause[] | number[];
 }

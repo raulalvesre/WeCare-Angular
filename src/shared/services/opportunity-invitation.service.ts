@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {OpportunityInvitation} from '../models/opportunity-invitation.model';
 import {environment} from 'src/environments/environment';
 import {Page} from '../models/page.model';
-import {Observable, tap} from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 import {VolunteerOpportunityService} from './volunteer-opportunity.service';
 import {AccessService} from './access.service';
 import {InstitutionService} from "./institution.service";
@@ -24,11 +24,11 @@ export class OpportunityInvitationService {
   }
 
   searchInvites({
-                  candidateId,
-                  opportunityId,
-                  pageNumber = 1,
-                  pageSize = 10,
-                }: {
+    candidateId,
+    opportunityId,
+    pageNumber = 1,
+    pageSize = 10,
+  }: {
     candidateId?: number,
     opportunityId?: number,
     pageNumber?: number,
@@ -58,16 +58,16 @@ export class OpportunityInvitationService {
             const opportunityInvitations = page.data;
 
             for (const opportunityInvitation of opportunityInvitations) {
-              this.volunteerOpportunityService.searchById({volunteerOpportunityId: opportunityInvitation.opportunityId})
-                .subscribe({
-                  next: volunteerOpportunity => {
-                    this.institutionService.get(volunteerOpportunity.institutionId)
-                      .subscribe(institution => {
-                          volunteerOpportunity.institution = institution;
-                          opportunityInvitation.opportunity = volunteerOpportunity
-                        }
-                      )
-                  }
+              this.volunteerOpportunityService.searchById({ volunteerOpportunityId: opportunityInvitation.opportunityId })
+                .pipe(
+                  switchMap(volunteerOpportunity => {
+                    opportunityInvitation.opportunity = volunteerOpportunity;
+
+                    return this.institutionService.get(volunteerOpportunity.institutionId)
+                  }),
+                )
+                .subscribe(institution => {
+                  opportunityInvitation.opportunity.institution = institution;
                 });
             }
           }

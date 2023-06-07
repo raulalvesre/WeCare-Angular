@@ -3,84 +3,214 @@
     <div class="col-lg-8">
       <div class="container border border-1 rounded-4 p-4">
         <div class="">
-          <h3 class="text-start">Voluntários Inscritos</h3>
+          <h3 class="text-start">Voluntários</h3>
         </div>
         <p>
           Aqui você encontra a relação de voluntários inscritos para vaga
-          <span class="fw-bold fst-italic">{{ volunteerOpportunity.name }}</span
+          <span class="fw-bold fst-italic">{{
+            volunteerOpportunity?.name
+          }}</span
           >.
-        </p>        
+        </p>
 
-        <ul class="applications">
-          <li class="volunteer">
-            <div class="thumb">
-              <img src="./../../../../assets/img/picofme.png" />
-            </div>
-            <div class="description">
-              <h4>Christiano</h4>
-              <div>
-                <p class="">
-                  {{ volunteerOpportunity.description }}
-                </p>
-                <br />
-                <div class="row mt-3 ps-3">
-                  <div class="col-lg-5 col-sm-6 text-truncate">
-                    <i
-                      class="bi bi-geo-alt-fill text-danger"
-                      title="{{ volunteerOpportunity.address.city }} - {{
-                        volunteerOpportunity.address.state
-                      }}"
-                      ><span class="text-dark">
-                        Reside em: {{ volunteerOpportunity.address.city }} -
-                        {{ volunteerOpportunity.address.state }}</span
-                      >
-                    </i>
-                  </div>
-                  <div class="col-lg-6 col-sm-6 text-truncate">
-                    <i class="bi bi-puzzle-fill text-warning">
-                      <span class="text-dark text-truncate"
-                        >Principais habilidades:
-                      </span></i
-                    >
-                  </div>
-                </div>
-                <div class="row ps-3">
-                  <div class="col-lg-4 col-sm-6 text-truncate">
-                    <i
-                      class="bi bi-telephone-fill text-success"
-                      title="{{ volunteerOpportunity.address.city }} - {{
-                        volunteerOpportunity.address.state
-                      }}"
-                      ><span class="text-dark"> Fone: </span>
-                    </i>
-                  </div>
-                  <div class="col-lg-4 col-sm-6 text-truncate">
-                    <i class="bi bi-envelope-at-fill text-info"
-                      ><span class="text-dark"> Email: </span>
-                    </i>
-                  </div>
-                  <div class="col-lg-4 col-sm-6 text-truncate">
-                    <i class="bi bi-linkedin text-primary"> :</i>
-                    <span class="text-dark">
-                      <a href="" target="_blank"> LinkedIn</a></span
-                    >
-                  </div>
-                </div>
-                <div class="action-buttons my-4">
-                  <div class="row">
-                    <div class="col-6 col-lg-9">
-                      <button class="btn btn-outline-danger">
-                        Recusar
-                      </button>
+        <ul class="nav nav-tabs">
+          <li class="nav-item" style="cursor: pointer">
+            <a
+              class="nav-link"
+              [ngClass]="{ active: currentRegistrationStatus == 'PENDING' }"
+              (click)="changeRegistrationStatus('PENDING')"
+              >Pendente</a
+            >
+          </li>
+          <li class="nav-item" style="cursor: pointer">
+            <a
+              class="nav-link"
+              [ngClass]="{ active: currentRegistrationStatus == 'ACCEPTED' }"
+              (click)="changeRegistrationStatus('ACCEPTED')"
+              >Aceito</a
+            >
+          </li>
+          <li class="nav-item" style="cursor: pointer">
+            <a
+              class="nav-link"
+              [ngClass]="{ active: currentRegistrationStatus == 'DENIED' }"
+              (click)="changeRegistrationStatus('DENIED')"
+              >Negado</a
+            >
+          </li>
+        </ul>
+
+        <div *ngIf="registrationsOpportunities?.length == 0">
+          <div class="card border-0 py-3">
+            <div class="card-body">Nenhum candidato encontrado</div>
+          </div>
+        </div>
+
+        <ul *ngIf="registrationsOpportunities?.length > 0" class="applications">
+          <ng-container
+            *ngFor="let registrationOpportunity of registrationsOpportunities"
+          >
+            <li class="volunteer">
+              <div
+                *ngIf="registrationOpportunity.candidate.photo?.length > 0"
+                class="thumb"
+              >
+                <img
+                  [src]="
+                    imageService.convertBase64ToPhotoUrl(
+                      registrationOpportunity.candidate.photo
+                    )
+                  "
+                />
+              </div>
+              <div class="description">
+                <h4>{{ registrationOpportunity.candidate.name }}</h4>
+                <div>
+                  <p>
+                    {{ registrationOpportunity.candidate.bio }}
+                  </p>
+                  <br />
+                  <div class="row mt-3 ps-3">
+                    <div class="col-12 text-truncate">
+                      <i
+                        class="bi bi-geo-alt-fill text-danger"
+                        title="{{ volunteerOpportunity.address.city }} - {{
+                          volunteerOpportunity.address.state
+                        }}"
+                        ><span class="text-dark">
+                          Reside em:
+                          {{
+                            registrationOpportunity.candidate.address
+                              .neighborhood
+                          }},
+                          {{ registrationOpportunity.candidate.address.city }} -
+                          {{
+                            registrationOpportunity.candidate.address.state
+                          }}</span
+                        >
+                      </i>
                     </div>
-                    <div class="col-2  col-lg-2">
-                      <button class="btn btn-primary">Aceitar</button>
+                    <div
+                      *ngIf="
+                        registrationOpportunity.candidate?.causesInterestedIn
+                          ?.length > 0
+                      "
+                      class="col-12 text-truncate"
+                    >
+                      <span class="text-dark text-truncate"
+                        ><i class="bi bi-puzzle-fill text-warning"></i>
+                        Principais habilidades:
+                        {{
+                          causesInterestedIn(
+                            registrationOpportunity.candidate.causesInterestedIn
+                          )
+                        }}
+                      </span>
+                      <span></span>
+                    </div>
+                    <div
+                      *ngIf="
+                        registrationOpportunity.candidate?.qualifications
+                          ?.length > 0
+                      "
+                      class="col-12 text-truncate"
+                    >
+                      <span class="text-dark text-truncate"
+                        ><i class="bi bi-award"></i>
+                        Qualificações:
+                        {{
+                          qualifications(
+                            registrationOpportunity.candidate.qualifications
+                          )
+                        }}
+                      </span>
+                      <span></span>
+                    </div>
+                  </div>
+                  <div class="row ps-3">
+                    <div
+                      *ngIf="registrationOpportunity?.candidate?.telephone"
+                      class="col-lg-4 col-sm-6 text-truncate"
+                    >
+                      <i
+                        class="bi bi-telephone-fill text-success"
+                        title="{{ volunteerOpportunity.address.city }} - {{
+                          volunteerOpportunity.address.state
+                        }}"
+                        ><span class="text-dark">
+                          Telefone:
+                          {{
+                            registrationOpportunity.candidate.telephone
+                          }}</span
+                        >
+                      </i>
+                    </div>
+                    <div
+                      *ngIf="registrationOpportunity?.candidate?.email"
+                      class="col-lg-4 col-sm-6 text-truncate"
+                    >
+                      <i class="bi bi-envelope-at-fill text-info"
+                        ><span class="text-dark"
+                          >E-mail:
+                          {{ registrationOpportunity.candidate.email }}</span
+                        >
+                      </i>
+                    </div>
+                    <div
+                      *ngIf="registrationOpportunity?.candidate?.linkedin"
+                      class="col-lg-4 col-sm-6 text-truncate"
+                    >
+                      <span class="text-dark">
+                        <i class="bi bi-linkedin text-primary"></i>
+                        <a href="" target="_blank">
+                          LinkedIn:
+                          {{ registrationOpportunity.candidate.linkedin }}
+                        </a>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="action-buttons my-4">
+                    <div class="row d-flex justify-content-end pe-2">
+                      <div
+                        *ngIf="registrationOpportunity.status == 'PENDING'"
+                        class="col-12 col-lg-6"
+                      >
+                        <button
+                          (click)="denyRegistration(registrationOpportunity)"
+                          class="btn btn-outline-danger me-2"
+                        >
+                          Recusar
+                        </button>
+
+                        <button
+                          (click)="acceptRegistration(registrationOpportunity)"
+                          class="btn btn-primary"
+                        >
+                          Aceitar
+                        </button>
+                      </div>
+                      <div
+                        *ngIf="registrationOpportunity.status == 'ACCEPTED'"
+                        class="col-12 col-lg-6"
+                      >
+                        <button class="btn btn-primary" disabled>
+                          Aceitar
+                        </button>
+                      </div>
+                      <div
+                        *ngIf="registrationOpportunity.status == 'DENIED'"
+                        class="col-12 col-lg-6"
+                      >
+                        <button class="btn btn-outline-danger me-2" disabled>
+                          Recusar
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </li>
+            </li>
+          </ng-container>
         </ul>
       </div>
     </div>
@@ -91,8 +221,8 @@
         <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Procedente</button>
       </div>
     </ng-template>
-  
-  
+
+
     <ng-template #banUser let-modal>
       <div class="modal-header">
         <h4 class="modal-title" id="modal-title">Banir usuário</h4>
