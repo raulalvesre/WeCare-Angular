@@ -25,6 +25,8 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
   opportunityInvitations: OpportunityInvitation[] = [];
   currentOpportunityInvitation: OpportunityInvitation;
 
+  isLoading: boolean = false;
+
   pageNumber = 1;
   pageSize = 10;
   hasNextPage = false;
@@ -128,7 +130,7 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
 
   private loadOpportunityInvitations() {
     const currentUser = this.accessService.getCurrentUser();
-
+    this.isLoading = true;
     const candidateId = currentUser.id;
 
     this.opportunityInvitationService.searchInvites({candidateId})
@@ -147,7 +149,7 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
         }, error: error => {
           console.error(error);
         }
-      });
+      }).add(() => this.isLoading = false);
   }
 
   openInviteDetails(opportunityInvitation: OpportunityInvitation, inviteDetailsModal: NgbActiveModal) {

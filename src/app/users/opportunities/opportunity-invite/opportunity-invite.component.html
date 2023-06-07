@@ -9,11 +9,15 @@
           convidado a participar!
         </p>
 
-        <div *ngIf="opportunityInvitations.length == 0" class="text-center text-bg-warning border rounded m-5">
+        <div style="display: flex; justify-content: center" *ngIf="isLoading">
+          <div class="loader"></div>
+        </div>
+
+        <div *ngIf="opportunityInvitations.length == 0 && !isLoading" class="text-center text-bg-warning border rounded m-5">
           <p class="align-middle m-3 fw-bold">Você ainda não recebeu nenhum convite!</p>
         </div>
 
-        <div *ngIf="opportunityInvitations.length > 0">
+        <div *ngIf="opportunityInvitations.length > 0 && !isLoading">
           <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
               <a class="nav-link" [class.active]="activeTab === 0" (click)="activeTab = 0">PENDENTES</a>
