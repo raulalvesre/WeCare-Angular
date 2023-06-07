@@ -6,13 +6,13 @@
     <div id="">
       <div class="text-center text-lg-start" *ngIf="shouldShowRecommendedOpportunities">
         <h3>Vagas Recomendadas pra Você</h3>
-        <app-card-slider-alt [volunteerOpportunities]="recommendedOpportunities"></app-card-slider-alt>
+        <app-card-slider-alt [volunteerOpportunities]="recommendedOpportunities" [userRole]="userRole"></app-card-slider-alt>
       </div>
       <div class="text-center text-lg-start mt-5">
         <div>
           <h3 class="">Vagas Adicionadas Recentemente</h3>
         </div>
-        <app-card-slider [volunteerOpportunities]="latestOpportunities"></app-card-slider>
+        <app-card-slider [volunteerOpportunities]="latestOpportunities" [userRole]="userRole"></app-card-slider>
       </div>
     </div>
 

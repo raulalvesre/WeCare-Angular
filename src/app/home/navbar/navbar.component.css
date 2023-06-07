@@ -1,22 +1,27 @@
-nav.navbar-transparent{
-	background: rgba(14, 164, 233, 0.7);
+nav.navbar-transparent {
+  background: rgba(14, 164, 233, 0.7);
 }
 
-.navbar-toggler{
-	border-color: rgb(255, 255, 255, 0.5);
+.navbar-toggler {
+  border-color: rgb(255, 255, 255, 0.5);
 }
 
-.divisor{
-	width: 1px;
-	background: rgb(255, 255, 255, 0.5);
-	margin: 15px 15px;
+.divisor {
+  width: 1px;
+  background: rgb(255, 255, 255, 0.5);
+  margin: 15px 15px;
 }
 
-.img_profile img{
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 50%;
-    display: block;
-    box-shadow: 1px 3px 12px rgba(0, 0, 0, 0.18);
-  }
+.img_profile img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  box-shadow: 1px 3px 12px rgba(0, 0, 0, 0.18);
+}
+
+.active {
+  color: rgb(255, 255, 255);
+  font-weight: bolder;
+}

@@ -61,7 +61,7 @@
                   <div class="fw-bold">Publicado por: </div>{{ volunteerOpportunity.institution.name }}
                 </div>
                 <div class="col-sm-6">
-                  <div class="fw-bold">Publicado em:</div>{{ volunteerOpportunity.creationDate | date : "dd/MM/yyyy"}}
+                  <div class="fw-bold">Publicado em: </div>{{ volunteerOpportunity.creationDate | date : "dd/MM/yyyy"}}
                 </div>
               </div>
 
@@ -120,6 +120,7 @@
                 type="button"
                 class="btn btn-primary container-special"
                 (click)="modal.close('Close click')"
+                *ngIf="userRole != 'UNKNOW'"
               >
                 Participar
               </button>
@@ -191,8 +192,8 @@
               </div>
             </div>
             
-            <div class="row">
-              <div class="col">
+            <div class="row justify-content-center">
+              <div class="col-6">
                 <button
                   class="button"
                   (click)="openXl(contentModal)"
@@ -200,7 +201,7 @@
                   Detalhes
                 </button>
               </div>
-              <div class="col">
+              <div class="col-6">
                 <button class="button">Participar</button>
               </div>
             </div>
