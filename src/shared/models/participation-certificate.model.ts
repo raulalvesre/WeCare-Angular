@@ -6,5 +6,6 @@ export interface ParticipationCertificate {
   authenticityCode: string;
   displayedQualifications: string[];
   creationDate: string;
+  candidateHasReportedProblem: boolean;
 
 }

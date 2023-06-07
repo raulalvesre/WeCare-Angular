@@ -25,24 +25,8 @@ export class ParticipationCertificateService {
     const token = this.accessService.getToken();
 
     return this.httpClient
-      .get<Page<ParticipationCertificate[]>>(`${this.apiUrl}/api/participation-certificate/search`, {
+      .get<Page<ParticipationCertificate[]>>(`${this.apiUrl}/api/participation-certificate/search?candidateId=` + candidateId, {
         headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
-      })
-      .subscribe((page: Page<ParticipationCertificate[]>) => {
-        if (page.data != null) {
-          this.hasNextPage = page.hasNextPage;
-
-          if (this.avaliableVolunteers.length === 0) {
-            this.avaliableVolunteers = page.data;
-          } else {
-            this.avaliableVolunteers.push(...page.data);
-          }
-
-          for (const volunteerOpportunity of this.avaliableVolunteers) {
-            volunteerOpportunity.collapseDescription =
-              volunteerOpportunity.description.length > this.opportunityDescriptionLength;
-          }
-        }
       });
   }
 

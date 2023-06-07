@@ -13,11 +13,17 @@ import {IssueService} from 'src/shared/services/issue.service';
 import {ToastService} from 'src/shared/services/toast.service';
 import {ParticipationCertificateService} from "../../../../shared/services/participation.certificate.service";
 import {ParticipationCertificate} from "../../../../shared/models/participation-certificate.model";
+import {InstitutionService} from "../../../../shared/services/institution.service";
+import {Institution} from "../../../../shared/models/institution.model";
+import {VolunteerOpportunity} from "../../../../shared/models/volunteer-opportunity.model";
+import {OpportunityModalComponent} from "../../../../shared/components/opportunity-modal/opportunity-modal.component";
+import {HttpStatusCode} from "@angular/common/http";
+import {IssueSearchParams} from "../../../../shared/models/issue-search-params.model";
 
 @Component({
   selector: 'app-accomplished',
   templateUrl: './accomplished.component.html',
-  styleUrls: ['./accomplished.component.css']
+  styleUrls: ['./accomplished.component.css'],
 })
 
 export class AccomplishedComponent implements OnInit, OnDestroy {
@@ -29,6 +35,7 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
   participationCertificate: ParticipationCertificate;
 
   currentCandidate: Candidate;
+  candidateIssues: Issue[] = [];
 
   readonly currentDate = new Date();
 
@@ -37,6 +44,7 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
   hasNextPage = false;
 
   closeResult = '';
+  isLoading: boolean = true;
 
   constructor(
     private modalService: NgbModal,
@@ -45,14 +53,17 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
     private issueService: IssueService,
     private toastService: ToastService,
     private fileService: FileService,
-    private participationCertificateService: ParticipationCertificateService
+    private participationCertificateService: ParticipationCertificateService,
+    private institutionService: InstitutionService,
   ) {
   }
 
   ngOnInit(): void {
     this.instituionProblemForm = new FormGroup({
       title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      message: new FormControl('', [Validators.required, Validators.minLength(12), Validators.maxLength(1000)])
+      description: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      opportunityId: new FormControl(0, [Validators.required]),
+      reportedUserId: new FormControl(0, [Validators.required])
     });
 
     this.loadCertificates();
@@ -62,7 +73,7 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
     this.toastService.clear();
   }
 
-  openCertificate(certificate: ParticipationCertificate, certificateModal: NgbActiveModal) {
+  openCertificate(certificate: ParticipationCertificate, certificateModal: any) {
     this.participationCertificate = certificate;
 
     const currentUser = this.accessService.getCurrentUser();
@@ -91,7 +102,7 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
       });
   }
 
-  openIssue(certificate: ParticipationCertificate, problemModal: NgbActiveModal) {
+  openIssue(certificate: ParticipationCertificate, problemModal: any) {
     this.participationCertificate = certificate;
 
     this.modalService.open(problemModal, {
@@ -108,29 +119,50 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
     );
   }
 
-  saveIssue(problemModal: NgbActiveModal) {
-    this.instituionProblemForm.get('title').setValue(`Problema com a instituição ${this.participationCertificate.registration.opportunity.institution.name}`);
+  openOpportunityModal(certificate: ParticipationCertificate, opportunityModal: any) {
+    this.participationCertificate = certificate;
 
-    const {title, message} = this.instituionProblemForm.value;
+    this.modalService.open(opportunityModal, {
+      ariaLabelledBy: 'modal-basic-title2',
+      centered: true,
+      size: 'lg'
+    }).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      },
+    );
+  }
+
+  saveIssue(problemModal: any) {
+    const {title, description, opportunityId, reportedUserId} = this.instituionProblemForm.value;
 
     const reportIssue = {
       title,
-      description: message,
+      description: description,
       opportunityId: this.participationCertificate.registration.opportunity.id,
-      reportedUserId: this.participationCertificate.registration.opportunity.institution.id,
+      reportedUserId: this.participationCertificate.registration.opportunity.institutionId,
     } as ReportIssue;
+
 
     this.issueService.reportIssue(reportIssue)
       .subscribe({
         next: (issue: Issue) => {
           if (issue.status === 'OPEN') {
-            this.toastService.show('Problema relatado com sucesso', {classname: 'bg-success text-light', delay: 5000});
 
             problemModal.close();
           }
         },
         error: error => {
-          console.error(error);
+          if (error.status == HttpStatusCode.Conflict) {
+            this.toastService.show('Você ja relatou problema com essa vaga', {
+              classname: 'bg-danger text-light',
+              delay: 5000
+            });
+            problemModal.close();
+          }
         }
       });
   }
@@ -152,14 +184,16 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
     this.loadCertificates();
   }
 
-  volunteerOpportunityAddress(volunteerRegistration: VolunteerRegistration) {
-    const address = volunteerRegistration.opportunity.address;
 
-    return `${address.neighborhood} (${address.city} - ${address.state})`;
+  volunteerOpportunityCompleteAddress(opportunity: VolunteerOpportunity) {
+    const address = opportunity.address;
+
+    return `${address.street},  ${address.number} - ${address.neighborhood} - (${address.city} - ${address.state})`
   }
 
   private loadCertificates() {
     const currentUser = this.accessService.getCurrentUser();
+    this.isLoading = true;
 
     this.participationCertificateService
       .searchParticipationCertificates(currentUser.id)
@@ -173,10 +207,32 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
             } else {
               this.participationCertificates.push(...page.data);
             }
+
+            for (let certificate of this.participationCertificates) {
+              this.institutionService.get(certificate.registration.opportunity.institutionId)
+                .subscribe({
+                  next: (inst: Institution) => {
+                    certificate.registration.opportunity.institution = inst;
+                    this.isLoading = false;
+
+                    this.issueService.search({reporterId: currentUser.id}).subscribe({
+                      next: (page: Page<Issue[]>) => {
+                        this.candidateIssues = page.data;
+                      }
+                    })
+                  }
+                })
+            }
           }
         }
       });
   }
+
+  candidateHasAlreadyReportedOpportunity(opportunityId: number): boolean {
+    const opsIdsThatCandidateHasIssues = this.candidateIssues.map(x => x.opportunityId);
+    return opsIdsThatCandidateHasIssues.includes(opportunityId);
+  }
+
 
   convertBase64ToPhotoUrl(photoBase64: string) {
     const photoExtension = this.fileService.fileExtension(photoBase64);
