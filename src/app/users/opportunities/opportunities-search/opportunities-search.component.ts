@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
-import { Page } from 'src/shared/models/page.model';
-import { VolunteerOpportunity } from 'src/shared/models/volunteer-opportunity.model';
-import { ToastService } from 'src/shared/services/toast.service';
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, FormGroup } from '@angular/forms';
-import { FederativeUnit } from 'src/shared/models/address.model';
-import { OpportunityCause } from 'src/shared/models/opportunity-cause.model';
-import { delay } from 'rxjs';
-import { ViaCepService } from 'src/shared/services/via-cep.service';
-import { OpportunityCauseService } from 'src/shared/services/opportunity-cause.service';
-import { AccessService } from 'src/shared/services/access.service';
-import { ImageService } from 'src/shared/services/image.service';
+import {Component, OnInit} from '@angular/core';
+import {VolunteerOpportunityService} from 'src/shared/services/volunteer-opportunity.service';
+import {Page} from 'src/shared/models/page.model';
+import {VolunteerOpportunity} from 'src/shared/models/volunteer-opportunity.model';
+import {ToastService} from 'src/shared/services/toast.service';
+import {HttpErrorResponse, HttpStatusCode} from '@angular/common/http';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormControl, FormGroup} from '@angular/forms';
+import {FederativeUnit} from 'src/shared/models/address.model';
+import {OpportunityCause} from 'src/shared/models/opportunity-cause.model';
+import {delay} from 'rxjs';
+import {ViaCepService} from 'src/shared/services/via-cep.service';
+import {OpportunityCauseService} from 'src/shared/services/opportunity-cause.service';
+import {AccessService} from 'src/shared/services/access.service';
+import {ImageService} from 'src/shared/services/image.service';
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -50,7 +51,9 @@ export class OpportunitiesSearchComponent implements OnInit {
     private opportunityCauseService: OpportunityCauseService,
     private accessService: AccessService,
     public imageService: ImageService,
-  ) { }
+    private activatedRoute: ActivatedRoute
+  ) {
+  }
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
@@ -58,11 +61,9 @@ export class OpportunitiesSearchComponent implements OnInit {
       finalDate: new FormControl(),
     });
 
-    this.loadOpportunities();
-
     this.searchCauses();
-
     this.searchFederativeUnits();
+    this.loadOpportunities();
 
     this.searchForm.get('initialDate')
       .valueChanges
@@ -132,9 +133,9 @@ export class OpportunitiesSearchComponent implements OnInit {
 
   clearDatesSelection() {
     this.searchForm.get('initialDate')
-      .setValue(null, { onlySelf: true, emitEvent: false });
+      .setValue(null, {onlySelf: true, emitEvent: false});
     this.searchForm.get('finalDate')
-      .setValue(null, { onlySelf: true, emitEvent: false });
+      .setValue(null, {onlySelf: true, emitEvent: false});
 
     this.initialDate = null;
     this.finalDate = null;
@@ -163,8 +164,11 @@ export class OpportunitiesSearchComponent implements OnInit {
       .subscribe({
         next: httpResponse => {
           if (httpResponse.status == HttpStatusCode.NoContent) {
-            this.toastService.show('Interesse cadastrado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
-            this.toastService.show('Pendente de aprovação', { classname: 'bg-info text-light', delay: 5000 });
+            this.toastService.show('Interesse cadastrado com sucesso', {
+              classname: 'bg-success text-light',
+              delay: 5000
+            });
+            this.toastService.show('Pendente de aprovação', {classname: 'bg-info text-light', delay: 5000});
             volunteerOpportunity.isCandidateRegistered = true;
           }
         },
@@ -173,24 +177,30 @@ export class OpportunitiesSearchComponent implements OnInit {
 
           if (httpErrorResponse.status == HttpStatusCode.Conflict) {
             if (httpErrorResponse.error.message?.toUpperCase()?.includes('OPORTUNIDADE JÁ ACONTECEU')) {
-              this.toastService.show('Oportunidade já aconteceu', { classname: 'bg-info text-light', delay: 5000 });
+              this.toastService.show('Oportunidade já aconteceu', {classname: 'bg-info text-light', delay: 5000});
             } else {
-              this.toastService.show('Cadastro já realizado', { classname: 'bg-info text-light', delay: 5000 });
+              this.toastService.show('Cadastro já realizado', {classname: 'bg-info text-light', delay: 5000});
             }
 
             return;
           }
 
           if (httpErrorResponse?.error) {
-            this.toastService.show('Houve um erro ao registrar o interesse', { classname: 'bg-danger text-light', delay: 5000 });
-            this.toastService.show('Será necessário tentar novamente', { classname: 'bg-danger text-light', delay: 5000 });
+            this.toastService.show('Houve um erro ao registrar o interesse', {
+              classname: 'bg-danger text-light',
+              delay: 5000
+            });
+            this.toastService.show('Será necessário tentar novamente', {
+              classname: 'bg-danger text-light',
+              delay: 5000
+            });
           }
         }
       });
   }
 
   openVolunteerOpportunityModal(volunteerOpportunityModal) {
-    this.modalService.open(volunteerOpportunityModal, { size: 'xl', centered: true });
+    this.modalService.open(volunteerOpportunityModal, {size: 'xl', centered: true});
   }
 
   private loadOpportunities() {
@@ -201,6 +211,7 @@ export class OpportunitiesSearchComponent implements OnInit {
     this.pageNumber = 1;
     this.volunteerOpportunities = [];
 
+
     this.volunteerOpportunityService.search({
       pageNumber: this.pageNumber,
       pageSize: this.pageSize,
@@ -208,7 +219,7 @@ export class OpportunitiesSearchComponent implements OnInit {
       opportunityCauses: this.selectedOpportunityCauses,
       federativeUnits: this.selectedFederativeUnits,
       initialDate: this.initialDate,
-      finalDate: this.finalDate
+      finalDate: this.finalDate,
     })
       .subscribe({
         next: (page: Page<VolunteerOpportunity[]>) => {
@@ -238,6 +249,10 @@ export class OpportunitiesSearchComponent implements OnInit {
       .subscribe({
         next: opportunityCauses => {
           this.opportunityCauses = opportunityCauses;
+          this.selectedOpportunityCauses = this.activatedRoute.snapshot.queryParamMap.getAll('causes')
+            .map(code => {
+              return this.opportunityCauses.filter(cause => cause.code == code)[0];
+            });
         },
         error: error => {
           console.error(error);
