@@ -9,7 +9,7 @@ export interface Candidate {
   telephone: string;
   bio: string;
   photo?: string;
-  linkedIn: string;
+  linkedIn?: string;
   address: Address;
   cpf: string;
   birthDate: string;

@@ -10,6 +10,9 @@ import { HttpStatusCode } from '@angular/common/http';
 import { ToastService } from 'src/shared/services/toast.service';
 import { OpportunityCause } from 'src/shared/models/opportunity-cause.model';
 import { Qualification } from 'src/shared/models/qualification.model';
+import {ParticipationCertificateService} from "../../../../shared/services/participation.certificate.service";
+import {ParticipationCertificate} from "../../../../shared/models/participation-certificate.model";
+import {Page} from "../../../../shared/models/page.model";
 
 
 
@@ -21,26 +24,32 @@ import { Qualification } from 'src/shared/models/qualification.model';
 
 export class OpportunityAppliedUsersComponent implements OnInit {
   route: ActivatedRoute = inject(ActivatedRoute);
-
   volunteerOpportunityId: number;
-
   currentRegistrationStatus = 'PENDING';
-
   volunteerOpportunity: VolunteerOpportunity;
   registrationsOpportunities: VolunteerOpportunityRegistration[] = [];
+  opportunityCertificates: ParticipationCertificate[] = [];
+  isLoading: boolean;
 
   constructor(
     private volunteerOpportunityService: VolunteerOpportunityService,
     private opportunityRegistrationService: OpportunityRegistrationService,
     public imageService: ImageService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private participationCertificateService: ParticipationCertificateService
   ) {
     this.volunteerOpportunityId = parseInt(this.route.snapshot.params['id']);
   }
 
   ngOnInit(): void {
     this.searchVolunteerOpportunity();
-
+    this.participationCertificateService.searchParticipationCertificates({ opportunityId: this.volunteerOpportunityId })
+      .subscribe({next: (certificatePage: Page<ParticipationCertificate[]>) => {
+          this.opportunityCertificates = certificatePage.data;
+        },
+        error: err => {
+          console.error(err);
+        }});
     this.searchCandidateAppliedOpportunities();
   }
 
@@ -59,7 +68,7 @@ export class OpportunityAppliedUsersComponent implements OnInit {
 
             setTimeout(() => {
               location.reload();
-            }, 3000);
+            }, 500);
           }
         }, error: error => {
           console.error(error);
@@ -76,7 +85,7 @@ export class OpportunityAppliedUsersComponent implements OnInit {
 
             setTimeout(() => {
               location.reload();
-            }, 5000);
+            }, 500);
           }
         }, error: error => {
           console.error(error);
@@ -96,6 +105,10 @@ export class OpportunityAppliedUsersComponent implements OnInit {
       .join(', ');
   }
 
+  opportunityHasAlreadyHappened(opportuntity: VolunteerOpportunity) {
+    return new Date(opportuntity.opportunityDate) <= new Date();
+  }
+
   private searchVolunteerOpportunity() {
     this.volunteerOpportunityService.searchById({ volunteerOpportunityId: this.volunteerOpportunityId })
       .subscribe({
@@ -112,7 +125,7 @@ export class OpportunityAppliedUsersComponent implements OnInit {
 
   private searchCandidateAppliedOpportunities() {
     console.log('searchCandidateAppliedOpportunities');
-
+    this.isLoading = true;
     console.log(this.volunteerOpportunityId);
     this.volunteerOpportunityService.searchRegistrations(
       this.volunteerOpportunityId,
@@ -128,7 +141,26 @@ export class OpportunityAppliedUsersComponent implements OnInit {
         error: error => {
           console.error(error);
         }
-      });
+      }).add(() => this.isLoading = false);
   }
 
+  emitCertificate(opportunityRegistration: VolunteerOpportunityRegistration) {
+    this.participationCertificateService.emitCertificate(opportunityRegistration.id, [])
+      .subscribe({
+        next: (certificate: ParticipationCertificate) => {
+          this.toastService.show('Certificado emitido com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+          opportunityRegistration.institutionEmittedCertificate = true;
+        },
+        error: (httpErrorResponse) => {
+          console.error(httpErrorResponse);
+          if (httpErrorResponse.status == HttpStatusCode.Conflict) {
+            this.toastService.show('Certificado já foi emitido', { classname: 'bg-danger text-light', delay: 5000 });
+          }
+        }
+      })
+  }
+
+  candidateAlreadyHasCertificate(candidateId) {
+    return this.opportunityCertificates.some(x => x.registration.candidate.id == candidateId);
+  }
 }

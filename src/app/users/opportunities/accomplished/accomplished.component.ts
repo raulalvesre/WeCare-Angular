@@ -196,7 +196,7 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.participationCertificateService
-      .searchParticipationCertificates(currentUser.id)
+      .searchParticipationCertificates({ candidateId: currentUser.id })
       .subscribe({
         next: (page: Page<ParticipationCertificate[]>) => {
           if (page.data != null) {

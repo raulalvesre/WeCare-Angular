@@ -35,7 +35,6 @@ export class VolunteerOpportunityService {
     finalDate = null,
     orderBy = null,
     orderDirection = null,
-    candidateNotRegistered = null
   }): Observable<Page<VolunteerOpportunity[]>> {
     const token = this.accessService.getToken();
 

@@ -165,8 +165,7 @@ export class OpportunitiesSearchComponent implements OnInit {
           if (httpResponse.status == HttpStatusCode.NoContent) {
             this.toastService.show('Interesse cadastrado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
             this.toastService.show('Pendente de aprovação', { classname: 'bg-info text-light', delay: 5000 });
-
-            this.loadOpportunities();
+            volunteerOpportunity.isCandidateRegistered = true;
           }
         },
         error: (httpErrorResponse: HttpErrorResponse) => {
