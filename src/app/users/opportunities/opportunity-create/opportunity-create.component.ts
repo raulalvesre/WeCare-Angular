@@ -8,6 +8,7 @@ import { OpportunityCauseService } from 'src/shared/services/opportunity-cause.s
 import { ToastService } from 'src/shared/services/toast.service';
 import { ViaCepService } from 'src/shared/services/via-cep.service';
 import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-opportunity-create',
@@ -30,7 +31,8 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
     private volunteerOpportunityService: VolunteerOpportunityService,
     private opportunityCauseService: OpportunityCauseService,
     private toastService: ToastService,
-    private viaCepService: ViaCepService
+    private viaCepService: ViaCepService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -128,6 +130,7 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
         next: httpResponse => {
           if (httpResponse.status == HttpStatusCode.Ok) {
             this.toastService.show('Cadastro realizado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+            this.router.navigateByUrl('opportunities-institution');
           }
         },
         error: (httpErrorResponse: HttpErrorResponse) => {

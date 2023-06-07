@@ -8,6 +8,7 @@ import { AccessService } from 'src/shared/services/access.service';
 import { InstitutionService } from 'src/shared/services/institution.service';
 import { ToastService } from 'src/shared/services/toast.service';
 import { ViaCepService } from 'src/shared/services/via-cep.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-institution-profile',
@@ -29,7 +30,8 @@ export class InstitutionProfileComponent {
     private institutionService: InstitutionService,
     private accessService: AccessService,
     private toastService: ToastService,
-    private viaCepService: ViaCepService
+    private viaCepService: ViaCepService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -127,7 +129,8 @@ export class InstitutionProfileComponent {
       .subscribe({
         next: httpResponse => {
           if (httpResponse.status == HttpStatusCode.Ok) {
-            this.toastService.show('Atualição feita com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+            this.toastService.show('Atualização feita com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+            setTimeout(() => this.router.navigateByUrl('opportunities'), 1000);
           }
         },
         error: (httpErrorResponse) => {

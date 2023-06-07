@@ -153,7 +153,7 @@
               <div class="card">
                 <div class="card-body fs-3 text-center">
                   <span class="bi bi-exclamation-triangle"></span>
-                  Nenhuma oportunidade cadastrada
+                  Nenhuma oportunidade encontrada
                 </div>
               </div>
             </div>
@@ -198,12 +198,12 @@
                       class="bi bi-calendar-week text-warning"
                       title="{{
                         volunteerOpportunity.opportunityDate
-                          | date : 'dd/MM/yyyy'
+                          | date : 'short'
                       }}"
                       ><span class="text-dark">
                         {{
                           volunteerOpportunity.opportunityDate
-                            | date : "dd/MM/yyyy"
+                            | date : "short"
                         }}</span
                       >
                     </i>
@@ -249,6 +249,7 @@
                   <div class="col-6">
                     <button
                       class="btn btn-sm btn-primary"
+                      [disabled]="volunteerOpportunity.isCandidateRegistered"
                       (click)="registerToOpportunity(volunteerOpportunity)"
                     >
                       Participar
@@ -344,14 +345,14 @@
                         class="bi bi-calendar-week text-warning col"
                         title="{{
                           volunteerOpportunity.opportunityDate
-                            | date : 'dd/MM/yyyy'
+                            | date : 'short'
                         }}"
                       >
                       </i>
                       <span class="text-dark fw-bold"> Data: </span>
                       {{
                         volunteerOpportunity.opportunityDate
-                          | date : "dd/MM/yyyy"
+                          | date : "short"
                       }}
                     </div>
                   </div>
@@ -391,6 +392,7 @@
                 <button
                   type="button"
                   class="btn btn-primary container-special"
+                  [disabled]="volunteerOpportunity.isCandidateRegistered"
                   (click)="modal.close('Close click')"
                 >
                   Participar

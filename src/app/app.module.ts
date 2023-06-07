@@ -40,6 +40,7 @@ import { PasswordRecoveryComponent } from './home/password-recovery/password-rec
 import { ActivateAccountComponent } from './home/activate-account/activate-account.component';
 import { VolunteerSearchComponent } from './institutions/volunteers/volunteer-search/volunteer-search.component';
 import { OpportunityAppliedUsersComponent } from './users/opportunities/opportunity-applied-users/opportunity-applied-users.component';
+import {OpportunityModalComponent} from "../shared/components/opportunity-modal/opportunity-modal.component";
 
 registerLocaleData(localePt);
 
@@ -85,19 +86,20 @@ registerLocaleData(localePt);
     { provide: LOCALE_ID, useValue: 'pt-BR' }
   ],
   bootstrap: [AppComponent],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    NgbModule,
-    ToastsContainerComponent,
-    NgxMaskDirective,
-    NgxMaskPipe,
-    NgbCollapseModule,
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        NgbModule,
+        ToastsContainerComponent,
+        NgxMaskDirective,
+        NgxMaskPipe,
+        NgbCollapseModule,
+        OpportunityModalComponent,
 
-  ]
+    ]
 })
 export class AppModule {
 }

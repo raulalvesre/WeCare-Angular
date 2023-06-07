@@ -37,11 +37,6 @@ h2 {
 
 .volunteer:nth-of-type(even) {
 	text-align: right;
-	background: linear-gradient(
-		/* -83deg, */
-		#0d9790 0 97%,
-		#fff0 calc(97% + 1px) 100%
-	);
 }
 
 .thumb {
@@ -79,7 +74,7 @@ h2 {
 }
 
 .volunteer:hover {
-    box-shadow: 0 0 50px rgba(33,33,33,.4); 
+    box-shadow: 0 0 50px rgba(33,33,33,.4);
 }
 
 .volunteer:hover .thumb {
@@ -149,7 +144,7 @@ h2 {
 	color: var(--dark);
 	font-weight: bold;
 } */
-/* 
+/*
 .co-funder:nth-of-type(even):after {
 	right: inherit;
 	left: 4em;

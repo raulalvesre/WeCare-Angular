@@ -1,12 +1,12 @@
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { OpportunityInvitation } from '../models/opportunity-invitation.model';
-import { environment } from 'src/environments/environment';
-import { Page } from '../models/page.model';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {OpportunityInvitation} from '../models/opportunity-invitation.model';
+import {environment} from 'src/environments/environment';
+import {Page} from '../models/page.model';
 import { Observable, switchMap, tap } from 'rxjs';
-import { VolunteerOpportunityService } from './volunteer-opportunity.service';
-import { AccessService } from './access.service';
-import { InstitutionService } from './institution.service';
+import {VolunteerOpportunityService} from './volunteer-opportunity.service';
+import {AccessService} from './access.service';
+import {InstitutionService} from "./institution.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,8 @@ export class OpportunityInvitationService {
     private accessService: AccessService,
     private volunteerOpportunityService: VolunteerOpportunityService,
     private institutionService: InstitutionService
-  ) { }
+  ) {
+  }
 
   searchInvites({
     candidateId,

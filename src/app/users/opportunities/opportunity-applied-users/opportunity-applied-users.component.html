@@ -9,7 +9,7 @@
           Aqui você encontra a relação de voluntários inscritos para vaga
           <span class="fw-bold fst-italic">{{
             volunteerOpportunity?.name
-          }}</span
+            }}</span
           >.
         </p>
 
@@ -19,7 +19,7 @@
               class="nav-link"
               [ngClass]="{ active: currentRegistrationStatus == 'PENDING' }"
               (click)="changeRegistrationStatus('PENDING')"
-              >Pendente</a
+            >Pendente</a
             >
           </li>
           <li class="nav-item" style="cursor: pointer">
@@ -27,7 +27,7 @@
               class="nav-link"
               [ngClass]="{ active: currentRegistrationStatus == 'ACCEPTED' }"
               (click)="changeRegistrationStatus('ACCEPTED')"
-              >Aceito</a
+            >Aceito</a
             >
           </li>
           <li class="nav-item" style="cursor: pointer">
@@ -35,41 +35,45 @@
               class="nav-link"
               [ngClass]="{ active: currentRegistrationStatus == 'DENIED' }"
               (click)="changeRegistrationStatus('DENIED')"
-              >Negado</a
+            >Negado</a
             >
           </li>
         </ul>
 
-        <div *ngIf="registrationsOpportunities?.length == 0">
+        <div style="display: flex; justify-content: center" *ngIf="isLoading">
+          <div class="loader"></div>
+        </div>
+
+        <div *ngIf="registrationsOpportunities?.length == 0 && !isLoading">
           <div class="card border-0 py-3">
             <div class="card-body">Nenhum candidato encontrado</div>
           </div>
         </div>
 
-        <ul *ngIf="registrationsOpportunities?.length > 0" class="applications">
+        <ul *ngIf="registrationsOpportunities?.length > 0 && !isLoading" class="applications">
           <ng-container
-            *ngFor="let registrationOpportunity of registrationsOpportunities"
+            *ngFor="let opportunityRegistration of registrationsOpportunities"
           >
             <li class="volunteer">
               <div
-                *ngIf="registrationOpportunity.candidate.photo?.length > 0"
+                *ngIf="opportunityRegistration.candidate.photo?.length > 0"
                 class="thumb"
               >
                 <img
                   [src]="
                     imageService.convertBase64ToPhotoUrl(
-                      registrationOpportunity.candidate.photo
+                      opportunityRegistration.candidate.photo
                     )
                   "
                 />
               </div>
               <div class="description">
-                <h4>{{ registrationOpportunity.candidate.name }}</h4>
+                <h4>{{ opportunityRegistration.candidate.name }}</h4>
                 <div>
                   <p>
-                    {{ registrationOpportunity.candidate.bio }}
+                    {{ opportunityRegistration.candidate.bio }}
                   </p>
-                  <br />
+                  <br/>
                   <div class="row mt-3 ps-3">
                     <div class="col-12 text-truncate">
                       <i
@@ -77,51 +81,51 @@
                         title="{{ volunteerOpportunity.address.city }} - {{
                           volunteerOpportunity.address.state
                         }}"
-                        ><span class="text-dark">
+                      ><span class="text-dark">
                           Reside em:
-                          {{
-                            registrationOpportunity.candidate.address
-                              .neighborhood
-                          }},
-                          {{ registrationOpportunity.candidate.address.city }} -
-                          {{
-                            registrationOpportunity.candidate.address.state
-                          }}</span
-                        >
+                        {{
+                        opportunityRegistration.candidate.address
+                          .neighborhood
+                        }},
+                        {{ opportunityRegistration.candidate.address.city }} -
+                        {{
+                        opportunityRegistration.candidate.address.state
+                        }}</span
+                      >
                       </i>
                     </div>
                     <div
                       *ngIf="
-                        registrationOpportunity.candidate?.causesInterestedIn
+                        opportunityRegistration.candidate?.causesCandidateIsInterestedIn
                           ?.length > 0
                       "
                       class="col-12 text-truncate"
                     >
                       <span class="text-dark text-truncate"
-                        ><i class="bi bi-puzzle-fill text-warning"></i>
+                      ><i class="bi bi-puzzle-fill text-warning"></i>
                         Principais habilidades:
                         {{
-                          causesInterestedIn(
-                            registrationOpportunity.candidate.causesInterestedIn
-                          )
+                        causesInterestedIn(
+                          opportunityRegistration.candidate.causesCandidateIsInterestedIn
+                        )
                         }}
                       </span>
                       <span></span>
                     </div>
                     <div
                       *ngIf="
-                        registrationOpportunity.candidate?.qualifications
+                        opportunityRegistration.candidate?.qualifications
                           ?.length > 0
                       "
                       class="col-12 text-truncate"
                     >
                       <span class="text-dark text-truncate"
-                        ><i class="bi bi-award"></i>
+                      ><i class="bi bi-award"></i>
                         Qualificações:
                         {{
-                          qualifications(
-                            registrationOpportunity.candidate.qualifications
-                          )
+                        qualifications(
+                          opportunityRegistration.candidate.qualifications
+                        )
                         }}
                       </span>
                       <span></span>
@@ -129,7 +133,7 @@
                   </div>
                   <div class="row ps-3">
                     <div
-                      *ngIf="registrationOpportunity?.candidate?.telephone"
+                      *ngIf="opportunityRegistration?.candidate?.telephone"
                       class="col-lg-4 col-sm-6 text-truncate"
                     >
                       <i
@@ -137,34 +141,34 @@
                         title="{{ volunteerOpportunity.address.city }} - {{
                           volunteerOpportunity.address.state
                         }}"
-                        ><span class="text-dark">
+                      ><span class="text-dark">
                           Telefone:
-                          {{
-                            registrationOpportunity.candidate.telephone
-                          }}</span
-                        >
+                        {{
+                        opportunityRegistration.candidate.telephone
+                        }}</span
+                      >
                       </i>
                     </div>
                     <div
-                      *ngIf="registrationOpportunity?.candidate?.email"
+                      *ngIf="opportunityRegistration?.candidate?.email"
                       class="col-lg-4 col-sm-6 text-truncate"
                     >
                       <i class="bi bi-envelope-at-fill text-info"
-                        ><span class="text-dark"
-                          >E-mail:
-                          {{ registrationOpportunity.candidate.email }}</span
-                        >
+                      ><span class="text-dark"
+                      >E-mail:
+                        {{ opportunityRegistration.candidate.email }}</span
+                      >
                       </i>
                     </div>
                     <div
-                      *ngIf="registrationOpportunity?.candidate?.linkedin"
+                      *ngIf="opportunityRegistration?.candidate?.linkedIn"
                       class="col-lg-4 col-sm-6 text-truncate"
                     >
                       <span class="text-dark">
                         <i class="bi bi-linkedin text-primary"></i>
                         <a href="" target="_blank">
                           LinkedIn:
-                          {{ registrationOpportunity.candidate.linkedin }}
+                          {{ opportunityRegistration.candidate.linkedIn }}
                         </a>
                       </span>
                     </div>
@@ -172,33 +176,35 @@
                   <div class="action-buttons my-4">
                     <div class="row d-flex justify-content-end pe-2">
                       <div
-                        *ngIf="registrationOpportunity.status == 'PENDING'"
+                        *ngIf="opportunityRegistration.status == 'PENDING'"
                         class="col-12 col-lg-6"
                       >
                         <button
-                          (click)="denyRegistration(registrationOpportunity)"
+                          (click)="denyRegistration(opportunityRegistration)"
                           class="btn btn-outline-danger me-2"
                         >
                           Recusar
                         </button>
 
                         <button
-                          (click)="acceptRegistration(registrationOpportunity)"
+                          (click)="acceptRegistration(opportunityRegistration)"
                           class="btn btn-primary"
                         >
                           Aceitar
                         </button>
                       </div>
                       <div
-                        *ngIf="registrationOpportunity.status == 'ACCEPTED'"
+                        *ngIf="opportunityRegistration.status == 'ACCEPTED' && opportunityHasAlreadyHappened(opportunityRegistration.opportunity)"
                         class="col-12 col-lg-6"
                       >
-                        <button class="btn btn-primary" disabled>
-                          Aceitar
+                        <button class="btn btn-primary"
+                                [disabled]="opportunityRegistration.institutionEmittedCertificate || candidateAlreadyHasCertificate(opportunityRegistration.candidate.id)"
+                                (click)="emitCertificate(opportunityRegistration)">
+                          Emitir certificado
                         </button>
                       </div>
                       <div
-                        *ngIf="registrationOpportunity.status == 'DENIED'"
+                        *ngIf="opportunityRegistration.status == 'DENIED'"
                         class="col-12 col-lg-6"
                       >
                         <button class="btn btn-outline-danger me-2" disabled>

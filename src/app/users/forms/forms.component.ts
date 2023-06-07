@@ -190,10 +190,9 @@ export class FormsComponent implements OnInit, OnDestroy {
         next: httpResponse => {
           if (httpResponse.status == HttpStatusCode.NoContent) {
             this.toastService.show('Cadastro realizado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+            this.toastService.show('Ative sua conta com o email que recebeu', { classname: 'bg-success text-light', delay: 5000 });
 
-            setTimeout(() => {
-              this.router.navigate(['/login']);
-            }, 2000);
+            this.router.navigate(['/login']);
           }
         },
         error: (httpErrorResponse) => {

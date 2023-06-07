@@ -6,6 +6,8 @@ import { VolunteerOpportunity } from 'src/shared/models/volunteer-opportunity.mo
 //Services
 import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
 import { FileService } from 'src/shared/services/file.service';
+import {HttpErrorResponse, HttpStatusCode} from "@angular/common/http";
+import {ToastService} from "../../../../shared/services/toast.service";
 
 
 @Component({
@@ -26,7 +28,8 @@ export class CardSliderComponent {
    constructor(
     private volunteerOpportunityService: VolunteerOpportunityService,
     private modalService: NgbModal,
-    private fileService: FileService
+    private fileService: FileService,
+    private toastService: ToastService
     ) {  }
 
   openXl(content) {
@@ -83,5 +86,36 @@ export class CardSliderComponent {
         },
       },
     })
+  }
+
+  registerToOpportunity(event: any, volunteerOpportunity: VolunteerOpportunity) {
+    this.volunteerOpportunityService.registerCurrentUserToOpportunity(volunteerOpportunity)
+      .subscribe({
+        next: httpResponse => {
+          if (httpResponse.status == HttpStatusCode.NoContent) {
+            this.toastService.show('Interesse cadastrado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+            this.toastService.show('Pendente de aprovação', { classname: 'bg-info text-light', delay: 5000 });
+            volunteerOpportunity.isCandidateRegistered = true;
+          }
+        },
+        error: (httpErrorResponse: HttpErrorResponse) => {
+          console.error(httpErrorResponse);
+
+          if (httpErrorResponse.status == HttpStatusCode.Conflict) {
+            if (httpErrorResponse.error.message?.toUpperCase()?.includes('OPORTUNIDADE JÁ ACONTECEU')) {
+              this.toastService.show('Oportunidade já aconteceu', { classname: 'bg-info text-light', delay: 5000 });
+            } else {
+              this.toastService.show('Cadastro já realizado', { classname: 'bg-info text-light', delay: 5000 });
+            }
+
+            return;
+          }
+
+          if (httpErrorResponse?.error) {
+            this.toastService.show('Houve um erro ao registrar o interesse', { classname: 'bg-danger text-light', delay: 5000 });
+            this.toastService.show('Será necessário tentar novamente', { classname: 'bg-danger text-light', delay: 5000 });
+          }
+        }
+      });
   }
 }

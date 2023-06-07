@@ -35,6 +35,7 @@ export class VolunteerOpportunityService {
     finalDate = null,
     orderBy = null,
     orderDirection = null,
+    causesOnlyCode = null,
   }): Observable<Page<VolunteerOpportunity[]>> {
     const token = this.accessService.getToken();
 
@@ -42,8 +43,11 @@ export class VolunteerOpportunityService {
       .append("pageNumber", pageNumber)
       .append("pageSize", pageSize);
 
+    console.log(opportunityCauses);
+
     opportunityCauses ??= [];
     for (const opportunityCauseCode of opportunityCauses.map(opportunityCause => opportunityCause.code)) {
+      console.log(opportunityCauseCode)
       parameters = parameters.append('causes', opportunityCauseCode);
     }
 
@@ -74,6 +78,10 @@ export class VolunteerOpportunityService {
 
     if (orderDirection != null) {
       parameters = parameters.append('orderDirection', orderDirection);
+    }
+
+    if (candidateNotRegistered != null) {
+      parameters = parameters.append('candidateNotRegistered', candidateNotRegistered);
     }
 
     return this.httpClient

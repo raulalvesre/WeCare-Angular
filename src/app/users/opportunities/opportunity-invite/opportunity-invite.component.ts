@@ -1,11 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalDismissReasons, NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { OpportunityInvitation } from 'src/shared/models/opportunity-invitation.model';
-import { Page } from 'src/shared/models/page.model';
-import { AccessService } from 'src/shared/services/access.service';
-import { ImageService } from 'src/shared/services/image.service';
-import { OpportunityInvitationService } from 'src/shared/services/opportunity-invitation.service';
-import { ToastService } from 'src/shared/services/toast.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ModalDismissReasons, NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {OpportunityInvitation} from 'src/shared/models/opportunity-invitation.model';
+import {Page} from 'src/shared/models/page.model';
+import {AccessService} from 'src/shared/services/access.service';
+import {FileService} from 'src/shared/services/file.service';
+import {ImageService} from 'src/shared/services/image.service';
+import {OpportunityInvitationService} from 'src/shared/services/opportunity-invitation.service';
+import {ToastService} from 'src/shared/services/toast.service';
+import {VolunteerRegistration} from "../../../../shared/models/volunteer-registration.model";
+import {VolunteerOpportunity} from "../../../../shared/models/volunteer-opportunity.model";
+import {InstitutionService} from "../../../../shared/services/institution.service";
+import {HttpStatusCode} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-opportunity-invite',
@@ -14,9 +20,12 @@ import { ToastService } from 'src/shared/services/toast.service';
 })
 export class OpportunityInviteComponent implements OnInit, OnDestroy {
 
-  opportunityInvitations: OpportunityInvitation[] = [];
+  activeTab: number = 0; // To keep track of the active tab
 
+  opportunityInvitations: OpportunityInvitation[] = [];
   currentOpportunityInvitation: OpportunityInvitation;
+
+  isLoading: boolean = false;
 
   pageNumber = 1;
   pageSize = 10;
@@ -30,7 +39,10 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
     private opportunityInvitationService: OpportunityInvitationService,
     private toastService: ToastService,
     public imageService: ImageService,
-  ) { }
+    private fileService: FileService,
+    private institutionService: InstitutionService
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadOpportunityInvitations();
@@ -38,6 +50,28 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.toastService.clear();
+  }
+
+  openModal(content) {
+    this.modalService.open(content, {size: 'xl', centered: true});
+  }
+
+  filterInvitationByStatus(status: string) {
+    return this.opportunityInvitations.filter(
+      invitations => invitations.status === status
+    );
+  }
+
+  volunteerOpportunityCompleteAddress(opportunity: VolunteerOpportunity) {
+    const address = opportunity.address;
+
+    return `${address.street},  ${address.number} - ${address.neighborhood} - (${address.city} - ${address.state})`
+  }
+
+  volunteerOpportunityAddress(opportunity: VolunteerOpportunity) {
+    const address = opportunity.address;
+
+    return `${address.neighborhood} (${address.city} - ${address.state})`;
   }
 
   invitationStatus(opportunityInvitation: OpportunityInvitation) {
@@ -65,11 +99,14 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
       .subscribe({
         next: httpStatus => {
           if (httpStatus.ok) {
-            this.toastService.show('Convite aceito com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+            this.toastService.show('Convite aceito com sucesso', {classname: 'bg-success text-light', delay: 5000});
+            opportunityInvitation.candidateHasResponded = true;
           }
         },
         error: error => {
-          console.error(error);
+          if (error.status == HttpStatusCode.Conflict) {
+            this.toastService.show('Você já respondeu esse convite', {classname: 'bg-info text-light', delay: 5000});
+          }
         }
       });
   }
@@ -79,21 +116,24 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
       .subscribe({
         next: httpStatus => {
           if (httpStatus.ok) {
-            this.toastService.show('Convite recusado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
+            this.toastService.show('Convite recusado com sucesso', {classname: 'bg-success text-light', delay: 5000});
+            opportunityInvitation.candidateHasResponded = true;
           }
         },
         error: error => {
-          console.error(error);
+          if (error.status == HttpStatusCode.Conflict) {
+            this.toastService.show('Você já respondeu esse convite', {classname: 'bg-info text-light', delay: 5000});
+          }
         }
       });
   }
 
   private loadOpportunityInvitations() {
     const currentUser = this.accessService.getCurrentUser();
-
+    this.isLoading = true;
     const candidateId = currentUser.id;
 
-    this.opportunityInvitationService.searchInvites({ candidateId })
+    this.opportunityInvitationService.searchInvites({candidateId})
       .subscribe({
         next: (page: Page<OpportunityInvitation[]>) => {
           if (page.data != null) {
@@ -104,17 +144,24 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
             } else {
               this.opportunityInvitations.push(...page.data);
             }
+
           }
         }, error: error => {
           console.error(error);
         }
-      });
+      }).add(() => this.isLoading = false);
   }
 
   openInviteDetails(opportunityInvitation: OpportunityInvitation, inviteDetailsModal: NgbActiveModal) {
     this.currentOpportunityInvitation = opportunityInvitation;
 
-    this.modalService.open(inviteDetailsModal, { ariaLabelledBy: 'modal-basic-title', centered: true, size: 'xl' }).result.then(
+    this.currentOpportunityInvitation.status = 'DENIED'
+
+    this.modalService.open(inviteDetailsModal, {
+      ariaLabelledBy: 'modal-basic-title',
+      centered: true,
+      size: 'xl'
+    }).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;
       },
@@ -132,5 +179,10 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  convertBase64ToPhotoUrl(photoBase64: string) {
+    const photoExtension = this.fileService.fileExtension(photoBase64);
+    return `data:image/${photoExtension};base64,${photoBase64}`;
   }
 }

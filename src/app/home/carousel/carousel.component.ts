@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./carousel.component.css']
 })
 export class CarouselComponent {
-  images = ['../../../assets/img/c-01.png', '../../../assets/img/c-02.png', '../../../assets/img/c-03.png'];
+  images = ['/assets/img/c-02.png'];
 
 	paused = false;
 	unpauseOnArrow = false;

@@ -1,10 +1,10 @@
-<div class="d-none d-md-block">
+<div class="d-none d-md-block" *ngIf="userRole === 'CANDIDATE'">
   <app-carousel></app-carousel>
 </div>
 <div class="content">
   <div class="container">
     <div id="">
-      <div class="text-center text-lg-start" *ngIf="shouldShowRecommendedOpportunities">
+      <div class="text-center text-lg-start" *ngIf="userIsCandidate">
         <h3>Vagas Recomendadas pra Você</h3>
         <app-card-slider-alt [volunteerOpportunities]="recommendedOpportunities" [userRole]="userRole"></app-card-slider-alt>
       </div>
@@ -66,8 +66,8 @@
       </div>
     </div>
 
-    <div class="text-center text-lg-start mt-5">
-      <h3>Causas Em Destaque Neste Mês</h3>
+    <div class="text-center text-lg-start mt-5" *ngIf="userRole === 'CANDIDATE'">
+      <h3 id="causes">Causas Em Destaque Neste Mês</h3>
       <app-featured-causes></app-featured-causes>
     </div>
 

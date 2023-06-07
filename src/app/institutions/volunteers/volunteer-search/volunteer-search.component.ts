@@ -1,11 +1,21 @@
-import { HttpStatusCode, HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Page } from 'src/shared/models/page.model';
-import { VolunteerOpportunity } from 'src/shared/models/volunteer-opportunity.model';
-import { FileService } from 'src/shared/services/file.service';
-import { ToastService } from 'src/shared/services/toast.service';
-import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
+import {HttpStatusCode, HttpErrorResponse} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Page} from 'src/shared/models/page.model';
+import {VolunteerOpportunity} from 'src/shared/models/volunteer-opportunity.model';
+import {FileService} from 'src/shared/services/file.service';
+import {ToastService} from 'src/shared/services/toast.service';
+import {VolunteerOpportunityService} from 'src/shared/services/volunteer-opportunity.service';
+import {CandidateService} from "../../../../shared/services/candidate.service";
+import {Candidate} from "../../../../shared/models/candidate.model";
+import {CandidateSearchParams} from "../../../../shared/models/candidate-search-params.model";
+import {OpportunityCause} from "../../../../shared/models/opportunity-cause.model";
+import {FormGroup} from "@angular/forms";
+import {FederativeUnit} from "../../../../shared/models/address.model";
+import {ViaCepService} from "../../../../shared/services/via-cep.service";
+import {OpportunityCauseService} from "../../../../shared/services/opportunity-cause.service";
+import {Qualification} from "../../../../shared/models/qualification.model";
+import {QualificationService} from "../../../../shared/services/qualification.service";
 
 @Component({
   selector: 'app-volunteer-search',
@@ -14,100 +24,145 @@ import { VolunteerOpportunityService } from 'src/shared/services/volunteer-oppor
 })
 export class VolunteerSearchComponent implements OnInit {
 
-  readonly opportunityDescriptionLength = 50;
+  candidates: Candidate[] = [];
+  qualifications: Qualification[] = [];
+  selectedQualifications: Qualification[] = [];
 
-  avaliableVolunteers: VolunteerOpportunity[] = [];
+  federativeUnits: FederativeUnit[] = [];
+  selectedFederativeUnits: FederativeUnit[] = [];
+
+  whichOpportunityToInviteForm: FormGroup;
+
 
   pageNumber = 1;
   pageSize = 10;
   hasNextPage = false;
+  isLoading = false;
 
   constructor(
     private volunteerOpportunityService: VolunteerOpportunityService,
+    private candidateService: CandidateService,
     private toastService: ToastService,
     private fileService: FileService,
-    private modalService: NgbModal
-  ) { }
+    private modalService: NgbModal,
+    private viaCepService: ViaCepService,
+    private opportunityCauseService: OpportunityCauseService,
+    private qualificationService: QualificationService
+  ) {
+  }
 
   ngOnInit(): void {
-    this.loadOpportunities();
+    this.searchQualifications();
+    this.searchFederativeUnits();
+    this.loadCandidates();
   }
 
-  getOpportunityDescription(volunteerOpportunity: VolunteerOpportunity): string {
-    return volunteerOpportunity.collapseDescription
-      ? volunteerOpportunity.description.substring(0, this.opportunityDescriptionLength)
-      : volunteerOpportunity.description;
+  private searchQualifications() {
+    this.qualificationService.search()
+      .subscribe({
+        next: opportunityCauses => {
+          this.qualifications = opportunityCauses;
+        },
+        error: error => {
+          console.error(error);
+        }
+      });
   }
 
-  toggleOpportunityDescription(volunteerOpportunity: VolunteerOpportunity) {
-    volunteerOpportunity.collapseDescription = !volunteerOpportunity.collapseDescription;
+  private searchFederativeUnits() {
+    this.viaCepService.getFederativeUnits()
+      .subscribe(federativeUnits => {
+        this.federativeUnits = federativeUnits;
+      });
+  }
+
+
+  private loadCandidates() {
+    this.isLoading = true;
+    const searchParams = this.getSearchParams();
+    this.candidateService.search(searchParams)
+      .subscribe({
+        next: (page: Page<Candidate[]>) => {
+          console.log(page.data)
+          this.candidates = page.data;
+        }
+      }).add(() => this.isLoading = false);
+  }
+
+  private getSearchParams(): CandidateSearchParams {
+    const params: any = {
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize
+    };
+
+    if (this.selectedFederativeUnits.length > 0) {
+      params.state = this.selectedFederativeUnits[0].abbreviation;
+    }
+
+    if (this.selectedQualifications.length > 0) {
+      params.qualificationIds = this.selectedQualifications.map(x => x.id);
+    }
+
+    return params;
+  }
+
+  addQualificationToSearch(qualification: Qualification) {
+    const opportunityIndex = this.selectedQualifications.indexOf(qualification);
+    if (opportunityIndex >= 0) {
+      return;
+    }
+
+    this.selectedQualifications.push(qualification);
+
+    this.loadCandidates();
+  }
+
+  removeQualificationToSearch(opportunityCause) {
+    const opportunityIndex = this.selectedQualifications.indexOf(opportunityCause);
+    this.selectedQualifications.splice(opportunityIndex, 1);
+
+    this.loadCandidates();
+  }
+
+  addFederativeUnitToSearch(federativeUnit: FederativeUnit) {
+    // const federativeUnitIndex = this.selectedFederativeUnits.indexOf(federativeUnit);
+    // if (federativeUnitIndex >= 0) {
+    //   return;
+    // }
+
+    // this.selectedFederativeUnits.push(federativeUnit);
+
+
+    this.selectedFederativeUnits = [federativeUnit];
+
+    this.loadCandidates();
+  }
+
+  removeFederativeUnit(federativeUnit: FederativeUnit) {
+    const federativeUnitIndex = this.selectedFederativeUnits.indexOf(federativeUnit);
+    this.selectedFederativeUnits.splice(federativeUnitIndex, 1);
+
+    this.loadCandidates();
   }
 
   loadMoreOpportunities() {
     this.pageNumber += 1;
 
-    this.loadOpportunities();
-  }
-
-  registerToOpportunity(volunteerOpportunity: VolunteerOpportunity) {
-    this.volunteerOpportunityService.registerCurrentUserToOpportunity(volunteerOpportunity)
-      .subscribe({
-        next: httpResponse => {
-          if (httpResponse.status == HttpStatusCode.NoContent) {
-            this.toastService.show('Interesse cadastrado com sucesso', { classname: 'bg-success text-light', delay: 5000 });
-            this.toastService.show('Pendente de aprovação', { classname: 'bg-info text-light', delay: 5000 });
-          }
-        },
-        error: (httpErrorResponse: HttpErrorResponse) => {
-          console.error(httpErrorResponse);
-
-          if (httpErrorResponse.status == HttpStatusCode.Conflict) {
-            this.toastService.show('Cadastro já realizado', { classname: 'bg-info text-light', delay: 5000 });
-
-            return;
-          }
-
-          if (httpErrorResponse?.error) {
-            this.toastService.show('Houve um erro ao registrar o interesse', { classname: 'bg-danger text-light', delay: 5000 });
-            this.toastService.show('Será necessário tentar novamente', { classname: 'bg-danger text-light', delay: 5000 });
-          }
-        }
-      });
+    this.loadCandidates();
   }
 
   convertBase64ToPhotoUrl(photoBase64: string) {
+    console.log(photoBase64)
     const photoExtension = this.fileService.fileExtension(photoBase64);
     return `data:image/${photoExtension};base64,${photoBase64}`;
   }
 
-  openXl(content) {
-		this.modalService.open(content, { size: 'xl' , centered: true});
-	}
+  inviteCandidate(modal: any) {
 
-  private loadOpportunities() {
-    this.volunteerOpportunityService.search({
-      pageNumber: this.pageNumber,
-      pageSize: this.pageSize
-    })
-      .subscribe({
-        next: (page: Page<VolunteerOpportunity[]>) => {
-          if (page.data != null) {
-            this.hasNextPage = page.hasNextPage;
-
-            if (this.avaliableVolunteers.length == 0) {
-              this.avaliableVolunteers = page.data;
-            } else {
-              this.avaliableVolunteers.push(...page.data);
-            }
-
-            for (const volunteerOpportunity of this.avaliableVolunteers) {
-              volunteerOpportunity.collapseDescription =
-                volunteerOpportunity.description.length > this.opportunityDescriptionLength;
-            }
-          }
-        }
-      });
   }
 
+  openInviteModal() {
+
+  }
 }
 

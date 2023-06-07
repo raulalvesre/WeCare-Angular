@@ -14,6 +14,7 @@ import { ToastService } from 'src/shared/services/toast.service';
 export class LoginComponent implements OnInit, OnDestroy {
   readonly cpf = UserDocumentType.cpf;
   readonly cnpj = UserDocumentType.cnpj;
+  isLoading: boolean = false;
 
   form: FormGroup;
 
@@ -42,6 +43,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login() {
+    this.isLoading = true;
     const { email, password, documentType } = this.form.value;
 
     this.accessService.login({
@@ -52,13 +54,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       next: () => {
         this.toastService.show('Acesso autorizado', { classname: 'bg-success text-light', delay: 5000 });
 
-        setTimeout(() => {
-          if (documentType == UserDocumentType.cpf) {
-            this.router.navigate(['/']);
-          } else {
-            this.router.navigate(['/opportunities-institution']);
-          }
-        }, 2000);
+        if (documentType == UserDocumentType.cpf) {
+          this.router.navigate(['/']);
+        } else {
+          this.router.navigate(['/opportunities-institution']);
+        }
       },
       error: (error: HttpErrorResponse) => {
         if (error.status == HttpStatusCode.Unauthorized) {
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.toastService.show('Cadastro não encontrado', { classname: 'bg-danger text-light', delay: 5000 });
         }
       }
-    });
+    }).add(() => this.isLoading = false);
   }
 
   changeDocumentType(documentType: UserDocumentType) {
