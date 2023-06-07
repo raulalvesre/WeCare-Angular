@@ -11,10 +11,22 @@
             class="d-flex justify-content-center align-items-center flex-column mb-2"
           >
             <div
-              [ngClass]="{ 'd-none': !currentPhotoFile }"
+              [ngClass]="{
+                'd-none':
+                  !currentPhotoFile && form.get('photo').value?.length == 0
+              }"
               class="d-flex justify-content-center w-auto"
             >
-              <img id="phofileImagePreview" class="rounded" alt="Imagem do perfil" />
+              <img
+                [attr.src]="
+                  form.get('photo').value?.length > 0
+                    ? imageService.convertBase64ToPhotoUrl(form.get('photo').value)
+                    : ''
+                "
+                id="phofileImagePreview"
+                class="rounded"
+                alt="Imagem do perfil"
+              />
             </div>
             <input
               #phofileImageInput

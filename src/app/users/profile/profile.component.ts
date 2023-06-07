@@ -12,6 +12,7 @@ import { ToastService } from 'src/shared/services/toast.service';
 import { ViaCepService } from 'src/shared/services/via-cep.service';
 import { CandidateService } from 'src/shared/services/candidate.service';
 import { Candidate } from 'src/shared/models/candidate.model';
+import { ImageService } from 'src/shared/services/image.service';
 
 @Component({
   selector: 'app-profile',
@@ -43,7 +44,8 @@ export class ProfileComponent implements OnInit {
     private opportunityCauseService: OpportunityCauseService,
     private toastService: ToastService,
     private viaCepService: ViaCepService,
-    private candidateService: CandidateService
+    private candidateService: CandidateService,
+    public imageService: ImageService
   ) { }
 
   ngOnInit() {
@@ -53,6 +55,7 @@ export class ProfileComponent implements OnInit {
       telephone: new FormControl(null, [Validators.required, Validators.minLength(14)]),
       birthDate: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       biography: new FormControl(null, [Validators.required, Validators.minLength(12)]),
+      photo: new FormControl(''),
       cpf: new FormControl(null, [Validators.required, Validators.minLength(14), Validators.maxLength(18)]),
       address: new FormGroup({
         street: new FormControl(null, [Validators.required]),
@@ -97,6 +100,7 @@ export class ProfileComponent implements OnInit {
           this.form.get('telephone').setValue(this.currentCandidate.telephone);
           this.form.get('birthDate').setValue(this.currentCandidate.birthDate);
           this.form.get('biography').setValue(this.currentCandidate.bio);
+          this.form.get('photo').setValue(this.currentCandidate.photo);
           this.form.get('cpf').setValue(this.currentCandidate.cpf);
           this.form.get('address').get('street').setValue(this.currentCandidate.address.street);
           this.form.get('address').get('number').setValue(this.currentCandidate.address.number);
@@ -105,6 +109,20 @@ export class ProfileComponent implements OnInit {
           this.form.get('address').get('neighborhood').setValue(this.currentCandidate.address.neighborhood);
           this.form.get('address').get('state').setValue(this.currentCandidate.address.state);
           this.form.get('address').get('postalCode').setValue(this.currentCandidate.address.postalCode);
+
+          this.selectedOpportunityCauses = this.opportunityCauses
+            .filter(opportunityCause =>
+              candidate.causesCandidateIsInterestedIn
+                .map(cause => cause.code)
+                .includes(opportunityCause.code)
+            );
+
+          this.selectedQualifications = this.qualifications
+            .filter(qualification =>
+                candidate.qualifications
+                  .map(candidateQualification => candidateQualification.id)
+                  .includes(qualification.id)
+            );
         },
         error: error => {
           console.error(error);
@@ -236,9 +254,9 @@ export class ProfileComponent implements OnInit {
     }
 
     if (this.selectedOpportunityCauses.length == 0) {
-      candidate.interestedInCausesIds = [];
+      candidate.causesCandidateIsInterestedIn = [];
     } else {
-      candidate.interestedInCausesIds = this.selectedOpportunityCauses
+      candidate.causesCandidateIsInterestedIn = this.selectedOpportunityCauses
         .map(opportunityCause => opportunityCause.id);
     }
 

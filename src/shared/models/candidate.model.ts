@@ -8,9 +8,11 @@ export interface Candidate {
   name: string;
   telephone: string;
   bio: string;
+  photo?: string;
   address: Address;
   cpf: string;
   birthDate: string;
-  qualificationsIds?: Qualification[] | number[];
-  interestedInCausesIds?: OpportunityCause[] | number[];
+  qualificationsIds?: number[];
+  qualifications?: Qualification[];
+  causesCandidateIsInterestedIn?: OpportunityCause[] | number[];
 }
