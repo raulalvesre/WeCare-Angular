@@ -7,6 +7,9 @@ import { FileService } from 'src/shared/services/file.service';
 import { ImageService } from 'src/shared/services/image.service';
 import { OpportunityInvitationService } from 'src/shared/services/opportunity-invitation.service';
 import { ToastService } from 'src/shared/services/toast.service';
+import {VolunteerRegistration} from "../../../../shared/models/volunteer-registration.model";
+import {VolunteerOpportunity} from "../../../../shared/models/volunteer-opportunity.model";
+import {InstitutionService} from "../../../../shared/services/institution.service";
 
 @Component({
   selector: 'app-opportunity-invite',
@@ -31,7 +34,8 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
     private opportunityInvitationService: OpportunityInvitationService,
     private toastService: ToastService,
     public imageService: ImageService,
-    private fileService: FileService
+    private fileService: FileService,
+    private institutionService: InstitutionService
   ) { }
 
   ngOnInit(): void {
@@ -40,6 +44,16 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.toastService.clear();
+  }
+
+  openModal(content) {
+    this.modalService.open(content, { size: 'xl', centered: true });
+  }
+
+  volunteerOpportunityCompleteAddress(opportunity: VolunteerOpportunity) {
+    const address = opportunity.address;
+
+    return`${address.street},  ${address.number} - ${address.neighborhood} - (${address.city} - ${address.state})`
   }
 
   invitationStatus(opportunityInvitation: OpportunityInvitation) {
@@ -59,8 +73,6 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
   }
 
   opportunityInvitationPending(opportunityInvitation: OpportunityInvitation) {
-    console.log(opportunityInvitation);
-
     return opportunityInvitation.status == 'PENDING';
   }
 
@@ -109,7 +121,6 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
               this.opportunityInvitations.push(...page.data);
             }
 
-            console.log(this.opportunityInvitations);
           }
         }, error: error => {
           console.error(error);

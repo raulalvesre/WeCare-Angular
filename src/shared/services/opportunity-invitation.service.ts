@@ -1,11 +1,12 @@
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { OpportunityInvitation } from '../models/opportunity-invitation.model';
-import { environment } from 'src/environments/environment';
-import { Page } from '../models/page.model';
-import { Observable, tap } from 'rxjs';
-import { VolunteerOpportunityService } from './volunteer-opportunity.service';
-import { AccessService } from './access.service';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {OpportunityInvitation} from '../models/opportunity-invitation.model';
+import {environment} from 'src/environments/environment';
+import {Page} from '../models/page.model';
+import {Observable, tap} from 'rxjs';
+import {VolunteerOpportunityService} from './volunteer-opportunity.service';
+import {AccessService} from './access.service';
+import {InstitutionService} from "./institution.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,15 +18,17 @@ export class OpportunityInvitationService {
   constructor(
     private httpClient: HttpClient,
     private accessService: AccessService,
-    private volunteerOpportunityService: VolunteerOpportunityService
-  ) { }
+    private volunteerOpportunityService: VolunteerOpportunityService,
+    private institutionService: InstitutionService
+  ) {
+  }
 
   searchInvites({
-    candidateId,
-    opportunityId,
-    pageNumber = 1,
-    pageSize = 10,
-  }: {
+                  candidateId,
+                  opportunityId,
+                  pageNumber = 1,
+                  pageSize = 10,
+                }: {
     candidateId?: number,
     opportunityId?: number,
     pageNumber?: number,
@@ -55,10 +58,15 @@ export class OpportunityInvitationService {
             const opportunityInvitations = page.data;
 
             for (const opportunityInvitation of opportunityInvitations) {
-              this.volunteerOpportunityService.searchById({ volunteerOpportunityId: opportunityInvitation.opportunityId })
+              this.volunteerOpportunityService.searchById({volunteerOpportunityId: opportunityInvitation.opportunityId})
                 .subscribe({
                   next: volunteerOpportunity => {
-                    opportunityInvitation.opportunity = volunteerOpportunity;
+                    this.institutionService.get(volunteerOpportunity.institutionId)
+                      .subscribe(institution => {
+                          volunteerOpportunity.institution = institution;
+                          opportunityInvitation.opportunity = volunteerOpportunity
+                        }
+                      )
                   }
                 });
             }
