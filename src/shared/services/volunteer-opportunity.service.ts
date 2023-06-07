@@ -8,6 +8,7 @@ import { VolunteerOpportunity } from '../models/volunteer-opportunity.model';
 import { InstitutionService } from './institution.service';
 import { Institution } from '../models/institution.model';
 import { OpportunityRegistration } from '../models/opportunity-registration.model';
+import { Candidate } from '../models/candidate.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,7 @@ export class VolunteerOpportunityService {
     pageNumber = 1,
     pageSize = 10,
     institutionId = null,
+    candidateNotRegistered = null,
     opportunityCauses = null,
     federativeUnits = null,
     initialDate = null,
@@ -51,6 +53,10 @@ export class VolunteerOpportunityService {
 
     if (institutionId != null) {
       parameters = parameters.append("institutionId", institutionId)
+    }
+
+    if (candidateNotRegistered != null) {
+      parameters = parameters.append("candidateNotRegistered", candidateNotRegistered)
     }
 
     if (initialDate != null) {
@@ -108,6 +114,17 @@ export class VolunteerOpportunityService {
       {
         headers: new HttpHeaders().append('Authorization', `Bearer ${token}`),
         observe: 'response'
+      }
+    );
+  }
+
+  searchAppliedCandidates(opportunityId: number): Observable<Candidate[]> {
+    const token = this.accessService.getToken();
+
+    return this.httpClient.get<Candidate[]>(
+      `${this.apiUrl}/api/volunteer-opportunity/${opportunityId}/registrations`,
+      {
+        headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
       }
     );
   }
