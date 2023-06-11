@@ -41,6 +41,7 @@ import { ActivateAccountComponent } from './home/activate-account/activate-accou
 import { VolunteerSearchComponent } from './institutions/volunteers/volunteer-search/volunteer-search.component';
 import { OpportunityAppliedUsersComponent } from './users/opportunities/opportunity-applied-users/opportunity-applied-users.component';
 import {OpportunityModalComponent} from "../shared/components/opportunity-modal/opportunity-modal.component";
+import { CertificateComponentComponent } from './home/certificate-component/certificate-component.component';
 
 registerLocaleData(localePt);
 
@@ -79,6 +80,7 @@ registerLocaleData(localePt);
     ActivateAccountComponent,
     VolunteerSearchComponent,
     OpportunityAppliedUsersComponent,
+    CertificateComponentComponent,
 
   ],
   providers: [

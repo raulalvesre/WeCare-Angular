@@ -65,4 +65,9 @@ export class ParticipationCertificateService {
     );
   }
 
+  getByAuthenticityCode(authenticityCode: string) : Observable<ParticipationCertificate> {
+    return this.httpClient
+      .get<ParticipationCertificate>(`${this.apiUrl}/api/participation-certificate/${authenticityCode}`,);
+  }
+
 }

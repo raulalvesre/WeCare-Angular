@@ -1,0 +1,61 @@
+<div style="display: flex; justify-content: center" *ngIf="isLoading">
+  <div class="loader"></div>
+</div>
+<div
+  class="modal-body certificate w-100 d-flex justify-content-start align-items-center flex-column text-center"
+  *ngIf="!isLoading"
+>
+  <div style="height: 20vh"></div>
+
+  <h4>Certificado de Participação</h4>
+
+  <div class="row d-flex justify-content-center">
+    <div class="col-6 mt-4">
+      <p class="m-0 text-start">
+
+        Certificamos que {{ participationCertificate.registration.candidate.name }} participou da
+        oportunidade
+
+        <strong>{{
+          participationCertificate.registration.opportunity.name
+          }}</strong>
+        realizado pela
+        <strong>{{
+          participationCertificate.registration.opportunity.institution
+            .name
+          }}</strong>
+
+        no dia
+
+        <strong>{{
+          participationCertificate.registration.opportunity.opportunityDate | date: "short"
+          }}</strong
+        >, contribuindo para uma sociedade melhor.
+      </p>
+
+      <div
+        class="d-flex flex-column align-items-start mt-4"
+        *ngIf="
+                    participationCertificate.registration.opportunity.causes
+                      ?.length > 0
+                  "
+      >
+        <h5 *ngIf="participationCertificate.displayedQualifications.length > 0">Habilidades Mostradas</h5>
+
+        <ul>
+          <li class="text-start"
+              *ngFor="
+                        let qualification of participationCertificate.displayedQualifications
+                      "
+          >
+            {{ qualification }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-4">
+        <p class="m-0">Código de autenticação: {{authenticityCode}}</p>
+      </div>
+    </div>
+  </div>
+</div>

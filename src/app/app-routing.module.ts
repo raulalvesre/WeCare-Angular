@@ -21,6 +21,7 @@ import { PasswordRecoveryComponent } from './home/password-recovery/password-rec
 import { ActivateAccountComponent } from './home/activate-account/activate-account.component';
 import { VolunteerSearchComponent } from './institutions/volunteers/volunteer-search/volunteer-search.component';
 import { OpportunityAppliedUsersComponent } from './users/opportunities/opportunity-applied-users/opportunity-applied-users.component';
+import {CertificateComponentComponent} from "./home/certificate-component/certificate-component.component";
 
 const routes: Routes = [
   {
@@ -111,6 +112,10 @@ const routes: Routes = [
   {
     path: 'applied-volunteers/:id',
     component: OpportunityAppliedUsersComponent
+  },
+  {
+    path: 'certificates/:authenticityCode',
+    component: CertificateComponentComponent
   }
 ];
 
