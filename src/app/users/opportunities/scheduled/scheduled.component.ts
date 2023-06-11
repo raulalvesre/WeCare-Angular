@@ -120,7 +120,7 @@ export class ScheduledComponent implements OnInit {
             }
           }
         }
-      });
+      }).add(() => this.isLoading = false);
 
     this.candidateService
       .searchDeniedRegistrations({
@@ -159,11 +159,8 @@ export class ScheduledComponent implements OnInit {
               this.volunteerRegistrations.push(...page.data);
             }
           }
-          this.isLoading = false;
-
         }
       });
-
   }
 
   convertBase64ToPhotoUrl(photoBase64: string) {

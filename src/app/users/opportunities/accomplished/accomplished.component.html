@@ -21,7 +21,8 @@
           <div class="loader"></div>
         </div>
 
-        <div *ngIf="participationCertificates.length == 0 && !isLoading" class="text-center text-bg-warning border rounded m-5">
+        <div *ngIf="participationCertificates.length == 0 && !isLoading"
+             class="text-center text-bg-warning border rounded m-5">
           <p class="bold align-middle m-3 fw-bold">Você ainda não possui nenhum certificado de participação</p>
         </div>
 
@@ -48,8 +49,10 @@
                   <div class="modal-body">
                     <div class="mb-3">
                       <form [formGroup]="instituionProblemForm">
-                        <input id="reportedUserId"  formControlName="reportedUserId" type="hidden" value="{{participationCertificate.registration.opportunity.institutionId}}" />
-                        <input id="opportunityId" formControlName="opportunityId" type="hidden" value="{{participationCertificate.registration.opportunity.id}}" />
+                        <input id="reportedUserId" formControlName="reportedUserId" type="hidden"
+                               value="{{participationCertificate.registration.opportunity.institutionId}}"/>
+                        <input id="opportunityId" formControlName="opportunityId" type="hidden"
+                               value="{{participationCertificate.registration.opportunity.id}}"/>
                         <div class="mb-3">
                           <label for="title" class="form-label"
                           >Título do problema</label
@@ -174,7 +177,7 @@
 
                       <div class="action-buttons my-4">
                         <div class="row">
-                          <div class="col-11 col-lg-11">
+                          <div class="col-9 col-lg-9">
                             <button
                               class="btn btn-primary"
                               title="Detalhes da oportunidade"

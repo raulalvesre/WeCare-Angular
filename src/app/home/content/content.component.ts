@@ -15,6 +15,8 @@ export class ContentComponent {
   recommendedOpportunities: VolunteerOpportunity[];
   latestOpportunities: VolunteerOpportunity[];
   userRole: string;
+  recommendedOpportunitiesIsLoading: boolean = false;
+  latestOpportunitiesIsLoading: boolean = false;
 
   constructor(
     private candidateService: CandidateService,
@@ -22,19 +24,29 @@ export class ContentComponent {
     private opportunityService: VolunteerOpportunityService
   ) {
     this.userIsCandidate = accessService.getCurrentUser()?.role === 'CANDIDATE';
+    this.recommendedOpportunitiesIsLoading = true;
+    this.latestOpportunitiesIsLoading = true;
 
     if (!this.userIsCandidate) {
       opportunityService.search({
         'orderBy': 'CreationDate',
         'orderDirection': 'Descending'
       }).subscribe(ops => this.latestOpportunities = ops.data)
+        .add(() => this.latestOpportunitiesIsLoading = false);
     } else {
-      candidateService.getCandidateRecomendedOpportunities().subscribe(ops => this.recommendedOpportunities = ops.data)
+      candidateService.getCandidateRecomendedOpportunities()
+        .subscribe(ops => this.recommendedOpportunities = ops.data)
+        .add(() => this.recommendedOpportunitiesIsLoading = false);
+
       opportunityService.search({
         'candidateNotRegistered': accessService.getCurrentUser().id,
         'orderBy': 'CreationDate',
         'orderDirection': 'Descending'
-      }).subscribe(ops => this.latestOpportunities = ops.data)
+      }).subscribe(ops => {
+        this.latestOpportunities = ops.data;
+      }).add(() => {
+        this.latestOpportunitiesIsLoading = false;
+      })
     }
   }
 

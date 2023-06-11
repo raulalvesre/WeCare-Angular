@@ -61,6 +61,11 @@ export class OpportunitiesSearchComponent implements OnInit {
       finalDate: new FormControl(),
     });
 
+    this.selectedOpportunityCauses = this.activatedRoute.snapshot.queryParamMap.getAll('causes').map(x => ({
+      code: x,
+      name: ''
+    }));
+
     this.searchCauses();
     this.searchFederativeUnits();
     this.loadOpportunities();
@@ -211,6 +216,10 @@ export class OpportunitiesSearchComponent implements OnInit {
     this.pageNumber = 1;
     this.volunteerOpportunities = [];
 
+
+    if (this.initialDate == undefined) {
+      this.initialDate = new Date();
+    }
 
     this.volunteerOpportunityService.search({
       pageNumber: this.pageNumber,

@@ -1,26 +1,16 @@
 import { Component } from '@angular/core';
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
-interface issues {
-  id: number,
-  status: string,
-  opportunityId: number,
-  title: string,
-  description: string,
-  resolutionNotes: string,
-  reportedUserId: number,
-  reporterId: number,
-  creationDate: Date
-}
+import {Issue} from "../../../shared/models/issue.model";
 
 @Component({
-  selector: 'app-institutions-issues',
+  selector: 'app-institutions-candidate-issues',
   templateUrl: './institutions-issues.component.html',
   styleUrls: ['./institutions-issues.component.css']
 })
 export class InstitutionsIssuesComponent {
 
   closeResult = '';
+  issues: Issue[] = [];
 
   constructor(private modalService: NgbModal) { }
 
@@ -45,62 +35,5 @@ export class InstitutionsIssuesComponent {
     }
   }
 
-  oportunityIssues: Array<issues> = [
-    {
-      id: 1,
-      status: 'Open',
-      opportunityId: 32,
-      title: 'string',
-      description: 'o que aconteceu foi que...',
-      resolutionNotes: 'string',
-      reportedUserId: 1,
-      reporterId: 1,
-      creationDate: new Date()
-    },
-    {
-      id: 1,
-      status: 'Open',
-      opportunityId: 32,
-      title: 'string',
-      description: 'o que aconteceu foi que...',
-      resolutionNotes: 'string',
-      reportedUserId: 1,
-      reporterId: 1,
-      creationDate: new Date()
-    },
-    {
-      id: 1,
-      status: 'Open',
-      opportunityId: 32,
-      title: 'string',
-      description: 'o que aconteceu foi que...',
-      resolutionNotes: 'string',
-      reportedUserId: 1,
-      reporterId: 1,
-      creationDate: new Date()
-    },
-    {
-      id: 1,
-      status: 'Open',
-      opportunityId: 32,
-      title: 'string',
-      description: 'o que aconteceu foi que...',
-      resolutionNotes: 'string',
-      reportedUserId: 1,
-      reporterId: 1,
-      creationDate: new Date()
-    },
-    {
-      id: 1,
-      status: 'Open',
-      opportunityId: 32,
-      title: 'string',
-      description: 'o que aconteceu foi que...',
-      resolutionNotes: 'string',
-      reportedUserId: 1,
-      reporterId: 1,
-      creationDate: new Date()
-    },
-  ]
 
 }

@@ -196,7 +196,7 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.participationCertificateService
-      .searchParticipationCertificates({ candidateId: currentUser.id })
+      .searchParticipationCertificates({candidateId: currentUser.id})
       .subscribe({
         next: (page: Page<ParticipationCertificate[]>) => {
           if (page.data != null) {
@@ -217,13 +217,14 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
                       next: (page: Page<Issue[]>) => {
                         this.candidateIssues = page.data;
                       }
-                    })
+                    }).add(() => this.isLoading = false)
                   }
                 })
+
             }
           }
         }
-      }).add(() => this.isLoading = false);
+      });
   }
 
   candidateHasAlreadyReportedOpportunity(opportunityId: number): boolean {

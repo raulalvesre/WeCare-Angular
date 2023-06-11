@@ -5,14 +5,14 @@
         <div class="">
           <h3>Problemas Relatados com Vagas</h3>
         </div>
-        <div *ngIf="oportunityIssues.length == 0">
+        <div *ngIf="issues.length == 0">
           <p class="bold">Sem problemas relatados no momento!</p>
         </div>
 
-        <div *ngIf="oportunityIssues.length > 0">
+        <div *ngIf="issues.length > 0">
           <ul
             class="applications"
-            *ngFor="let oportunityIssue of oportunityIssues"
+            *ngFor="let oportunityIssue of issues"
           >
             <li class="volunteer">
               <div class="description">
