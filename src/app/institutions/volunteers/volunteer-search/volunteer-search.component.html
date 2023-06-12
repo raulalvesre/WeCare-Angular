@@ -40,7 +40,7 @@
               *ngFor="let qualification of selectedQualifications"
               class="d-flex flex-row mt-1"
             >
-              <span class="me-2 w-50">{{ qualification.name }}</span>
+              <span class="me-2 w-100">{{ qualification.name }}</span>
               <span
                 (click)="removeQualificationToSearch(qualification)"
                 role="button"
@@ -84,8 +84,8 @@
                 class="d-flex flex-row mt-1"
               >
                 <span class="me-2 w-50"
-                  >{{ federativeUnit.name }} ({{
-                    federativeUnit.abbreviation
+                >{{ federativeUnit.name }} ({{
+                  federativeUnit.abbreviation
                   }})</span
                 >
                 <span
@@ -148,11 +148,11 @@
             <div class="text-start row">
               <div class="col text-truncate text-start">
                 <i class="bi bi-geo-alt-fill text-danger"
-                  ><span class="text-dark"
-                    >{{ candidate.address.neighborhood }},
-                    {{ candidate.address.city }} -
-                    {{ candidate.address.state }}</span
-                  >
+                ><span class="text-dark"
+                >{{ candidate.address.neighborhood }},
+                  {{ candidate.address.city }} -
+                  {{ candidate.address.state }}</span
+                >
                 </i>
               </div>
             </div>
@@ -162,8 +162,8 @@
                 class="col text-truncate text-start"
               >
                 <i class="bi bi-bookmark-heart text-success"
-                  ><span class="text-dark text-start">{{
-                    candidate?.qualifications?.join(", ")
+                ><span class="text-dark text-start">{{
+                  candidate?.qualifications?.join(", ")
                   }}</span>
                 </i>
               </div>
@@ -192,43 +192,52 @@
             ></button>
           </div>
           <div class="modal-body">
-            <div class="mb-3">
+            <div style="display: flex; justify-content: center" *ngIf="invitesAreLoading">
+              <div class="loader"></div>
+            </div>
+            <div class="mb-3" *ngIf="!invitesAreLoading">
               <form [formGroup]="volunteerOpportunitiesInvitesForm">
                 <ng-container formArrayName="volunteerOpportunitiesInvites">
+                  <div *ngIf="volunteerOpportunitiesInvites?.controls.length == 0" class="text-center">
+                    <div class="text-center text-bg-warning border rounded m-5">
+                      <p class="align-middle m-3 fw-bold">
+                        Voluntário já inscrito/convidado para todas suas oportunidades
+                      </p>
+                    </div>
+                  </div>
                   <table
                     *ngIf="volunteerOpportunitiesInvites?.controls.length > 0"
                     class="table"
                   >
                     <thead>
-                      <tr>
-                        <th>Oportunidade</th>
-                        <th>Enviar</th>
-                      </tr>
+                    <tr>
+                      <th>Oportunidade</th>
+                      <th>Enviar</th>
+                    </tr>
                     </thead>
                     <tbody>
-                      <tr
-                        *ngFor="
+                    <tr
+                      *ngFor="
                           let volunteerOpportunityInvite of volunteerOpportunitiesInvites.controls
                         "
-                      >
-                        <td>
-                          {{ volunteerOpportunityInvite.value.name }}<br />{{
-                            volunteerOpportunityInvite.value | json
-                          }}
-                        </td>
-                        <td [formGroup]="volunteerOpportunityInvite" class="d-flex justify-content-center">
-                          <div class="h-100">
-                            <input type="checkbox" formControlName="sendInvite" class="form-check-input" title="Enviar Convite" />
-                          </div>
-                        </td>
-                      </tr>
+                    >
+                      <td>
+                        {{ volunteerOpportunityInvite.value.name }}
+                      </td>
+                      <td [formGroup]="volunteerOpportunityInvite" class="d-flex justify-content-center">
+                        <div class="h-100">
+                          <input type="checkbox" formControlName="sendInvite" class="form-check-input"
+                                 title="Enviar Convite"/>
+                        </div>
+                      </td>
+                    </tr>
                     </tbody>
                   </table>
                 </ng-container>
               </form>
             </div>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer" *ngIf="!invitesAreLoading">
             <button
               type="button"
               class="btn btn-primary"

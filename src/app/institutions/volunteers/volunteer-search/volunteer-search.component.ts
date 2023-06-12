@@ -1,22 +1,24 @@
-import { HttpStatusCode, HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Page } from 'src/shared/models/page.model';
-import { VolunteerOpportunity } from 'src/shared/models/volunteer-opportunity.model';
-import { FileService } from 'src/shared/services/file.service';
-import { ToastService } from 'src/shared/services/toast.service';
-import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
-import { CandidateService } from "../../../../shared/services/candidate.service";
-import { Candidate } from "../../../../shared/models/candidate.model";
-import { CandidateSearchParams } from "../../../../shared/models/candidate-search-params.model";
-import { OpportunityCause } from "../../../../shared/models/opportunity-cause.model";
-import { FormArray, FormControl, FormGroup } from "@angular/forms";
-import { FederativeUnit } from "../../../../shared/models/address.model";
-import { ViaCepService } from "../../../../shared/services/via-cep.service";
-import { OpportunityCauseService } from "../../../../shared/services/opportunity-cause.service";
-import { Qualification } from "../../../../shared/models/qualification.model";
-import { QualificationService } from "../../../../shared/services/qualification.service";
-import { ImageService } from 'src/shared/services/image.service';
+import {HttpStatusCode, HttpErrorResponse} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Page} from 'src/shared/models/page.model';
+import {VolunteerOpportunity} from 'src/shared/models/volunteer-opportunity.model';
+import {FileService} from 'src/shared/services/file.service';
+import {ToastService} from 'src/shared/services/toast.service';
+import {VolunteerOpportunityService} from 'src/shared/services/volunteer-opportunity.service';
+import {CandidateService} from "../../../../shared/services/candidate.service";
+import {Candidate} from "../../../../shared/models/candidate.model";
+import {CandidateSearchParams} from "../../../../shared/models/candidate-search-params.model";
+import {OpportunityCause} from "../../../../shared/models/opportunity-cause.model";
+import {FormArray, FormControl, FormGroup} from "@angular/forms";
+import {FederativeUnit} from "../../../../shared/models/address.model";
+import {ViaCepService} from "../../../../shared/services/via-cep.service";
+import {OpportunityCauseService} from "../../../../shared/services/opportunity-cause.service";
+import {Qualification} from "../../../../shared/models/qualification.model";
+import {QualificationService} from "../../../../shared/services/qualification.service";
+import {ImageService} from 'src/shared/services/image.service';
+import {AccessService} from "../../../../shared/services/access.service";
+import {OpportunityInvitation} from "../../../../shared/models/opportunity-invitation.model";
 
 @Component({
   selector: 'app-volunteer-search',
@@ -42,6 +44,7 @@ export class VolunteerSearchComponent implements OnInit {
   pageSize = 10;
   hasNextPage = false;
   isLoading = false;
+  invitesAreLoading = false;
 
   constructor(
     private volunteerOpportunityService: VolunteerOpportunityService,
@@ -52,7 +55,8 @@ export class VolunteerSearchComponent implements OnInit {
     private viaCepService: ViaCepService,
     private opportunityCauseService: OpportunityCauseService,
     private qualificationService: QualificationService,
-    public imageService: ImageService
+    public imageService: ImageService,
+    private accessService: AccessService
   ) {
   }
 
@@ -96,7 +100,6 @@ export class VolunteerSearchComponent implements OnInit {
     this.candidateService.search(searchParams)
       .subscribe({
         next: (page: Page<Candidate[]>) => {
-          console.log(page.data)
           this.candidates = page.data;
         }
       }).add(() => this.isLoading = false);
@@ -171,37 +174,40 @@ export class VolunteerSearchComponent implements OnInit {
   }
 
   openInviteModal(inviteModal, candidate: Candidate) {
+    this.invitesAreLoading = true;
+    const instituionId = this.accessService.getCurrentUser().id;
     this.currentCandidate = candidate;
 
     this.volunteerOpportunityService
       .search({
-        candidateNotRegistered: this.currentCandidate.id
+        candidateNotRegistered: this.currentCandidate.id,
+        candidateNotInvited: this.currentCandidate.id,
+        institutionId: instituionId
       })
       .subscribe({
-        next: page => {
-          if (Array.isArray(page.data) && page.data.length > 0) {
-            this.currentVolunteerOpportunities = page.data;
+        next: opportunityPage => {
+          this.currentVolunteerOpportunities = opportunityPage.data;
 
-            console.log(this.currentVolunteerOpportunities);
+          this.volunteerOpportunitiesInvites.clear();
 
-            this.volunteerOpportunitiesInvites.clear();
+          for (const volunteerOpportunity of this.currentVolunteerOpportunities) {
+            console.log(volunteerOpportunity);
 
-            for (const volunteerOpportunity of this.currentVolunteerOpportunities) {
-              console.log(volunteerOpportunity);
-
-              this.volunteerOpportunitiesInvites.push(new FormGroup({
-                opportunityId: new FormControl(volunteerOpportunity.id),
-                name: new FormControl(volunteerOpportunity.name),
-                sendInvite: new FormControl(false)
-              }));
-            }
-
-            console.log([...this.volunteerOpportunitiesInvites.controls.values()]);
+            this.volunteerOpportunitiesInvites.push(new FormGroup({
+              opportunityId: new FormControl(volunteerOpportunity.id),
+              name: new FormControl(volunteerOpportunity.name),
+              sendInvite: new FormControl(false)
+            }));
           }
-        }
-      });
 
-    this.modalService.open(inviteModal);
+          console.log([...this.volunteerOpportunitiesInvites.controls.values()]);
+        }
+      }).add(() => {
+      this.modalService.open(inviteModal);
+
+      this.invitesAreLoading = false
+    })
+
   }
 
   existsOpportunityInviteToSend() {
@@ -210,6 +216,8 @@ export class VolunteerSearchComponent implements OnInit {
   }
 
   inviteCandidate(modal: NgbActiveModal) {
+    this.invitesAreLoading = true;
+
     const volunteerOpportunitiesInvites = [...this.volunteerOpportunitiesInvites.controls.values()]
       .filter(volunteerOpportunityInvite => volunteerOpportunityInvite.value.sendInvite)
       .map(volunteerOpportunityInvite => {
@@ -222,10 +230,38 @@ export class VolunteerSearchComponent implements OnInit {
         }
       });
 
-    // TODO Enviar os convites
-    console.log(volunteerOpportunitiesInvites);
+    for (let volunteerOpportunitiesInvite of volunteerOpportunitiesInvites) {
+      this.volunteerOpportunityService.inviteCandidate(this.currentCandidate.id, volunteerOpportunitiesInvite.opportunityId)
+        .subscribe({
+          next: httpResponse => {
+            this.toastService.show('Convite enviado com sucesso', {classname: 'bg-success text-light', delay: 5000});
+            this.invitesAreLoading = false;
+          },
+          error: (httpErrorResponse: HttpErrorResponse) => {
+            console.error(httpErrorResponse);
 
-    modal.close();
+            if (httpErrorResponse.status == HttpStatusCode.Conflict) {
+              this.toastService.show('Candidato já foi convidado', {classname: 'bg-info text-light', delay: 5000});
+              return;
+            }
+
+            if (httpErrorResponse?.error) {
+              this.toastService.show('Houve um erro ao convidar o candidato', {
+                classname: 'bg-danger text-light',
+                delay: 5000
+              });
+              this.toastService.show('Será necessário tentar novamente', {
+                classname: 'bg-danger text-light',
+                delay: 5000
+              });
+            }
+
+            this.invitesAreLoading = false;
+          }
+        }).add(() => {
+        modal.close();
+      });
+    }
   }
 }
 
