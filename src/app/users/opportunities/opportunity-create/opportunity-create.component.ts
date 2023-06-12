@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { delay, distinctUntilChanged } from 'rxjs';
 import { OpportunityCause } from 'src/shared/models/opportunity-cause.model';
 import { OpportunityRegistration } from 'src/shared/models/opportunity-registration.model';
@@ -8,7 +8,7 @@ import { OpportunityCauseService } from 'src/shared/services/opportunity-cause.s
 import { ToastService } from 'src/shared/services/toast.service';
 import { ViaCepService } from 'src/shared/services/via-cep.service';
 import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-opportunity-create',
@@ -20,6 +20,9 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
 
   postalCodeInvalid = false;
+
+  private currentDate = new Date();
+  private tomorrowDate = new Date();
 
   opportunityCauses: OpportunityCause[] = [];
   selectedOpportunityCauses: OpportunityCause[] = [];
@@ -33,13 +36,19 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
     private toastService: ToastService,
     private viaCepService: ViaCepService,
     private router: Router
-  ) { }
+  ) {
+    this.tomorrowDate = new Date();
+    this.tomorrowDate.setDate(this.currentDate.getDate() + 1);
+    this.tomorrowDate.setHours(0);
+    this.tomorrowDate.setMinutes(0);
+    this.tomorrowDate.setMilliseconds(0);
+  }
 
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl(null, [Validators.required, Validators.minLength(2), Validators.maxLength(255)]),
       description: new FormControl(null, [Validators.required, Validators.minLength(2), Validators.maxLength(500)]),
-      opportunityDate: new FormControl(null, [Validators.required]),
+      opportunityDate: new FormControl(null, [Validators.required, opportunityDateValidator()]),
       photo: new FormControl(null, [Validators.required]),
       address: new FormGroup({
         street: new FormControl(null, [Validators.required]),
@@ -160,5 +169,29 @@ export class OpportunityCreateComponent implements OnInit, OnDestroy {
           console.error(error);
         }
       });
+  }
+}
+
+export function opportunityDateValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const dateText = control.value;
+
+    if (dateText == null) {
+      return null;
+    }
+
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+    tomorrow.setHours(0);
+    tomorrow.setMinutes(0);
+    tomorrow.setSeconds(0);
+
+    const selectedDate = new Date(dateText);
+    selectedDate.setUTCHours(0);
+    selectedDate.setUTCMinutes(0);
+    selectedDate.setUTCSeconds(0);
+    selectedDate.setMinutes(selectedDate.getMinutes() + selectedDate.getTimezoneOffset())
+    return selectedDate.getUTCDate() >= tomorrow.getUTCDate() ? null : { dateNotGreaterThanTomorrow: true };
   }
 }

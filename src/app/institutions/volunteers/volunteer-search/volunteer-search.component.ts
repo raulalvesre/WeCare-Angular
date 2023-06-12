@@ -1,21 +1,22 @@
-import {HttpStatusCode, HttpErrorResponse} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Page} from 'src/shared/models/page.model';
-import {VolunteerOpportunity} from 'src/shared/models/volunteer-opportunity.model';
-import {FileService} from 'src/shared/services/file.service';
-import {ToastService} from 'src/shared/services/toast.service';
-import {VolunteerOpportunityService} from 'src/shared/services/volunteer-opportunity.service';
-import {CandidateService} from "../../../../shared/services/candidate.service";
-import {Candidate} from "../../../../shared/models/candidate.model";
-import {CandidateSearchParams} from "../../../../shared/models/candidate-search-params.model";
-import {OpportunityCause} from "../../../../shared/models/opportunity-cause.model";
-import {FormGroup} from "@angular/forms";
-import {FederativeUnit} from "../../../../shared/models/address.model";
-import {ViaCepService} from "../../../../shared/services/via-cep.service";
-import {OpportunityCauseService} from "../../../../shared/services/opportunity-cause.service";
-import {Qualification} from "../../../../shared/models/qualification.model";
-import {QualificationService} from "../../../../shared/services/qualification.service";
+import { HttpStatusCode, HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Page } from 'src/shared/models/page.model';
+import { VolunteerOpportunity } from 'src/shared/models/volunteer-opportunity.model';
+import { FileService } from 'src/shared/services/file.service';
+import { ToastService } from 'src/shared/services/toast.service';
+import { VolunteerOpportunityService } from 'src/shared/services/volunteer-opportunity.service';
+import { CandidateService } from "../../../../shared/services/candidate.service";
+import { Candidate } from "../../../../shared/models/candidate.model";
+import { CandidateSearchParams } from "../../../../shared/models/candidate-search-params.model";
+import { OpportunityCause } from "../../../../shared/models/opportunity-cause.model";
+import { FormArray, FormControl, FormGroup } from "@angular/forms";
+import { FederativeUnit } from "../../../../shared/models/address.model";
+import { ViaCepService } from "../../../../shared/services/via-cep.service";
+import { OpportunityCauseService } from "../../../../shared/services/opportunity-cause.service";
+import { Qualification } from "../../../../shared/models/qualification.model";
+import { QualificationService } from "../../../../shared/services/qualification.service";
+import { ImageService } from 'src/shared/services/image.service';
 
 @Component({
   selector: 'app-volunteer-search',
@@ -25,14 +26,17 @@ import {QualificationService} from "../../../../shared/services/qualification.se
 export class VolunteerSearchComponent implements OnInit {
 
   candidates: Candidate[] = [];
+
+  currentCandidate: Candidate;
+  currentVolunteerOpportunities: VolunteerOpportunity[];
+
   qualifications: Qualification[] = [];
   selectedQualifications: Qualification[] = [];
 
   federativeUnits: FederativeUnit[] = [];
   selectedFederativeUnits: FederativeUnit[] = [];
 
-  whichOpportunityToInviteForm: FormGroup;
-
+  volunteerOpportunitiesInvitesForm: FormGroup;
 
   pageNumber = 1;
   pageSize = 10;
@@ -47,7 +51,8 @@ export class VolunteerSearchComponent implements OnInit {
     private modalService: NgbModal,
     private viaCepService: ViaCepService,
     private opportunityCauseService: OpportunityCauseService,
-    private qualificationService: QualificationService
+    private qualificationService: QualificationService,
+    public imageService: ImageService
   ) {
   }
 
@@ -55,6 +60,14 @@ export class VolunteerSearchComponent implements OnInit {
     this.searchQualifications();
     this.searchFederativeUnits();
     this.loadCandidates();
+
+    this.volunteerOpportunitiesInvitesForm = new FormGroup({
+      volunteerOpportunitiesInvites: new FormArray([])
+    });
+  }
+
+  get volunteerOpportunitiesInvites() {
+    return this.volunteerOpportunitiesInvitesForm.controls['volunteerOpportunitiesInvites'] as FormArray;
   }
 
   private searchQualifications() {
@@ -157,12 +170,55 @@ export class VolunteerSearchComponent implements OnInit {
     return `data:image/${photoExtension};base64,${photoBase64}`;
   }
 
-  inviteCandidate(modal: any) {
+  openInviteModal(inviteModal, candidate: Candidate) {
+    this.currentCandidate = candidate;
 
+    this.volunteerOpportunityService
+      .search({
+        candidateNotRegistered: this.currentCandidate.id
+      })
+      .subscribe({
+        next: page => {
+          if (Array.isArray(page.data) && page.data.length > 0) {
+            this.currentVolunteerOpportunities = page.data;
+
+            console.log(this.currentVolunteerOpportunities);
+
+            for (const volunteerOpportunity of this.currentVolunteerOpportunities) {
+              this.volunteerOpportunitiesInvites.push(new FormGroup({
+                opportunityId: new FormControl(volunteerOpportunity.id),
+                name: new FormControl(volunteerOpportunity.name),
+                sendInvite: new FormControl(false)
+              }));
+            }
+
+            console.log([...this.volunteerOpportunitiesInvites.controls.values()]);
+          }
+        }
+      });
+
+    this.modalService.open(inviteModal);
   }
 
-  openInviteModal() {
+  existsOpportunityInviteToSend() {
+    return [...this.volunteerOpportunitiesInvites.controls.values()]
+      .find(volunteerOpportunityInvite => volunteerOpportunityInvite.value.sendInvite)
+  }
 
+  inviteCandidate(modal: NgbActiveModal) {
+    const volunteerOpportunitiesInvites = [...this.volunteerOpportunitiesInvites.controls.values()]
+      .filter(volunteerOpportunityInvite => volunteerOpportunityInvite.value.sendInvite)
+      .map(volunteerOpportunityInvite => {
+        return {
+          opportunityId: volunteerOpportunityInvite.value.id,
+          name: volunteerOpportunityInvite.value.name,
+          sendInvite: volunteerOpportunityInvite.value.sendInvite
+        }
+      });
+
+    console.log(volunteerOpportunitiesInvites);
+
+    modal.close();
   }
 }
 

@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, delay, distinctUntilChanged } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -53,7 +53,7 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
     this.form = new FormGroup({
       name: new FormControl(null, [Validators.required, Validators.minLength(2), Validators.maxLength(255)]),
       description: new FormControl(null, [Validators.required, Validators.minLength(2), Validators.maxLength(500)]),
-      opportunityDate: new FormControl(null, [Validators.required]),
+      opportunityDate: new FormControl(null, [Validators.required ]),
       photo: new FormControl(null),
       address: new FormGroup({
         street: new FormControl(null, [Validators.required]),
@@ -227,22 +227,4 @@ export class OpportunityEditComponent implements OnInit, OnDestroy {
   }
 }
 
-export function opportunityDateValidator(): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const dateText = control.value;
 
-    if (dateText == null) {
-      return null;
-    }
-
-    const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 1);
-    tomorrow.setHours(0);
-    tomorrow.setMinutes(0);
-    tomorrow.setMilliseconds(0);
-
-    const selectedDate = new Date(dateText);
-    return selectedDate > tomorrow ? null : { dateNotGreaterThanTomorrow: true };
-  }
-}

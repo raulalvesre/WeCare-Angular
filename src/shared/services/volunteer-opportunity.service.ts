@@ -57,11 +57,11 @@ export class VolunteerOpportunityService {
     }
 
     if (institutionId != null) {
-      parameters = parameters.append("institutionId", institutionId)
+      parameters = parameters.append('institutionId', institutionId)
     }
 
     if (candidateNotRegistered != null) {
-      parameters = parameters.append("candidateNotRegistered", candidateNotRegistered)
+      parameters = parameters.append('candidateNotRegistered', candidateNotRegistered)
     }
 
     if (initialDate != null) {
@@ -78,10 +78,6 @@ export class VolunteerOpportunityService {
 
     if (orderDirection != null) {
       parameters = parameters.append('orderDirection', orderDirection);
-    }
-
-    if (candidateNotRegistered != null) {
-      parameters = parameters.append('candidateNotRegistered', candidateNotRegistered);
     }
 
     return this.httpClient
