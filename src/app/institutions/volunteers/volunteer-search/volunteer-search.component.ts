@@ -184,7 +184,11 @@ export class VolunteerSearchComponent implements OnInit {
 
             console.log(this.currentVolunteerOpportunities);
 
+            this.volunteerOpportunitiesInvites.clear();
+
             for (const volunteerOpportunity of this.currentVolunteerOpportunities) {
+              console.log(volunteerOpportunity);
+
               this.volunteerOpportunitiesInvites.push(new FormGroup({
                 opportunityId: new FormControl(volunteerOpportunity.id),
                 name: new FormControl(volunteerOpportunity.name),
@@ -209,13 +213,16 @@ export class VolunteerSearchComponent implements OnInit {
     const volunteerOpportunitiesInvites = [...this.volunteerOpportunitiesInvites.controls.values()]
       .filter(volunteerOpportunityInvite => volunteerOpportunityInvite.value.sendInvite)
       .map(volunteerOpportunityInvite => {
+        console.log(volunteerOpportunityInvite);
+
         return {
-          opportunityId: volunteerOpportunityInvite.value.id,
+          opportunityId: volunteerOpportunityInvite.value.opportunityId,
           name: volunteerOpportunityInvite.value.name,
           sendInvite: volunteerOpportunityInvite.value.sendInvite
         }
       });
 
+    // TODO Enviar os convites
     console.log(volunteerOpportunitiesInvites);
 
     modal.close();
