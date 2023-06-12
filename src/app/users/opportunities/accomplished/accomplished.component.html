@@ -8,6 +8,9 @@
         </p>
         <ul>
           <li>
+            Você usar o botão <span class="bi bi-clipboard"></span> para copiar o link do seu certificado.
+          </li>
+          <li>
             Você pode ver mais detalhes da oportunidade por meio do
             botão <span class="bi bi-card-text text-primary"></span>.
           </li>
@@ -177,7 +180,17 @@
 
                       <div class="action-buttons my-4">
                         <div class="row">
-                          <div class="col-9 col-lg-9">
+                          <div class="col-8 col-lg-8">
+                            <button
+                              class="btn btn-secondary"
+                              title="Copiar link"
+                              (click)="linkCopiedToast()"
+                              ngxClipboard [cbContent]="getCertificateLink(participationCertificate.authenticityCode)"
+                            >
+                              <span class="bi bi-clipboard"></span>
+                            </button>
+                          </div>
+                          <div class="col-1 col-lg-1">
                             <button
                               class="btn btn-primary"
                               title="Detalhes da oportunidade"

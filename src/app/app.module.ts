@@ -42,6 +42,7 @@ import { VolunteerSearchComponent } from './institutions/volunteers/volunteer-se
 import { OpportunityAppliedUsersComponent } from './users/opportunities/opportunity-applied-users/opportunity-applied-users.component';
 import {OpportunityModalComponent} from "../shared/components/opportunity-modal/opportunity-modal.component";
 import { CertificateComponentComponent } from './home/certificate-component/certificate-component.component';
+import {ClipboardModule} from "ngx-clipboard";
 
 registerLocaleData(localePt);
 
@@ -100,7 +101,7 @@ registerLocaleData(localePt);
         NgxMaskPipe,
         NgbCollapseModule,
         OpportunityModalComponent,
-
+        ClipboardModule
     ]
 })
 export class AppModule {

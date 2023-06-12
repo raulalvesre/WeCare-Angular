@@ -23,6 +23,7 @@
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.4",
     "jose": "^4.14.4",
+    "ngx-clipboard": "^16.0.0",
     "ngx-mask": "^15.1.0",
     "os": "^0.1.2",
     "rxjs": "~7.8.0",

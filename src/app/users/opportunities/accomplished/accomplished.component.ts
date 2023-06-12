@@ -237,4 +237,16 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
     const photoExtension = this.fileService.fileExtension(photoBase64);
     return `data:image/${photoExtension};base64,${photoBase64}`;
   }
+
+
+  getCertificateLink(authenticityCode: string) {
+    return `${window.location.protocol}//${window.location.host}/certificates/${authenticityCode}`
+  }
+
+  linkCopiedToast() {
+    this.toastService.show('Link copiado!', {
+      classname: 'bg-success text-light',
+      delay: 5000
+    });
+  }
 }
