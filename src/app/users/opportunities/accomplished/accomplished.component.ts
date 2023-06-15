@@ -224,7 +224,7 @@ export class AccomplishedComponent implements OnInit, OnDestroy {
             }
           }
         }
-      });
+      }).add(() => this.isLoading = false);
   }
 
   candidateHasAlreadyReportedOpportunity(opportunityId: number): boolean {

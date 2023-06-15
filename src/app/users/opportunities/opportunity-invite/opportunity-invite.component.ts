@@ -108,7 +108,7 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
             this.toastService.show('Você já respondeu esse convite', {classname: 'bg-info text-light', delay: 5000});
           }
         }
-      });
+      }).add(() => location.reload());
   }
 
   denyInvite(opportunityInvitation: OpportunityInvitation) {
@@ -125,7 +125,7 @@ export class OpportunityInviteComponent implements OnInit, OnDestroy {
             this.toastService.show('Você já respondeu esse convite', {classname: 'bg-info text-light', delay: 5000});
           }
         }
-      });
+      }).add(() => location.reload());;
   }
 
   private loadOpportunityInvitations() {

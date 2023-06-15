@@ -31,11 +31,11 @@ export class ContentComponent {
       opportunityService.search({
         'orderBy': 'CreationDate',
         'orderDirection': 'Descending'
-      }).subscribe(ops => this.latestOpportunities = ops.data)
+      }).subscribe(ops => this.latestOpportunities = ops.data.filter(x => new Date() < new Date(x.opportunityDate)))
         .add(() => this.latestOpportunitiesIsLoading = false);
     } else {
       candidateService.getCandidateRecomendedOpportunities()
-        .subscribe(ops => this.recommendedOpportunities = ops.data)
+        .subscribe(ops => this.recommendedOpportunities = ops.data.filter(x => new Date() < new Date(x.opportunityDate)))
         .add(() => this.recommendedOpportunitiesIsLoading = false);
 
       opportunityService.search({
@@ -43,7 +43,7 @@ export class ContentComponent {
         'orderBy': 'CreationDate',
         'orderDirection': 'Descending'
       }).subscribe(ops => {
-        this.latestOpportunities = ops.data;
+        this.latestOpportunities = ops.data.filter(x => new Date() < new Date(x.opportunityDate));
       }).add(() => {
         this.latestOpportunitiesIsLoading = false;
       })
