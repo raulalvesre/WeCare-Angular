@@ -11,6 +11,10 @@ export class ImageService {
   ) { }
 
   convertBase64ToPhotoUrl(photoBase64: string) {
+    if (photoBase64 == null || photoBase64 == '') {
+      return '';
+    }
+    
     const photoExtension = this.fileService.fileExtension(photoBase64);
     return `data:image/${photoExtension};base64,${photoBase64}`;
   }

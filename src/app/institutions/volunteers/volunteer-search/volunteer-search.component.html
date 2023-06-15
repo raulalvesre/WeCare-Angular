@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" style="min-height: 64vh">
   <div class="container">
     <div class="row my-3 d-flex justify-content-space-around">
       <div class="col">
@@ -6,7 +6,6 @@
           Encontre Voluntários Para Ajudar Com a Sua Causa
         </h2>
       </div>
-
 
       <div class="row">
         <section class="col d-flex flex-wrap">
@@ -41,7 +40,7 @@
               *ngFor="let qualification of selectedQualifications"
               class="d-flex flex-row mt-1"
             >
-              <span class="me-2 w-50">{{ qualification.name }}</span>
+              <span class="me-2 w-100">{{ qualification.name }}</span>
               <span
                 (click)="removeQualificationToSearch(qualification)"
                 role="button"
@@ -72,9 +71,7 @@
                   ngbDropdownItem
                   *ngFor="let federativeUnit of federativeUnits"
                 >
-                  {{ federativeUnit.name }} ({{
-                  federativeUnit.abbreviation
-                  }})
+                  {{ federativeUnit.name }} ({{ federativeUnit.abbreviation }})
                 </button>
               </div>
             </div>
@@ -86,11 +83,11 @@
                 *ngFor="let federativeUnit of selectedFederativeUnits"
                 class="d-flex flex-row mt-1"
               >
-                  <span class="me-2 w-50"
-                  >{{ federativeUnit.name }} ({{
-                    federativeUnit.abbreviation
-                    }})</span
-                  >
+                <span class="me-2 w-50"
+                >{{ federativeUnit.name }} ({{
+                  federativeUnit.abbreviation
+                  }})</span
+                >
                 <span
                   (click)="removeFederativeUnit(federativeUnit)"
                   role="button"
@@ -109,34 +106,31 @@
       </div>
       <section
         *ngFor="let candidate of candidates"
-        class="card card-content1 col-xs-10 col-sm-8 col-lg-5 col-xl-3"
+        class="card col-xs-10 col-sm-8 col-lg-5 col-xl-3 d-flex justify-content-center align-items-center m-3 p-0"
       >
-        <div class="" *ngIf="!isLoading">
-          <!--            <div class="image-content">-->
-          <!--              <span class="overlay"></span>-->
-          <!--              <div class="card-image">-->
-          <!--                <img-->
-          <!--                  [src]="convertBase64ToPhotoUrl(candidate.photo)"-->
-          <!--                  alt="Foto do candidato {{ candidate.name }}"-->
-          <!--                  class="card-img"-->
-          <!--                />-->
-          <!--              </div>-->
-          <!--            </div>-->
+        <ng-container *ngIf="!isLoading">
+          <div *ngIf="candidate.photo" class="image-content w-100">
+            <span class="overlay"></span>
+            <div class="card-image">
+              <img
+                [src]="imageService.convertBase64ToPhotoUrl(candidate?.photo)"
+                alt="Foto do candidato {{ candidate.name }}"
+                class="card-img"
+              />
+            </div>
+          </div>
           <div class="card-content row">
-            <h2
-              class="name col-10 text-truncate"
-              title="{{ candidate.name }}"
-            >
+            <h2 class="name col-10 text-center" title="{{ candidate.name }}">
               {{ candidate.name }}
             </h2>
             <p
-              class="description crop-text-5"
+              class="description text-body-tertiary crop-text-5 my-2"
               title="{{ candidate.bio }}"
             >
               {{ candidate.bio }}
             </p>
 
-            <!-- <div class="description2 text-center row">
+            <!-- <div class=" text-center row">
             <div class="col text-truncate text-start">
               <i
                 class="bi bi-calendar-week text-warning"
@@ -151,49 +145,39 @@
               </i>
             </div>
           </div> -->
-            <div class="description2 text-start row">
+            <div class="text-start row">
               <div class="col text-truncate text-start">
-                <i
-                  class="bi bi-geo-alt-fill text-danger"
-                  title="{{ candidate.address.city }} - {{
-                      candidate.address.state
-                    }}"
+                <i class="bi bi-geo-alt-fill text-danger"
                 ><span class="text-dark"
-                >{{ candidate.address.city }} -
+                >{{ candidate.address.neighborhood }},
+                  {{ candidate.address.city }} -
                   {{ candidate.address.state }}</span
                 >
                 </i>
               </div>
             </div>
-            <div class="description2 text-start row">
-              <div class="col text-truncate text-start">
-                <i
-                  class="bi bi-bookmark-heart text-success"
-                  title="Qualificações: {{ candidate.qualifications }}"
+            <div class="text-start row">
+              <div
+                *ngIf="candidate?.qualifications?.length > 0"
+                class="col text-truncate text-start"
+              >
+                <i class="bi bi-bookmark-heart text-success"
                 ><span class="text-dark text-start">{{
-                  candidate.qualifications
+                  candidate?.qualifications?.join(", ")
                   }}</span>
                 </i>
               </div>
             </div>
-            <div
-              class="row text-center my-2"
-              style="width: 104%; max-width: 104%"
-            >
-              <!--                <div class="col-6">-->
-              <!--                  <button-->
-              <!--                    class="btn btn-sm btn-outline-warning"-->
-              <!--                    (click)="openXl(contentModal, candidate)"-->
-              <!--                  >-->
-              <!--                    Detalhes-->
-              <!--                  </button>-->
-              <!--                </div>-->
-              <div class="col-6">
-                <button class="btn btn-sm btn-primary" (click)="openInviteModal()">Convidar</button>
-              </div>
+            <div class="row d-flex justify-content-end my-2">
+              <button
+                class="btn btn-sm btn-primary"
+                (click)="openInviteModal(inviteModal, candidate)"
+              >
+                Convidar
+              </button>
             </div>
           </div>
-        </div>
+        </ng-container>
 
         <ng-template #inviteModal let-modal>
           <div class="modal-header">
@@ -208,23 +192,62 @@
             ></button>
           </div>
           <div class="modal-body">
-            <div class="mb-3">
-              <form [formGroup]="whichOpportunityToInviteForm">
-
+            <div style="display: flex; justify-content: center" *ngIf="invitesAreLoading">
+              <div class="loader"></div>
+            </div>
+            <div class="mb-3" *ngIf="!invitesAreLoading">
+              <form [formGroup]="volunteerOpportunitiesInvitesForm">
+                <ng-container formArrayName="volunteerOpportunitiesInvites">
+                  <div *ngIf="volunteerOpportunitiesInvites?.controls.length == 0" class="text-center">
+                    <div class="text-center text-bg-warning border rounded m-5">
+                      <p class="align-middle m-3 fw-bold">
+                        Voluntário já inscrito/convidado para todas suas oportunidades
+                      </p>
+                    </div>
+                  </div>
+                  <table
+                    *ngIf="volunteerOpportunitiesInvites?.controls.length > 0"
+                    class="table"
+                  >
+                    <thead>
+                    <tr>
+                      <th>Oportunidade</th>
+                      <th>Enviar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr
+                      *ngFor="
+                          let volunteerOpportunityInvite of volunteerOpportunitiesInvites.controls
+                        "
+                    >
+                      <td>
+                        {{ volunteerOpportunityInvite.value.name }}
+                      </td>
+                      <td [formGroup]="volunteerOpportunityInvite" class="d-flex justify-content-center">
+                        <div class="h-100">
+                          <input type="checkbox" formControlName="sendInvite" class="form-check-input"
+                                 title="Enviar Convite"/>
+                        </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </ng-container>
               </form>
             </div>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer" *ngIf="!invitesAreLoading">
             <button
               type="button"
               class="btn btn-primary"
               (click)="inviteCandidate(modal)"
+              [disabled]="!existsOpportunityInviteToSend()"
             >
               Convidar
             </button>
           </div>
         </ng-template>
-
       </section>
 
       <div *ngIf="hasNextPage" class="row d-flex justify-content-center mt-5">

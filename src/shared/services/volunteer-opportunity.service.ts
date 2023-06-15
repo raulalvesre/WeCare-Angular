@@ -10,6 +10,7 @@ import { Institution } from '../models/institution.model';
 import { OpportunityRegistration } from '../models/opportunity-registration.model';
 import { Candidate } from '../models/candidate.model';
 import { VolunteerOpportunityRegistration } from '../models/candidate-volunteer-opportunity.model';
+import {OpportunityInvitation} from "../models/opportunity-invitation.model";
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class VolunteerOpportunityService {
     finalDate = null,
     orderBy = null,
     orderDirection = null,
-    causesOnlyCode = null,
+    candidateNotInvited = null,
   }): Observable<Page<VolunteerOpportunity[]>> {
     const token = this.accessService.getToken();
 
@@ -43,11 +44,9 @@ export class VolunteerOpportunityService {
       .append("pageNumber", pageNumber)
       .append("pageSize", pageSize);
 
-    console.log(opportunityCauses);
 
     opportunityCauses ??= [];
     for (const opportunityCauseCode of opportunityCauses.map(opportunityCause => opportunityCause.code)) {
-      console.log(opportunityCauseCode)
       parameters = parameters.append('causes', opportunityCauseCode);
     }
 
@@ -57,11 +56,15 @@ export class VolunteerOpportunityService {
     }
 
     if (institutionId != null) {
-      parameters = parameters.append("institutionId", institutionId)
+      parameters = parameters.append('institutionId', institutionId)
     }
 
     if (candidateNotRegistered != null) {
-      parameters = parameters.append("candidateNotRegistered", candidateNotRegistered)
+      parameters = parameters.append('candidateNotRegistered', candidateNotRegistered)
+    }
+
+    if (candidateNotInvited != null) {
+      parameters = parameters.append('candidateNotInvited', candidateNotInvited)
     }
 
     if (initialDate != null) {
@@ -78,10 +81,6 @@ export class VolunteerOpportunityService {
 
     if (orderDirection != null) {
       parameters = parameters.append('orderDirection', orderDirection);
-    }
-
-    if (candidateNotRegistered != null) {
-      parameters = parameters.append('candidateNotRegistered', candidateNotRegistered);
     }
 
     return this.httpClient
@@ -217,4 +216,34 @@ export class VolunteerOpportunityService {
         observe: 'response'
       });
   }
+
+  inviteCandidate(candidateId: number, opportunityId: number): Observable<HttpResponse<any>> {
+    const token = this.accessService.getToken();
+
+    const body = {
+      candidateId,
+      opportunityId,
+      invitationMessage: '',
+      responseMessage: ''
+    };
+
+    return this.httpClient.post<HttpResponse<any>>(
+      `${this.apiUrl}/api/opportunity-invitation`,
+      body,
+      {
+        headers: new HttpHeaders().append('Authorization', `Bearer ${token}`),
+      });
+  }
+
+  getOpportunitiesCandidateIsInvitedTo(candidateId: number, institutionId: number) {
+    const token = this.accessService.getToken();
+
+    return this.httpClient.get<Page<OpportunityInvitation[]>>(
+      `${this.apiUrl}/api/opportunity-invitation/search?candidateId=${candidateId}&opportunityId=${institutionId}`,
+      {
+        headers: new HttpHeaders().append('Authorization', `Bearer ${token}`)
+      }
+    );
+  }
+
 }

@@ -1,5 +1,5 @@
 <div class="content">
-  <div class="container">
+  <div class="container" style="min-height: 48vh">
     <div class="row my-3 d-flex justify-content-space-around">
       <div class="col">
         <h2 class="fs-3 text-primary">Meus Projetos</h2>
@@ -21,7 +21,7 @@
       Legenda
       <i class="bi bi-trash text-danger"> - Exlcuir Oportunidade // </i>
       <i class="bi bi-pencil text-warning"> - Editar oportunidade // </i>
-      <i class="bi bi-people-fill text-info"> - Consultar Inscritos</i>
+      <i class="bi bi-people-fill text-info"> - Consultar Voluntários</i>
     </p>
 
     <form [formGroup]="searchForm">
@@ -174,8 +174,8 @@
 
       <section
         *ngFor="let volunteerOpportunity of volunteerOpportunities"
-        class="card card-content1 col-xs-10 col-sm-8 col-lg-5 col-xl-3"
-        >
+        class="card col-xs-10 col-sm-8 col-lg-5 col-xl-3 p-0 m-3"
+      >
         <div class="col-sm-12">
           <div class="image-content">
             <span class="overlay"></span>
@@ -241,55 +241,37 @@
                 </i>
               </div>
             </div>
-            <div class="row text-center my-3">
-              <div class="col-4">
+            <div class="row my-3 pe-4">
+              <div class="col-12 col-md-4">
                 <button
                   class="btn btn-sm btn-outline-danger"
                   (click)="deleteOpportunity(volunteerOpportunity)"
+                  title="Deletar Oportunidade"
                 >
-                  <i class="bi bi-trash"></i>
+                  <span class="bi bi-trash"></span> Deletar
                 </button>
               </div>
-              <div class="col-4">
+              <div class="col-12 col-md-4 d-flex justify-content-center align-items-center">
                 <a
                   [routerLink]="['/opportunity/edit', volunteerOpportunity.id]"
-                  class=""
+                  class="btn btn-sm btn-outline-warning d-flex justify-content-center align-items-center w-100 h-100 flex-column"
+                  title="Editar Oportunidade"
                 >
-                  <button class="btn btn-sm btn-outline-warning">
-                    <i class="bi bi-pencil"></i>
-                  </button>
+                  <span class="bi bi-pencil"></span> Editar
                 </a>
               </div>
-              <div class="col-4">
+              <div class="col-12 col-md-4">
                 <a
                   [routerLink]="[
                     '/applied-volunteers',
                     volunteerOpportunity.id
                   ]"
-                  class=""
+                  class="btn btn-sm btn-outline-info"
+                  title="Ver Voluntários"
                 >
-                  <button class="btn btn-sm btn-outline-info">
-                    <i class="bi bi-people-fill"></i>
-                  </button>
+                  <span class="bi bi-people-fill"></span> Voluntários
                 </a>
               </div>
-
-              <!-- <div class="d-flex justify-content-end">
-              <button
-                (click)="deleteOpportunity(volunteerOpportunity)"
-                class="btn btn-outline-danger rounded-5 w-100 me-2"
-              >
-                <span class="bi bi-trash3"></span>
-                Excluir
-              </button>
-              <a
-                [routerLink]="['/opportunity/edit', volunteerOpportunity.id]"
-                class="btn btn-outline-primary rounded-5 w-100"
-              >
-                <span class="bi bi-pencil"></span>
-                Editar
-              </a>
-            </div> -->
             </div>
           </div>
         </div>

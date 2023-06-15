@@ -37,7 +37,7 @@
               <label for="opportunity-date" class="form-label">Data</label>
               <input
                 id="opportunity-date"
-                type="date"
+                type="datetime-local"
                 name="opportunityDate"
                 formControlName="opportunityDate"
                 class="form-control"
@@ -52,11 +52,22 @@
                 *ngIf="
                   form.get('opportunityDate').invalid &&
                   (form.get('opportunityDate').dirty ||
-                    form.get('opportunityDate').touched)
+                    form.get('opportunityDate').touched) &&
+                  !form.get('opportunityDate')?.errors
+                    ?.dateNotGreaterThanTomorrow
                 "
                 class="invalid-feedback"
               >
                 Data inválida
+              </div>
+              <div
+                *ngIf="
+                  form.get('opportunityDate')?.errors
+                    ?.dateNotGreaterThanTomorrow
+                "
+                class="invalid-feedback"
+              >
+                Data mínima {{ tomorrowDate | date : "shortDate" }}
               </div>
             </div>
 
@@ -224,10 +235,26 @@
                       <input
                         id="street-number"
                         type="text"
-                        name="street-number"
+                        name="number"
                         formControlName="number"
                         class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            form.get('address').get('number').invalid &&
+                            (form.get('address').get('number').dirty ||
+                              form.get('address').get('number').touched)
+                        }"
                       />
+                      <div
+                        *ngIf="
+                          form.get('address').get('number').invalid &&
+                          (form.get('address').get('number').dirty ||
+                            form.get('address').get('number').touched)
+                        "
+                        class="invalid-feedback"
+                      >
+                        Número inválido
+                      </div>
                     </div>
 
                     <div class="mb-3">
@@ -342,28 +369,26 @@
             </div> -->
 
             <div class="mt-1">
-              <div class="row text-end">
-                <div class="col-12">
-                 
-                    <a
-                      href="/opportunities-institution"
-                      routerLinkActive="active"
-                      style="color: initial; text-decoration: none;"
-                    > <button type="button" class="btn btn-outline-danger mx-5">Cancelar</button>
-                      
-                    </a>
+              <div class="row">
+                <div class="col-12 d-flex justify-content-end">
+                  <a
+                    href="/opportunities-institution"
+                    routerLinkActive="active"
+                    class="btn btn-outline-danger me-3"
+                  >
+                    Cancelar
+                  </a>
                   <button
                     type="button ps-3"
                     [disabled]="form.invalid"
                     class="btn btn-primary"
                     (click)="register()"
                   >
-                  Cadastrar
+                    Cadastrar
                   </button>
                 </div>
               </div>
             </div>
-
           </form>
         </div>
       </div>
